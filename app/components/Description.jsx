@@ -126,7 +126,6 @@ const Description = () => {
 
   return (
     <div className="relative overflow-hidden bg-black py-24 font-space">
-      {/* Enhanced gradients */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(0,179,255,0.1),transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(0,179,255,0.05),transparent_50%)]" />
 
@@ -135,7 +134,7 @@ const Description = () => {
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Everything you need to run{" "}
             <span className="bg-gradient-to-r from-sky-400 via-blue-500 to-sky-600 bg-clip-text text-transparent">
-              Local LLMs
+              LMs
             </span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-white/60">
@@ -144,22 +143,24 @@ const Description = () => {
           </p>
         </div>
 
-        <div className="mt-20 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-20 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group relative rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300"
+              className="group relative rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm transition-all duration-300"
             >
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-sky-400/0 to-sky-400/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
               <div className="relative">
-                <div className="mb-4 inline-flex rounded-lg bg-sky-400/10 p-3 text-sky-400 transition-all duration-300 group-hover:bg-sky-400/20 group-hover:scale-110">
-                  {feature.icon}
-                </div>
+                <div className="flex justify-start items-center gap-4">
+                  <div className="mb-4 inline-flex rounded-lg bg-sky-400/10 p-3 text-sky-400 transition-all duration-300 group-hover:bg-sky-400/20 group-hover:scale-110">
+                    {feature.icon}
+                  </div>
 
-                <h3 className="mb-2 text-lg font-semibold text-white transition-colors duration-300 group-hover:text-sky-400">
-                  {feature.title}
-                </h3>
+                  <h3 className="mb-2 text-lg font-semibold text-white transition-colors duration-300 group-hover:text-sky-400">
+                    {feature.title}
+                  </h3>
+                </div>
 
                 <p className="text-white/60 transition-colors duration-300 group-hover:text-white/70">
                   {feature.description}
@@ -167,31 +168,6 @@ const Description = () => {
               </div>
             </div>
           ))}
-        </div>
-
-        <div className="mt-16 flex justify-center">
-          <a
-            href="/features"
-            className="group relative inline-flex items-center gap-2 text-sm font-medium text-sky-400 transition-all duration-300 hover:text-sky-300"
-          >
-            <span className="relative">
-              Learn more about our features
-              <span className="absolute bottom-0 left-0 h-px w-full bg-sky-400/50 scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-            </span>
-            <svg
-              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </a>
         </div>
       </div>
     </div>

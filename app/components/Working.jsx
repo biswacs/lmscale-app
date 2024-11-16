@@ -1,40 +1,31 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Cloud, Settings, Zap, Terminal, Server, Cpu } from "lucide-react";
+import { Cloud, Settings, Zap, Terminal, Server } from "lucide-react";
 
-// Animated terminal text component
-const AnimatedTerminal = ({ lines, repeat = true }) => {
-  const [currentLine, setCurrentLine] = useState(0);
-  const [text, setText] = useState("");
-
-  useEffect(() => {
-    if (currentLine < lines.length) {
-      const timer = setTimeout(() => {
-        setText((prev) => prev + lines[currentLine].text + "\n");
-        setCurrentLine((prev) => prev + 1);
-      }, lines[currentLine].delay || 1000);
-
-      return () => clearTimeout(timer);
-    } else if (repeat) {
-      const timer = setTimeout(() => {
-        setText("");
-        setCurrentLine(0);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [currentLine, lines, repeat]);
-
+const ModelsTerminal = () => {
   return (
-    <pre className="text-sm font-mono">
+    <pre className="text-sm font-mono space-y-1">
       <code>
-        {text}
-        <span className="animate-pulse">_</span>
+        <span className="text-green-400">├─ Meta</span>
+        {"\n"}
+        <span className="text-sky-400">│ └─ Llama-2-70b</span>
+        {"\n"}
+        <span className="text-green-400">├─ Mistral AI</span>
+        {"\n"}
+        <span className="text-sky-400">│ └─ Mixtral-8x7b</span>
+        {"\n"}
+        <span className="text-green-400">├─ EleutherAI</span>
+        {"\n"}
+        <span className="text-sky-400">│ └─ Pythia-12b</span>
+        {"\n"}
+        <span className="text-green-400">└─ TII</span>
+        {"\n"}
+        <span className="text-sky-400"> └─ Falcon-40b</span>
       </code>
     </pre>
   );
 };
 
-// Progress indicator component
 const ProgressIndicator = ({ value, label, color = "sky" }) => {
   const [progress, setProgress] = useState(0);
 
@@ -51,9 +42,9 @@ const ProgressIndicator = ({ value, label, color = "sky" }) => {
         <span className="text-sm text-white/60">{label}</span>
         <span className={`text-sm text-${color}-400`}>{progress}%</span>
       </div>
-      <div className={`h-2 rounded-full bg-${color}-400/10 overflow-hidden`}>
+      <div className={`h-2 rounded-full overflow-hidden`}>
         <div
-          className={`h-full rounded-full bg-${color}-400/40 transition-all duration-1000 ease-out`}
+          className={`h-full rounded-full bg-sky-400/80 transition-all duration-1000 ease-out`}
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -62,21 +53,8 @@ const ProgressIndicator = ({ value, label, color = "sky" }) => {
 };
 
 const Working = () => {
-  const [activeStep, setActiveStep] = useState(0);
-  const [isHovering, setIsHovering] = useState(false);
-
-  // Terminal animation content
-  const deployLines = [
-    { text: "$ LmCloud deploy gpt-j-6b", delay: 1000 },
-    { text: "Provisioning cloud resources...", delay: 500 },
-    { text: "Configuring deployment: ████████████ 100%", delay: 1500 },
-    { text: "Optimizing for inference...", delay: 800 },
-    { text: "Model ready for customization!", delay: 500 },
-  ];
-
   return (
     <div className="relative overflow-hidden bg-black py-24 font-space">
-      {/* Enhanced background with animated gradients and grid */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(0,179,255,0.1),transparent_50%)] animate-pulse-slow" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(0,179,255,0.05),transparent_50%)] animate-pulse-slow" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
@@ -100,68 +78,29 @@ const Working = () => {
             Works
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-white/60">
-            Deploy and customize cloud LLMs in three simple steps
+            Deploy and customize open source LLMs in three simple steps
           </p>
         </div>
 
         <div className="relative mt-20">
           <div className="grid gap-12 md:grid-cols-3">
-            {/* Step 1 */}
-            <div
-              className="relative flex flex-col items-center group"
-              onMouseEnter={() => setActiveStep(0)}
-            >
+            <div className="relative flex flex-col items-center group">
               <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-full bg-sky-400/10 ring-2 ring-sky-400/20 transition-all duration-300 group-hover:ring-sky-400/40 group-hover:bg-sky-400/20">
-                <Cloud className="h-8 w-8 text-sky-400 transition-transform duration-300 group-hover:scale-110" />
+                <Cloud className="h-8 w-8 text-sky-400 transition-transform duration-300 group-hover:rotate-45" />
               </div>
               <h3 className="mb-4 text-xl font-semibold text-white">
                 Select Your Model
               </h3>
               <p className="text-center text-white/60">
-                Choose from our catalog of pre-configured LLMs or specify your
-                custom model requirements.
+                Choose from our catalog of pre-configured open source LLMs.
               </p>
               <div className="mt-6 w-full rounded-xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-sky-400/20 hover:bg-white/[0.07] backdrop-blur-sm">
-                <AnimatedTerminal lines={deployLines} />
+                <ModelsTerminal />
               </div>
             </div>
-
-            {/* Step 2 */}
-            <div
-              className="relative flex flex-col items-center group"
-              onMouseEnter={() => setActiveStep(1)}
-            >
+            <div className="relative flex flex-col items-center group">
               <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-full bg-sky-400/10 ring-2 ring-sky-400/20 transition-all duration-300 group-hover:ring-sky-400/40 group-hover:bg-sky-400/20">
-                <Settings className="h-8 w-8 text-sky-400 transition-transform duration-300 group-hover:rotate-90" />
-              </div>
-              <h3 className="mb-4 text-xl font-semibold text-white">
-                Customize Performance
-              </h3>
-              <p className="text-center text-white/60">
-                Fine-tune your model's behavior with our intuitive interface.
-                Adjust parameters for optimal performance.
-              </p>
-              <div className="mt-6 w-full space-y-4 rounded-xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-sky-400/20 hover:bg-white/[0.07] backdrop-blur-sm">
-                <ProgressIndicator label="Response Speed" value={75} />
-                <ProgressIndicator label="Context Length" value={50} />
-                <ProgressIndicator label="Resource Usage" value={60} />
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-white/60">Status</span>
-                  <span className="flex items-center text-emerald-400">
-                    <span className="mr-2 h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    Optimized
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div
-              className="relative flex flex-col items-center group"
-              onMouseEnter={() => setActiveStep(2)}
-            >
-              <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-full bg-sky-400/10 ring-2 ring-sky-400/20 transition-all duration-300 group-hover:ring-sky-400/40 group-hover:bg-sky-400/20">
-                <Zap className="h-8 w-8 text-sky-400 transition-transform duration-300 group-hover:scale-110" />
+                <Zap className="h-8 w-8 text-sky-400 transition-transform duration-300 group-hover:rotate-45" />
               </div>
               <h3 className="mb-4 text-xl font-semibold text-white">
                 Launch & Scale
@@ -199,32 +138,31 @@ const Working = () => {
                 </pre>
               </div>
             </div>
+            <div className="relative flex flex-col items-center group">
+              <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-full bg-sky-400/10 ring-2 ring-sky-400/20 transition-all duration-300 group-hover:ring-sky-400/40 group-hover:bg-sky-400/20">
+                <Settings className="h-8 w-8 text-sky-400 transition-transform duration-300 group-hover:rotate-45" />
+              </div>
+              <h3 className="mb-4 text-xl font-semibold text-white">
+                Customize Performance
+              </h3>
+              <p className="text-center text-white/60">
+                Fine-tune your model's behavior with our intuitive interface.
+                Adjust parameters for optimal performance.
+              </p>
+              <div className="mt-6 w-full space-y-4 rounded-xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-sky-400/20 hover:bg-white/[0.07] backdrop-blur-sm">
+                <ProgressIndicator label="Response Speed" value={75} />
+                <ProgressIndicator label="Context Length" value={50} />
+                <ProgressIndicator label="Resource Usage" value={60} />
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-white/60">Status</span>
+                  <span className="flex items-center text-emerald-400">
+                    <span className="mr-2 h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Optimized
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div className="mt-20 flex justify-center">
-          <a
-            href="/deploy"
-            className="group relative inline-flex items-center gap-2 rounded-full bg-sky-500 px-8 py-3 text-base font-medium text-white transition-all duration-300 hover:bg-sky-600 hover:scale-105"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-          >
-            Deploy Now
-            <svg
-              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-            <div className="absolute -inset-1 animate-pulse rounded-full bg-sky-500/20 blur-xl group-hover:bg-sky-500/30"></div>
-          </a>
         </div>
       </div>
     </div>

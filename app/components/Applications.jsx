@@ -3,42 +3,6 @@ import React from "react";
 const Applications = () => {
   const useCases = [
     {
-      title: "Customer Support",
-      description:
-        "Deploy conversational AI agents that understand your product and provide 24/7 customer support with human-like interactions.",
-      icon: (
-        <svg
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"
-          />
-        </svg>
-      ),
-      color: "sky",
-      demo: (
-        <div className="flex gap-3">
-          <div className="flex-shrink-0">
-            <div className="h-8 w-8 rounded-full bg-sky-400/10" />
-          </div>
-          <div className="flex-grow">
-            <p className="text-sm text-white/80">
-              "How can I reset my password?"
-            </p>
-            <p className="mt-2 text-sm text-sky-400">
-              AI: "I'll guide you through our secure password reset process..."
-            </p>
-          </div>
-        </div>
-      ),
-    },
-    {
       title: "Content Generation",
       description:
         "Generate high-quality, SEO-optimized content at scale with AI that understands your brand voice and industry context.",
@@ -63,6 +27,39 @@ const Applications = () => {
           <div className="h-2 w-3/4 rounded bg-purple-500/20" />
           <div className="h-2 w-full rounded bg-purple-500/10" />
           <div className="h-2 w-2/3 rounded bg-purple-500/10" />
+        </div>
+      ),
+    },
+    {
+      title: "Customer Support",
+      description:
+        "Deploy conversational AI agents that understand your product and provide 24/7 customer support with human-like interactions.",
+      icon: (
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"
+          />
+        </svg>
+      ),
+      color: "sky",
+      demo: (
+        <div className="flex gap-3">
+          <div className="flex-grow">
+            <p className="text-sm text-white/80">
+              "How can I reset my password?"
+            </p>
+            <p className="mt-2 text-sm text-sky-400">
+              AI: "I'll guide you through our secure password reset process..."
+            </p>
+          </div>
         </div>
       ),
     },
@@ -116,7 +113,6 @@ const Applications = () => {
 
   return (
     <div className="relative overflow-hidden bg-black py-24 font-space">
-      {/* Enhanced gradients */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(0,179,255,0.1),transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(0,179,255,0.05),transparent_50%)]" />
 
@@ -138,20 +134,22 @@ const Applications = () => {
           {useCases.map((useCase, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-8 transition-all duration-300 hover:border-sky-400/50 hover:bg-white/[0.07] hover:shadow-[0_0_30px_rgba(0,179,255,0.1)]"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-sky-400/50 hover:bg-white/[0.07] hover:shadow-[0_0_30px_rgba(0,179,255,0.1)]"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-sky-400/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
               <div className="relative">
-                <div
-                  className={`mb-4 inline-flex rounded-lg bg-${useCase.color}-400/10 p-3 text-${useCase.color}-400 transition-transform duration-300 group-hover:scale-110`}
-                >
-                  {useCase.icon}
-                </div>
+                <div className="flex justify-start items-center gap-4">
+                  <div
+                    className={`mb-4 inline-flex rounded-lg bg-${useCase.color}-400/10 p-3 text-${useCase.color}-400 transition-transform duration-300 group-hover:scale-110`}
+                  >
+                    {useCase.icon}
+                  </div>
 
-                <h3 className="mb-4 text-xl font-semibold text-white transition-colors duration-300 group-hover:text-sky-400">
-                  {useCase.title}
-                </h3>
+                  <h3 className="mb-4 text-xl font-semibold text-white transition-colors duration-300 group-hover:text-sky-400">
+                    {useCase.title}
+                  </h3>
+                </div>
 
                 <p className="text-white/60 transition-colors duration-300 group-hover:text-white/70">
                   {useCase.description}
@@ -166,7 +164,7 @@ const Applications = () => {
         </div>
 
         <div className="mt-16 text-center">
-          <p className="text-lg text-white/60">
+          <p className="text-lg text-white/80">
             And many more use cases including:
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-4">
@@ -179,28 +177,6 @@ const Applications = () => {
               </span>
             ))}
           </div>
-        </div>
-
-        <div className="mt-16 flex justify-center">
-          <a
-            href="/contact"
-            className="group relative inline-flex items-center gap-2 rounded-full bg-sky-500 px-8 py-3 text-base font-medium text-white transition-all duration-300 hover:bg-sky-600 hover:shadow-[0_0_20px_rgba(0,179,255,0.3)]"
-          >
-            Discuss Your Use Case
-            <svg
-              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </a>
         </div>
       </div>
     </div>

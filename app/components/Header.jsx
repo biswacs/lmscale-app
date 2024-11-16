@@ -42,8 +42,7 @@ const Header = () => {
 
   const navItems = [
     { label: "Product", href: "/product" },
-    { label: "Docs", href: "/docs" },
-    { label: "Pricing", href: "/pricing" },
+    { label: "Docs", href: "#" },
   ];
 
   return (
@@ -60,8 +59,7 @@ const Header = () => {
               : "border-white/5 bg-black/50 backdrop-blur-md"
           } p-3 transition-all duration-300`}
         >
-          <div className="flex items-center gap-8">
-            {/* Logo */}
+          <div className="flex items-center gap-8 mx-2">
             <a
               href="/"
               className="group flex items-center text-2xl font-bold text-white font-space"
@@ -74,7 +72,6 @@ const Header = () => {
               </span>
             </a>
 
-            {/* Desktop Navigation - Moved next to logo */}
             <nav className="hidden md:block">
               <ul className="flex items-center gap-8">
                 {navItems.map((item) => (
@@ -86,8 +83,7 @@ const Header = () => {
             </nav>
           </div>
 
-          {/* Desktop Actions - Login and Signup */}
-          <div className="hidden items-center gap-4 md:flex">
+          <div className="hidden items-center gap-4 md:flex mx-2">
             <a
               href="/login"
               className="group relative inline-flex items-center gap-1 rounded-full px-2 text-sm font-medium text-white transform transition-all duration-200 hover:scale-110"
@@ -103,7 +99,6 @@ const Header = () => {
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -119,7 +114,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <div
         className={`fixed inset-0 top-[73px] z-50 transition-transform duration-300 md:hidden ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
