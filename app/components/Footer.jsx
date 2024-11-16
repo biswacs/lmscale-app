@@ -47,13 +47,9 @@ const Footer = () => {
             <div className="text-2xl font-bold tracking-tight">
               <span className="relative">
                 Lm
-                <span className="relative">
-                  <span className="absolute -inset-x-2 -inset-y-1 block animate-pulse rounded-lg bg-sky-400/10 blur-xl" />
-                  <span className="relative bg-gradient-to-r from-sky-400 to-sky-500 bg-clip-text text-transparent">
-                    Cloud
-                  </span>
+                <span className="bg-sky-400 bg-clip-text text-transparent">
+                  Scale.
                 </span>
-                <span className="text-sky-400">.</span>
               </span>
             </div>
             <p className="max-w-xs text-center md:text-left text-sm text-white/60">
@@ -82,7 +78,7 @@ const Footer = () => {
         <div className="mt-12 border-t border-white/10 pt-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-sm text-white/40">
-              &copy; {new Date().getFullYear()} LmCloud. All rights reserved.
+              &copy; {new Date().getFullYear()} LmScale. All rights reserved.
             </p>
             <a
               className="text-sm text-white/40 transition-colors duration-300 hover:text-sky-400"

@@ -5,6 +5,7 @@ import Description from "./components/Description";
 import Working from "./components/Working";
 import Applications from "./components/Applications";
 import Performance from "./components/Performance";
+import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
 const page = () => {
@@ -19,6 +20,7 @@ const page = () => {
       <Working />
       <Description />
       <Performance />
+      <Contact />
       <Footer />
     </div>
   );

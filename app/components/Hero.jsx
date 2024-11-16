@@ -98,7 +98,7 @@ const Hero = () => {
               <div className="h-3 w-3 rounded-full bg-green-500"></div>
             </div>
             <pre className="text-left text-sm text-white/80 mt-2">
-              <code>{`curl -X POST "https://api.lmcloud.ai/v1/completion" \\
+              <code>{`curl -X POST "https://api.LmScale.ai/v1/completion" \\
 -H "Content-Type: application/json" \\
 -H "Authorization: Bearer your-api-key" \\
 -d '{

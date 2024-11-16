@@ -125,7 +125,7 @@ const Applications = () => {
             </span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-white/60">
-            See how companies are leveraging LmCloud to transform their
+            See how companies are leveraging LmScale to transform their
             businesses
           </p>
         </div>

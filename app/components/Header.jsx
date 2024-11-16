@@ -67,7 +67,7 @@ const Header = () => {
               <span className="relative">
                 Lm
                 <span className="bg-sky-400 bg-clip-text text-transparent">
-                  Cloud.
+                  Scale.
                 </span>
               </span>
             </a>

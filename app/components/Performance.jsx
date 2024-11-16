@@ -146,8 +146,7 @@ const Performance = () => {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black py-24 font-space antialiased">
-      {/* Enhanced background effects */}
+    <div className="relative h-auto overflow-hidden bg-black py-24 font-space antialiased">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_60%,rgba(0,179,255,0.1),transparent_60%)] animate-pulse-slow" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(0,179,255,0.05),transparent_50%)] animate-pulse-slow delay-75" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px]" />

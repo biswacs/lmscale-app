@@ -72,7 +72,7 @@ const Working = () => {
             <span className="relative">
               <span className="absolute -inset-1 block animate-pulse rounded-lg bg-sky-500/20 blur-xl"></span>
               <span className="relative bg-gradient-to-r from-sky-400 via-blue-500 to-sky-400 bg-clip-text text-transparent animate-gradient-x">
-                LmCloud
+                LmScale
               </span>
             </span>{" "}
             Works
