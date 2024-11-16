@@ -1,23 +1,68 @@
-import React from "react";
+"use client";
+import { Terminal } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+
+const FloatingParticle = ({ delay }) => {
+  return (
+    <div
+      className={`absolute h-1 w-1 rounded-full bg-sky-400/40 animate-[float_4s_ease-in-out_infinite] opacity-0`}
+      style={{
+        animationDelay: `${delay}s`,
+        animation:
+          "float 4s ease-in-out infinite, fade-in-out 4s ease-in-out infinite",
+      }}
+    />
+  );
+};
 
 const Hero = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    setMousePosition({ x: clientX, y: clientY });
+  };
+
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black font-space">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(0,179,255,0.2),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(0,179,255,0.1),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+    <div
+      className="relative min-h-screen overflow-hidden bg-black font-space"
+      onMouseMove={handleMouseMove}
+    >
+      {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(0,179,255,0.2),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(0,179,255,0.1),transparent_50%)]" /> */}
+
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
+        <div
+          className="absolute inset-0 animate-pulse-slow bg-[radial-gradient(circle_800px_at_var(--mouse-x,100px)_var(--mouse-y,100px),rgba(20,179,255,0.4),transparent_100%)]"
+          style={{
+            "--mouse-x": `${mousePosition.x}px`,
+            "--mouse-y": `${mousePosition.y}px`,
+          }}
+        />
+      </div>
+
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(20)].map((_, i) => (
+          <FloatingParticle key={i} delay={i * 0.2} />
+        ))}
+      </div>
+
       <div className="relative mx-auto max-w-7xl px-4 pt-32 pb-20">
         <div className="text-center">
-          <div className="mb-8 inline-flex items-center rounded-full border border-sky-500/20 bg-sky-500/10 px-6 py-2 text-sm text-sky-400">
-            <span className="mr-2 inline-block h-2 w-2 rounded-full bg-sky-400 animate-pulse"></span>
+          <div className="mb-8 inline-flex items-center rounded-full border border-sky-500/20 bg-sky-500/10 px-6 py-2 text-sm text-sky-400 backdrop-blur-sm hover:scale-105 transition-transform duration-300">
+            <Terminal className="mr-2 h-4 w-4 animate-pulse" />
             Now in Public Beta
           </div>
 
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl md:text-7xl">
-            Run LLMs
-            <br />
-            <span className="bg-gradient-to-r from-sky-400 via-sky-500 to-sky-400 bg-clip-text text-transparent">
-              In The Cloud
+          <h1 className="relative text-4xl font-bold tracking-tight text-white sm:text-6xl md:text-7xl">
+            <span className="relative">
+              <span className="absolute -inset-1 block animate-pulse rounded-lg bg-sky-500/20 blur-xl" />
+              <span className="relative">
+                Run LLMs <br />
+                <span className="bg-gradient-to-r from-sky-400 via-sky-500 to-sky-400 bg-clip-text text-transparent">
+                  In The Cloud
+                </span>
+              </span>
             </span>
           </h1>
 
@@ -43,10 +88,30 @@ const Hero = () => {
                   d="M9 5l7 7-7 7"
                 />
               </svg>
+              <div className="absolute -inset-1 animate-pulse rounded-full bg-sky-500/20 blur-xl group-hover:bg-sky-500/30"></div>
             </a>
-            <a className="group rounded-full border border-white/10 px-8 py-3 text-base font-medium text-white transition-all duration-300 hover:bg-white/5 hover:border-white/20">
+            {/* <a className="group rounded-full border border-white/10 px-8 py-3 text-base font-medium text-white transition-all duration-300 hover:bg-white/5 hover:border-white/20 backdrop-blur-sm">
               View Docs
-            </a>
+            </a> */}
+          </div>
+
+          <div className="mt-16 mx-auto max-w-3xl rounded-lg border border-sky-500/20 bg-black/50 p-4 backdrop-blur-sm">
+            <div className="flex items-center space-x-2 mb-2">
+              <div className="h-3 w-3 rounded-full bg-red-500"></div>
+              <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+              <div className="h-3 w-3 rounded-full bg-green-500"></div>
+            </div>
+            <pre className="text-left text-sm text-white/80">
+              <code>{`curl -X POST "https://api.lmcloud.ai/v1/completion" \\
+ -H "Content-Type: application/json" \\
+ -H "Authorization: Bearer your-api-key" \\
+ -d '{
+   "prompt": "Explain quantum computing in simple terms",
+   "max_tokens": 100,
+   "temperature": 0.7,
+   "top_p": 0.9
+ }'`}</code>
+            </pre>
           </div>
         </div>
       </div>

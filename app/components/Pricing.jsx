@@ -57,12 +57,6 @@ const Pricing = () => {
 
       <div className="relative mx-auto max-w-7xl px-4">
         <div className="text-center">
-          {/* Section badge */}
-          <div className="inline-flex items-center rounded-full border border-sky-500/20 bg-sky-500/10 px-6 py-2 text-sm text-sky-400">
-            <span className="mr-2 inline-block h-2 w-2 rounded-full bg-sky-400 animate-pulse"></span>
-            Simple Pricing
-          </div>
-
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Simple,{" "}
             <span className="bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">

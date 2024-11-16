@@ -75,11 +75,13 @@ const Footer = () => {
           {/* Brand section */}
           <div className="space-y-8">
             <div className="flex items-center">
-              <a href="#" className="group">
-                <span className="text-2xl font-bold bg-gradient-to-r from-white to-sky-400 bg-clip-text text-transparent transition-all duration-300 group-hover:to-sky-500">
-                  LmCloud
+              <span className="relative">
+                Lm
+                <span className="bg-sky-400 bg-clip-text text-transparent">
+                  Cloud
                 </span>
-              </a>
+                <span className="text-sky-400">.</span>
+              </span>
             </div>
             <p className="max-w-xs text-base text-neutral-400">
               Empowering businesses with secure, scalable local LLM solutions in
