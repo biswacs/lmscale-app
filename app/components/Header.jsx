@@ -15,30 +15,52 @@ const NavLink = ({ href, children }) => (
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => {
+    let ticking = false;
+    let lastKnownScrollY = window.scrollY;
+
+    const updateScrollDir = () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY > lastScrollY) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
+      if (currentScrollY < 0) {
+        return;
       }
-      setLastScrollY(currentScrollY);
 
       if (currentScrollY > 20) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
+
+      if (Math.abs(currentScrollY - lastKnownScrollY) < 10) {
+        return;
+      }
+
+      setIsVisible(currentScrollY <= lastKnownScrollY || currentScrollY < 50);
+
+      lastKnownScrollY = currentScrollY;
+      setLastScrollY(currentScrollY);
+      ticking = false;
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateScrollDir();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    setIsVisible(true);
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const navItems = [
     { label: "Product", href: "/product" },
@@ -47,7 +69,7 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-transform duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >

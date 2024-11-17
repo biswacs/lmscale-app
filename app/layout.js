@@ -33,14 +33,6 @@ export const metadata = {
     locale: "en_US",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "LmScale - Deploy & Scale Local LLMs in the Cloud",
-    description:
-      "Enterprise-grade platform for deploying and scaling local language models with industry-leading performance, security, and reliability.",
-    images: ["/twitter-image.png"],
-    creator: "@LmScale",
-  },
   alternates: {
     canonical: "https://lmscale.com",
   },
@@ -66,7 +58,6 @@ export default function RootLayout({ children }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

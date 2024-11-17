@@ -141,7 +141,7 @@ const Applications = () => {
               <div className="relative">
                 <div className="flex justify-start items-center gap-4">
                   <div
-                    className={`mb-4 inline-flex rounded-lg bg-${useCase.color}-400/10 p-3 text-${useCase.color}-400 transition-transform duration-300 group-hover:scale-110`}
+                    className={`mb-4 inline-flex rounded-lg p-3 text-${useCase.color}-400 transition-transform duration-300 group-hover:scale-110`}
                   >
                     {useCase.icon}
                   </div>

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Cpu, Memory, Zap, Activity, Server, Clock } from "lucide-react";
+import { Cpu, HardDrive, Zap, Activity, Server, Clock } from "lucide-react";
 
 const LiveMetric = ({
   label,
@@ -141,7 +141,7 @@ const Performance = () => {
 
   const resourceMetrics = [
     { label: "CPU Utilization", value: "30%", percentage: 30, Icon: Cpu },
-    { label: "Memory Usage", value: "45%", percentage: 45, Icon: Memory },
+    { label: "Memory Usage", value: "45%", percentage: 45, Icon: HardDrive },
     { label: "GPU Performance", value: "75%", percentage: 75, Icon: Zap },
   ];
 
