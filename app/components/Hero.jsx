@@ -72,7 +72,7 @@ const Hero = () => {
           </p>
 
           <div className="mt-10 flex items-center justify-center gap-4">
-            <a className="group relative inline-flex items-center rounded-full bg-sky-500 px-8 py-3 text-base font-medium text-white transition-all duration-300 hover:bg-sky-600 hover:shadow-[0_0_20px_rgba(0,179,255,0.5)]">
+            <a className="group relative inline-flex items-center rounded-full bg-sky-500 px-8 py-3 text-base font-medium text-white transition-all duration-300 hover:bg-sky-500">
               Get Started
               <svg
                 className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
