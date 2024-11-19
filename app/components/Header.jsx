@@ -1,14 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
-const NavLink = ({ href, children }) => (
+const NavLink = ({ href, children, hasDropdown }) => (
   <a
     href={href}
-    className="group relative text-sm text-white/70 hover:text-white transition-colors duration-200"
+    className="group relative flex items-center gap-1 px-1 py-2 text-sm font-medium text-white/70 transition-colors duration-200 hover:text-white"
   >
     {children}
-    <span className="absolute inset-x-0 -bottom-1 h-px scale-x-0 bg-gradient-to-r from-sky-400/40 to-sky-400 transition-transform duration-200 group-hover:scale-x-100" />
+    {hasDropdown && (
+      <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
+    )}
+    <span className="absolute inset-x-0 -bottom-0.5 h-0.5 w-full scale-x-0 rounded-full bg-white opacity-0 transition-all duration-200 group-hover:scale-x-100 group-hover:opacity-100" />
   </a>
 );
 
@@ -19,15 +22,8 @@ const Header = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
-    let ticking = false;
-    let lastKnownScrollY = window.scrollY;
-
-    const updateScrollDir = () => {
+    const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
-      if (currentScrollY < 0) {
-        return;
-      }
 
       if (currentScrollY > 20) {
         setScrolled(true);
@@ -35,98 +31,103 @@ const Header = () => {
         setScrolled(false);
       }
 
-      if (Math.abs(currentScrollY - lastKnownScrollY) < 10) {
-        return;
-      }
+      setIsVisible(
+        currentScrollY <= lastScrollY ||
+          currentScrollY < 50 ||
+          currentScrollY + window.innerHeight >=
+            document.documentElement.scrollHeight
+      );
 
-      setIsVisible(currentScrollY <= lastKnownScrollY || currentScrollY < 50);
-
-      lastKnownScrollY = currentScrollY;
       setLastScrollY(currentScrollY);
-      ticking = false;
     };
 
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          updateScrollDir();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    setIsVisible(true);
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const navItems = [
-    { label: "Product", href: "/product" },
-    { label: "Docs", href: "#" },
+    {
+      label: "Product",
+      href: "/product",
+      hasDropdown: false,
+    },
+    {
+      label: "Docs",
+      href: "/docs",
+      hasDropdown: false,
+    },
+    {
+      label: "Pricing",
+      href: "/pricing",
+      hasDropdown: false,
+    },
   ];
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-transform duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-in-out ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      <div className="mx-auto w-full max-w-7xl px-4">
-        <div
-          className={`relative mt-4 flex w-full items-center justify-between rounded-2xl border ${
-            scrolled
-              ? "border-white/10 bg-black/70 backdrop-blur-xl"
-              : "border-white/5 bg-black/50 backdrop-blur-md"
-          } p-3 transition-all duration-300`}
-        >
-          <div className="flex items-center gap-8 mx-2">
+      <div
+        className={`w-full transition-all duration-300 ${
+          scrolled ? "bg-black/80 backdrop-blur-xl" : "bg-transparent"
+        }`}
+      >
+        <div className="flex h-16 items-center justify-between px-4 lg:px-8">
+          <div className="flex items-center gap-8">
             <a
               href="/"
-              className="group flex items-center text-2xl font-bold text-white font-space"
+              className="group flex items-center gap-0 text-2xl font-bold text-white"
             >
+              <img
+                src="/icon.png"
+                alt="LmScale Logo"
+                className="h-8 w-8 object-contain"
+              />
               <span className="relative">
-                Lm
-                <span className="bg-sky-400 bg-clip-text text-transparent">
-                  Scale.
-                </span>
+                LmScale
+                <span className="text-white">.</span>
+                <div className="absolute -inset-x-2 -inset-y-1 -z-10 scale-95 rounded-lg bg-white/5 opacity-0 blur-sm transition duration-300 group-hover:scale-100 group-hover:opacity-100" />
               </span>
             </a>
-
-            <nav className="hidden md:block">
-              <ul className="flex items-center gap-8">
+            <nav className="hidden lg:block">
+              <ul className="flex items-center gap-6">
                 {navItems.map((item) => (
                   <li key={item.label}>
-                    <NavLink href={item.href}>{item.label}</NavLink>
+                    <NavLink href={item.href} hasDropdown={item.hasDropdown}>
+                      {item.label}
+                    </NavLink>
                   </li>
                 ))}
               </ul>
             </nav>
           </div>
 
-          <div className="hidden items-center gap-4 md:flex mx-2">
+          <div className="hidden items-center gap-6 lg:flex">
             <a
               href="/login"
-              className="group relative inline-flex items-center gap-1 rounded-full px-2 text-sm font-medium text-white transform transition-all duration-200 hover:scale-110"
+              className="group relative text-sm font-medium text-white transition-colors duration-200 hover:text-white"
             >
-              <span>Login</span>
-              <span className="absolute inset-x-0 -bottom-1 h-px scale-x-0 bg-gradient-to-r from-sky-400/40 to-sky-400 transition-transform duration-200 group-hover:scale-x-100" />
+              Login
+              <span className="absolute inset-x-0 -bottom-0.5 h-0.5 w-full scale-x-0 rounded-full bg-white opacity-0 transition-all duration-200 group-hover:scale-x-100 group-hover:opacity-100" />
             </a>
             <a
               href="/signup"
-              className="inline-flex items-center justify-center rounded-full bg-sky-500 px-4 py-1.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-sky-500"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-white/20 p-0.5 transition-all duration-300 hover:bg-white/10"
             >
-              Sign up
+              <span className="inline-flex h-full w-full items-center justify-center rounded-full px-6 py-2 text-sm font-medium text-white transition-all duration-300">
+                Sign up
+              </span>
             </a>
           </div>
 
           <button
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="inline-flex items-center justify-center rounded-full p-2 text-white transition-colors duration-200 hover:bg-white/10 md:hidden"
+            className="inline-flex items-center justify-center rounded-full p-2.5 text-white transition-colors duration-200 hover:bg-white/10 lg:hidden"
+            aria-label="Toggle menu"
           >
-            <span className="sr-only">Toggle menu</span>
             {isMenuOpen ? (
               <X className="h-6 w-6 animate-in fade-in zoom-in" />
             ) : (
@@ -137,40 +138,41 @@ const Header = () => {
       </div>
 
       <div
-        className={`fixed inset-0 top-[73px] z-50 transition-transform duration-300 md:hidden ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed inset-x-0 top-16 z-40 transform overflow-hidden transition-all duration-300 ease-in-out lg:hidden ${
+          isMenuOpen ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <nav className="flex h-full flex-col">
-          <div className="bg-black/60 backdrop-blur-md m-4 p-2 rounded-xl">
-            <ul>
+        <div className="bg-black/90 backdrop-blur-xl">
+          <div className="px-4 py-6">
+            <nav className="flex flex-col space-y-1">
               {navItems.map((item) => (
-                <li key={item.label}>
-                  <a
-                    href={item.href}
-                    className="flex items-center justify-start p-2 text-white"
-                  >
-                    {item.label}
-                  </a>
-                </li>
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="flex items-center justify-between rounded-lg px-4 py-3 text-sm font-medium text-white/70 transition-colors duration-200 hover:bg-white/5 hover:text-white"
+                >
+                  {item.label}
+                  {item.hasDropdown && (
+                    <ChevronDown className="h-4 w-4 text-white/50" />
+                  )}
+                </a>
               ))}
-            </ul>
-            <div className="mt-4 border-t border-white/10 pt-4">
+              <div className="my-3 border-t border-white/10" />
               <a
                 href="/login"
-                className="flex w-full items-center justify-start p-2 text-white"
+                className="flex items-center rounded-lg px-4 py-3 text-sm font-medium text-white/70 transition-colors duration-200 hover:bg-white/5 hover:text-white"
               >
                 Login
               </a>
               <a
                 href="/signup"
-                className="flex w-full items-center justify-start p-2 text-white"
+                className="flex items-center rounded-lg border border-white/20 px-4 py-3 text-sm font-medium text-white transition-all duration-200 hover:bg-white/10"
               >
                 Sign up
               </a>
-            </div>
+            </nav>
           </div>
-        </nav>
+        </div>
       </div>
     </header>
   );
