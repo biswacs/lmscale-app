@@ -21,12 +21,12 @@ const Applications = () => {
           />
         </svg>
       ),
-      color: "purple",
+      color: "neutral",
       demo: (
         <div className="space-y-2">
-          <div className="h-2 w-3/4 rounded bg-purple-500/20" />
-          <div className="h-2 w-full rounded bg-purple-500/10" />
-          <div className="h-2 w-2/3 rounded bg-purple-500/10" />
+          <div className="h-2 w-3/4 rounded bg-neutral-500/20" />
+          <div className="h-2 w-full rounded bg-neutral-500/10" />
+          <div className="h-2 w-2/3 rounded bg-neutral-500/10" />
         </div>
       ),
     },
@@ -49,14 +49,14 @@ const Applications = () => {
           />
         </svg>
       ),
-      color: "sky",
+      color: "neutral",
       demo: (
         <div className="flex gap-3">
           <div className="flex-grow">
-            <p className="text-sm text-white/80">
+            <p className="text-sm text-gray-600">
               "How can I reset my password?"
             </p>
-            <p className="mt-2 text-sm text-sky-400">
+            <p className="mt-2 text-sm text-neutral-900">
               AI: "I'll guide you through our secure password reset process..."
             </p>
           </div>
@@ -82,11 +82,11 @@ const Applications = () => {
           />
         </svg>
       ),
-      color: "orange",
+      color: "neutral",
       demo: (
         <div className="flex items-center gap-3">
           <svg
-            className="h-5 w-5 text-orange-400"
+            className="h-5 w-5 text-neutral-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -98,7 +98,7 @@ const Applications = () => {
               d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
             />
           </svg>
-          <div className="h-2 w-full rounded bg-orange-500/20" />
+          <div className="h-2 w-full rounded bg-neutral-500/20" />
         </div>
       ),
     },
@@ -112,19 +112,13 @@ const Applications = () => {
   ];
 
   return (
-    <div className="relative overflow-hidden bg-black py-24 font-space">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(0,179,255,0.1),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(0,179,255,0.05),transparent_50%)]" />
-
+    <div className="relative overflow-hidden bg-white py-24 font-mono">
       <div className="relative mx-auto max-w-7xl px-4">
         <div className="text-center">
-          <h2 className="mt-6 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Power Your{" "}
-            <span className="bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">
-              AI Applications
-            </span>
+          <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            Power Your AI Applications
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-white/60">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
             See how companies are leveraging LmScale to transform their
             businesses
           </p>
@@ -134,28 +128,24 @@ const Applications = () => {
           {useCases.map((useCase, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-sky-400/50 hover:bg-white/[0.07] hover:shadow-[0_0_30px_rgba(0,179,255,0.1)]"
+              className="group relative overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)]"
             >
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-sky-400/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
               <div className="relative">
                 <div className="flex justify-start items-center gap-4">
-                  <div
-                    className={`mb-4 inline-flex rounded-lg p-3 text-${useCase.color}-400 transition-transform duration-300 group-hover:scale-110`}
-                  >
+                  <div className="mb-4 inline-flex rounded-lg p-3 text-neutral-600 bg-neutral-100/50 transition-all duration-300 group-hover:bg-neutral-100 group-hover:text-neutral-900">
                     {useCase.icon}
                   </div>
 
-                  <h3 className="mb-4 text-xl font-semibold text-white transition-colors duration-300 group-hover:text-sky-400">
+                  <h3 className="mb-4 text-xl font-semibold text-neutral-900 transition-colors duration-300 group-hover:text-black">
                     {useCase.title}
                   </h3>
                 </div>
 
-                <p className="text-white/60 transition-colors duration-300 group-hover:text-white/70">
+                <p className="text-gray-600 transition-colors duration-300 group-hover:text-neutral-700">
                   {useCase.description}
                 </p>
 
-                <div className="mt-6 rounded-lg border border-white/5 bg-black/20 p-4 transition-all duration-300 group-hover:border-sky-400/20">
+                <div className="mt-6 rounded-xl border border-neutral-100 bg-neutral-50 p-4 transition-all duration-300 group-hover:border-neutral-200 group-hover:bg-neutral-100/50">
                   {useCase.demo}
                 </div>
               </div>
@@ -164,14 +154,14 @@ const Applications = () => {
         </div>
 
         <div className="mt-16 text-center">
-          <p className="text-lg text-white/80">
+          <p className="text-lg text-gray-900">
             And many more use cases including:
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-4">
             {additionalUseCases.map((useCase, index) => (
               <span
                 key={index}
-                className="rounded-full border border-white/10 bg-white/5 px-6 py-2 text-sm text-white transition-all duration-300 hover:border-sky-400/50 hover:bg-white/[0.07]"
+                className="rounded-full border border-neutral-200 bg-white px-6 py-2 text-sm text-neutral-600 transition-all duration-300 hover:-translate-y-0.5 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-900 hover:shadow-[0_4px_10px_-2px_rgba(0,0,0,0.05)]"
               >
                 {useCase}
               </span>
