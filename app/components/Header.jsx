@@ -5,13 +5,13 @@ import { Menu, X, ChevronDown } from "lucide-react";
 const NavLink = ({ href, children, hasDropdown }) => (
   <a
     href={href}
-    className="group relative flex items-center gap-1 px-1 py-2 text-sm font-medium text-gray-600 transition-colors duration-200 hover:text-gray-900"
+    className="group relative flex items-center gap-1 px-1 py-2 text-sm font-medium text-neutral-600 transition-colors duration-200 hover:text-neutral-900"
   >
     {children}
     {hasDropdown && (
       <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
     )}
-    <span className="absolute inset-x-0 -bottom-0.5 h-0.5 w-full scale-x-0 rounded-full bg-gray-900 opacity-0 transition-all duration-200 group-hover:scale-x-100 group-hover:opacity-100" />
+    <span className="absolute inset-x-0 -bottom-0.5 h-0.5 w-full scale-x-0 rounded-full bg-neutral-900 opacity-0 transition-all duration-200 group-hover:scale-x-100 group-hover:opacity-100" />
   </a>
 );
 
@@ -60,17 +60,12 @@ const Header = () => {
   const navItems = [
     {
       label: "Product",
-      href: "/product",
+      href: "#",
       hasDropdown: false,
     },
     {
       label: "Docs",
-      href: "/docs",
-      hasDropdown: false,
-    },
-    {
-      label: "Pricing",
-      href: "/pricing",
+      href: "#",
       hasDropdown: false,
     },
   ];
@@ -94,7 +89,7 @@ const Header = () => {
               <div className="flex items-center gap-8">
                 <a
                   href="/"
-                  className="group flex items-center gap-1 text-xl sm:text-2xl font-bold text-gray-900"
+                  className="group flex items-center gap-1 text-xl sm:text-2xl font-bold text-neutral-900"
                 >
                   <img
                     src="/icon.png"
@@ -103,8 +98,8 @@ const Header = () => {
                   />
                   <span className="relative">
                     LmScale
-                    <span className="text-gray-900">.</span>
-                    <div className="absolute -inset-x-2 -inset-y-1 -z-10 scale-95 rounded-lg bg-gray-100 opacity-0 blur-sm transition duration-300 group-hover:scale-100 group-hover:opacity-100" />
+                    <span className="text-neutral-900">.</span>
+                    <div className="absolute -inset-x-2 -inset-y-1 -z-10 scale-95 rounded-lg bg-neutral-100 opacity-0 blur-sm transition duration-300 group-hover:scale-100 group-hover:opacity-100" />
                   </span>
                 </a>
                 <nav className="hidden lg:block">
@@ -126,14 +121,14 @@ const Header = () => {
               <div className="hidden items-center gap-6 lg:flex">
                 <a
                   href="/login"
-                  className="group relative text-sm font-medium text-gray-600 transition-colors duration-200 hover:text-gray-900"
+                  className="group relative text-sm font-medium text-neutral-600 transition-colors duration-200 hover:text-neutral-900"
                 >
                   Login
-                  <span className="absolute inset-x-0 -bottom-0.5 h-0.5 w-full scale-x-0 rounded-full bg-gray-900 opacity-0 transition-all duration-200 group-hover:scale-x-100 group-hover:opacity-100" />
+                  <span className="absolute inset-x-0 -bottom-0.5 h-0.5 w-full scale-x-0 rounded-full bg-neutral-900 opacity-0 transition-all duration-200 group-hover:scale-x-100 group-hover:opacity-100" />
                 </a>
                 <a
                   href="/signup"
-                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-gray-900 p-0.5 transition-all duration-300 hover:bg-gray-800"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-neutral-900 p-0.5 transition-all duration-300 hover:bg-neutral-800"
                 >
                   <span className="inline-flex h-full w-full items-center justify-center rounded-full px-4 py-1 text-sm font-medium text-white transition-all duration-300">
                     Sign up
@@ -144,7 +139,7 @@ const Header = () => {
               <button
                 type="button"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="inline-flex items-center justify-center rounded-full p-2 text-gray-600 transition-colors duration-200 hover:bg-gray-100 lg:hidden"
+                className="inline-flex items-center justify-center rounded-full p-2 text-neutral-600 transition-colors duration-200 hover:bg-neutral-100 lg:hidden"
                 aria-label="Toggle menu"
               >
                 {isMenuOpen ? (
@@ -172,25 +167,25 @@ const Header = () => {
                   key={item.label}
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center justify-between rounded-lg px-4 py-3 text-sm font-medium text-gray-600 transition-colors duration-200 hover:bg-gray-50 hover:text-gray-900"
+                  className="flex items-center justify-between rounded-lg px-4 py-3 text-sm font-medium text-neutral-600 transition-colors duration-200 hover:bg-neutral-50 hover:text-neutral-900"
                 >
                   {item.label}
                   {item.hasDropdown && (
-                    <ChevronDown className="h-4 w-4 text-gray-400" />
+                    <ChevronDown className="h-4 w-4 text-neutral-400" />
                   )}
                 </a>
               ))}
               <a
                 href="/login"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center rounded-lg px-4 py-3 text-sm font-medium text-gray-600 transition-colors duration-200 hover:bg-gray-50 hover:text-gray-900"
+                className="flex items-center rounded-lg px-4 py-3 text-sm font-medium text-neutral-600 transition-colors duration-200 hover:bg-neutral-50 hover:text-neutral-900"
               >
                 Login
               </a>
               <a
                 href="/signup"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center rounded-lg px-4 py-3 text-sm font-medium text-gray-900 transition-colors duration-200 hover:bg-gray-50"
+                className="flex items-center rounded-lg px-4 py-3 text-sm font-medium text-neutral-900 transition-colors duration-200 hover:bg-neutral-50"
               >
                 Sign up
               </a>

@@ -17,15 +17,13 @@ const Hero = () => {
 
       <div className="relative mx-auto max-w-7xl px-4 pt-20 md:pt-24">
         <div className="text-center">
-          <div className="mb-6 md:mb-8 inline-flex items-center rounded-full border border-black/10 bg-black/5 px-4 py-1.5 md:px-6 md:py-2 text-xs md:text-sm text-black/80 backdrop-blur-sm transition-all hover:bg-black/10">
+          <div className="mb-6 md:mb-8 inline-flex items-center rounded-full border border-black/10 px-4 py-1.5 md:px-6 md:py-2 text-xs md:text-sm text-neutral-800 backdrop-blur-sm transition-all hover:bg-black/10">
             <Terminal className="mr-2 h-3 w-3 md:h-4 md:w-4" />
             Now Available in Beta
           </div>
 
           <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold tracking-tight text-gray-900">
-            Run Language Models
-            <br className="hidden sm:block" />
-            <span className="sm:inline"> In The Cloud</span>
+            Run LLMs In The Cloud
           </h1>
 
           <div className="mt-8 md:mt-12 mx-auto max-w-6xl p-4 md:p-8 relative">

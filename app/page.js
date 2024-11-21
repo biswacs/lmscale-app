@@ -1,12 +1,12 @@
 import React from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import Description from "./components/Description";
+import Details from "./components/Details";
 import Working from "./components/Working";
 import Applications from "./components/Applications";
-import Performance from "./components/Performance";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import Models from "./components/Models";
 
 const page = () => {
   return (
@@ -17,9 +17,9 @@ const page = () => {
       <Header />
       <Hero />
       <Applications />
+      <Models />
       <Working />
-      <Description />
-      <Performance />
+      <Details />
       <Contact />
       <Footer />
     </div>
