@@ -40,57 +40,58 @@ const socialLinks = [
 
 const Footer = () => {
   return (
-    <footer className="relative overflow-hidden font-mono">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#059669,transparent_40%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#ea580c,transparent_40%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#2563eb,transparent_40%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#65a30d,transparent_40%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#d946ef,transparent_40%)]" />
-      <div className="absolute inset-0 bg-white/50 backdrop-blur-[2px]" />
+    <footer className="relative bg-white">
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
+        <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />{" "}
+      </div>
 
       <div className="relative mx-auto max-w-7xl px-4 py-12">
         <div className="flex flex-col items-center justify-between gap-8 md:flex-row md:gap-12">
-          <div className="flex flex-col items-center md:items-start space-y-6">
-            <div className="text-2xl font-bold tracking-tight text-neutral-900">
-              LmScale.
-            </div>
-            <p className="max-w-xs text-center md:text-left text-sm text-neutral-800">
+          <div className="flex flex-col items-center md:items-start">
+            <div className="text-2xl font-light text-neutral-800">LmScale</div>
+            <p className="mt-4 max-w-xs text-center md:text-left text-sm text-neutral-800">
               Empowering businesses with secure, scalable local LLM solutions in
               the cloud.
             </p>
           </div>
 
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center gap-8">
             {socialLinks.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className="group relative p-2 text-neutral-800"
+                className="text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
               >
-                <span className="absolute inset-0 rounded-lg bg-neutral-100 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                <span className="relative">
-                  <span className="sr-only">{item.name}</span>
-                  <item.icon className="h-5 w-5" aria-hidden="true" />
-                </span>
+                <span className="sr-only">{item.name}</span>
+                <item.icon className="h-5 w-5" aria-hidden="true" />
               </a>
             ))}
           </div>
         </div>
 
-        <div className="mt-12 border-t border-neutral-200 pt-8">
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <p className="text-sm text-neutral-800">
-              &copy; {new Date().getFullYear()} LmScale. All rights reserved.
+        <div className="mt-12 border-t border-neutral-200/60 pt-8">
+          <div className="flex flex-col-reverse gap-4 md:flex-row md:items-center md:justify-between">
+            <p className="text-sm text-neutral-600 text-center md:text-left">
+              © {new Date().getFullYear()} LmScale. All rights reserved.
             </p>
-            <div className="flex gap-6">
+            <nav className="flex flex-wrap justify-center gap-8">
               {["Privacy Policy", "Terms of Service", "Documentation"].map(
                 (item) => (
-                  <a key={item} className="text-sm text-neutral-800" href="#">
+                  <a
+                    key={item}
+                    href="#"
+                    className="text-sm text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
+                  >
                     {item}
                   </a>
                 )
               )}
-            </div>
+            </nav>
           </div>
         </div>
       </div>

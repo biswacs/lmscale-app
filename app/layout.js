@@ -1,3 +1,14 @@
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+  preload: true,
+});
+
 export const metadata = {
   title: "LmScale",
   description:
@@ -49,11 +60,9 @@ export const metadata = {
   },
 };
 
-import "./globals.css";
-
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable}`}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -80,7 +89,7 @@ export default function RootLayout({ children }) {
           })}
         </script>
       </head>
-      <body>{children}</body>
+      <body className="font-sans antialiased font-light">{children}</body>
     </html>
   );
 }

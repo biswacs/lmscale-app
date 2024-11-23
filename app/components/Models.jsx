@@ -2,20 +2,48 @@
 import React, { useState } from "react";
 import { Search } from "lucide-react";
 
-const ModelCard = ({ icon, name, type, border = false }) => (
-  <div className="group relative h-[200px] overflow-hidden rounded-2xl bg-white p-6 backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:bg-white hover:shadow-xl">
-    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-neutral-100 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+const SearchBar = ({ searchQuery, setSearchQuery }) => (
+  <div className="relative w-full sm:w-auto">
+    <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-400" />
+    <input
+      type="text"
+      placeholder="Search models..."
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      className="w-full border border-neutral-200 bg-white py-2 pl-10 pr-4 text-sm placeholder-neutral-400 shadow-sm focus:outline-none"
+    />
+  </div>
+);
+
+const TypeFilter = ({ selectedType, setSelectedType }) => (
+  <div className="flex w-full flex-wrap gap-2 sm:w-auto">
+    {["All", "Chat", "Code"].map((type) => (
+      <button
+        key={type}
+        onClick={() => setSelectedType(type)}
+        className={`flex-1 px-4 py-2 text-sm font-medium transition-colors sm:flex-initial ${
+          selectedType === type
+            ? "bg-neutral-800 text-white"
+            : "bg-white text-neutral-600 hover:bg-neutral-100"
+        }`}
+      >
+        {type}
+      </button>
+    ))}
+  </div>
+);
+
+const ModelCard = ({ icon, name, type }) => (
+  <div className="group relative h-40 overflow-hidden bg-white p-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-md">
     <div className="relative flex h-full flex-col items-start">
-      <div className="rounded-xl bg-gradient-to-br from-neutral-50 to-neutral-100 p-2 shadow-sm transition-transform duration-500 group-hover:scale-110">
-        <img src={icon} alt={name} className="h-12 w-12" />
-      </div>
-      <div className="mt-auto space-y-1">
-        <h3 className="font-semibold text-neutral-900 transition-colors duration-300 group-hover:text-neutral-800">
+      <img src={icon} alt={name} className="h-8 w-8 sm:h-10 sm:w-10" />
+      <div className="mt-4 space-y-1">
+        <h3 className="text-sm sm:text-base font-semibold text-neutral-800 transition-colors duration-300 group-hover:text-neutral-800">
           {name}
         </h3>
         <div className="flex items-center gap-2">
-          <span className="flex h-2 w-2 rounded-full bg-green-500" />
-          <p className="text-sm text-neutral-500 transition-colors duration-300 group-hover:text-neutral-600">
+          <span className="flex h-2 w-2 bg-green-500" />
+          <p className="text-xs sm:text-sm text-neutral-500 transition-colors duration-300 group-hover:text-neutral-600">
             {type}
           </p>
         </div>
@@ -25,12 +53,12 @@ const ModelCard = ({ icon, name, type, border = false }) => (
 );
 
 const MoreModelsCard = ({ count }) => (
-  <div className="group relative h-[200px] overflow-hidden rounded-2xl bg-white p-6 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
-    <div className="flex h-full items-center justify-center">
-      <div className="text-center">
-        <h3 className="text-4xl font-bold text-neutral-800">+{count}</h3>
-        <p className="mt-2 text-neutral-600">More Models</p>
-      </div>
+  <div className="group relative h-40 overflow-hidden bg-white p-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-md">
+    <div className="relative flex h-full flex-col items-start">
+      <h3 className="text-4xl font-light text-neutral-800">+{count}</h3>
+      <h3 className="mt-4 text-sm sm:text-base font-light text-neutral-800">
+        More Models
+      </h3>
     </div>
   </div>
 );
@@ -129,48 +157,30 @@ const Models = () => {
   const remainingCount = filteredModels.length - displayedModels.length;
 
   return (
-    <div className="relative min-h-screen bg-white py-24 font-mono">
+    <div className="relative min-h-screen bg-white py-12 sm:py-24">
       <div className="relative mx-auto max-w-7xl px-4">
         <div className="text-center">
-          <h2 className="font-mono text-3xl font-medium tracking-tight text-neutral-900">
-            Build with the best Open Source models
-          </h2>
-          <p className="mx-auto mt-4 text-lg text-neutral-600">
+          <h1 className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tight text-neutral-800">
+            Open Source models
+          </h1>
+          <p className="mx-auto mt-4 text-sm sm:text-lg text-neutral-600">
             Future of AI is open-source and LmScale helps you to build with the
             best open-source LLMs.
           </p>
         </div>
 
-        <div className="mt-12 flex flex-col gap-6 sm:flex-row sm:items-center justify-center">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-400" />
-            <input
-              type="text"
-              placeholder="Search models..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-lg border border-neutral-200 bg-white py-2 pl-10 pr-4 text-sm placeholder-neutral-400 shadow-sm focus:border-neutral-300 focus:outline-none focus:ring-1 focus:ring-neutral-300"
-            />
-          </div>
-
-          <div className="flex gap-2">
-            {["All", "Chat", "Code"].map((type) => (
-              <button
-                key={type}
-                onClick={() => setSelectedType(type)}
-                className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-                  selectedType === type
-                    ? "bg-neutral-900 text-white"
-                    : "bg-white text-neutral-600 hover:bg-neutral-100"
-                }`}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
+        <div className="mt-8 sm:mt-12 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
+          <SearchBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+          <TypeFilter
+            selectedType={selectedType}
+            setSelectedType={setSelectedType}
+          />
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+        <div className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {displayedModels.map((model, index) => (
             <ModelCard key={index} {...model} />
           ))}

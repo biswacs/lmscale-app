@@ -1,19 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
-
-const NavLink = ({ href, children, hasDropdown }) => (
-  <a
-    href={href}
-    className="group relative flex items-center gap-1 px-1 py-2 text-sm font-medium text-neutral-600 transition-colors duration-200 hover:text-neutral-900"
-  >
-    {children}
-    {hasDropdown && (
-      <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
-    )}
-    <span className="absolute inset-x-0 -bottom-0.5 h-0.5 w-full scale-x-0 rounded-full bg-neutral-900 opacity-0 transition-all duration-200 group-hover:scale-x-100 group-hover:opacity-100" />
-  </a>
-);
+import { Menu, X } from "lucide-react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -57,19 +44,6 @@ const Header = () => {
     };
   }, [isMenuOpen]);
 
-  const navItems = [
-    {
-      label: "Product",
-      href: "#",
-      hasDropdown: false,
-    },
-    {
-      label: "Docs",
-      href: "#",
-      hasDropdown: false,
-    },
-  ];
-
   return (
     <>
       <header
@@ -80,57 +54,61 @@ const Header = () => {
         <div
           className={`w-full transition-all duration-300 ${
             scrolled || isMenuOpen
-              ? "bg-white/80 backdrop-blur-xl shadow-sm"
+              ? "bg-white/80 backdrop-blur-xl"
               : "bg-transparent"
           }`}
         >
           <div className="mx-auto max-w-full">
             <div className="flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center gap-8">
+              <div className="flex items-center">
                 <a
                   href="/"
-                  className="group flex items-center gap-1 text-xl sm:text-2xl font-bold text-neutral-900"
+                  className="group flex items-center gap-2 text-xl sm:text-2xl font-bold text-neutral-800"
                 >
                   <img
                     src="/icon.png"
                     alt="LmScale Logo"
                     className="h-7 w-7 sm:h-8 sm:w-8 object-contain"
                   />
-                  <span className="relative">
-                    LmScale
-                    <span className="text-neutral-900">.</span>
-                    <div className="absolute -inset-x-2 -inset-y-1 -z-10 scale-95 rounded-lg bg-neutral-100 opacity-0 blur-sm transition duration-300 group-hover:scale-100 group-hover:opacity-100" />
-                  </span>
+                  <div className="font-light">LmScale</div>
                 </a>
-                <nav className="hidden lg:block">
-                  <ul className="flex items-center gap-6">
-                    {navItems.map((item) => (
-                      <li key={item.label}>
-                        <NavLink
-                          href={item.href}
-                          hasDropdown={item.hasDropdown}
-                        >
-                          {item.label}
-                        </NavLink>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
               </div>
 
-              <div className="hidden items-center gap-6 lg:flex">
+              <div className="hidden lg:flex items-center space-x-6">
+                <nav>
+                  <ul className="flex items-center space-x-6">
+                    <li>
+                      <a
+                        href="#"
+                        className="text-sm font-medium text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
+                      >
+                        Product
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        className="text-sm font-medium text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
+                      >
+                        Docs
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+
                 <a
                   href="/login"
-                  className="group relative text-sm font-medium text-neutral-600 transition-colors duration-200 hover:text-neutral-900"
+                  className="group relative inline-flex items-center justify-center overflow-hidden p-0.5 transition-all duration-300 hover:bg-neutral-800 border border-neutral-200"
                 >
-                  Login
-                  <span className="absolute inset-x-0 -bottom-0.5 h-0.5 w-full scale-x-0 rounded-full bg-neutral-900 opacity-0 transition-all duration-200 group-hover:scale-x-100 group-hover:opacity-100" />
+                  <span className="inline-flex h-full w-full items-center justify-center px-4 py-1 text-sm font-medium text-neutral-800 transition-all duration-300">
+                    Login
+                  </span>
                 </a>
                 <a
                   href="/signup"
-                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-neutral-900 p-0.5 transition-all duration-300 hover:bg-neutral-800"
+                  className="group relative inline-flex items-center justify-center overflow-hidden bg-neutral-800 p-0.5 transition-all duration-300 hover:bg-neutral-800"
                 >
-                  <span className="inline-flex h-full w-full items-center justify-center rounded-full px-4 py-1 text-sm font-medium text-white transition-all duration-300">
+                  <span className="inline-flex h-full w-full items-center justify-center px-4 py-1 text-sm font-medium text-white transition-all duration-300">
                     Sign up
                   </span>
                 </a>
@@ -139,7 +117,7 @@ const Header = () => {
               <button
                 type="button"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="inline-flex items-center justify-center rounded-full p-2 text-neutral-600 transition-colors duration-200 hover:bg-neutral-100 lg:hidden"
+                className="inline-flex items-center justify-center p-2 text-neutral-600 transition-colors duration-200 hover:bg-neutral-100 lg:hidden"
                 aria-label="Toggle menu"
               >
                 {isMenuOpen ? (
@@ -153,7 +131,6 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Mobile menu overlay */}
       <div
         className={`fixed inset-0 z-40 bg-white/90 backdrop-blur-xl transition-all duration-300 lg:hidden ${
           isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -162,30 +139,31 @@ const Header = () => {
         <div className="h-full pt-20 overflow-y-auto">
           <div className="px-4 py-6">
             <nav className="flex flex-col space-y-1">
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center justify-between rounded-lg px-4 py-3 text-sm font-medium text-neutral-600 transition-colors duration-200 hover:bg-neutral-50 hover:text-neutral-900"
-                >
-                  {item.label}
-                  {item.hasDropdown && (
-                    <ChevronDown className="h-4 w-4 text-neutral-400" />
-                  )}
-                </a>
-              ))}
+              <a
+                href="#"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-between px-4 py-3 text-sm font-medium text-neutral-600 transition-colors duration-200 hover:bg-neutral-50 hover:text-neutral-800"
+              >
+                Product
+              </a>
+              <a
+                href="#"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-between px-4 py-3 text-sm font-medium text-neutral-600 transition-colors duration-200 hover:bg-neutral-50 hover:text-neutral-800"
+              >
+                Docs
+              </a>
               <a
                 href="/login"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center rounded-lg px-4 py-3 text-sm font-medium text-neutral-600 transition-colors duration-200 hover:bg-neutral-50 hover:text-neutral-900"
+                className="flex items-center px-4 py-3 text-sm font-medium text-neutral-600 transition-colors duration-200 hover:bg-neutral-50 hover:text-neutral-800"
               >
                 Login
               </a>
               <a
                 href="/signup"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center rounded-lg px-4 py-3 text-sm font-medium text-neutral-900 transition-colors duration-200 hover:bg-neutral-50"
+                className="flex items-center px-4 py-3 text-sm font-medium text-neutral-800 transition-colors duration-200 hover:bg-neutral-50"
               >
                 Sign up
               </a>
