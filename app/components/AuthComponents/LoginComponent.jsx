@@ -82,7 +82,7 @@ const LoginComponent = () => {
         <div className="flex min-h-screen flex-col items-center justify-center py-16 md:py-24">
           <div className="w-full">
             <div className="mb-6 md:mb-8 inline-flex items-center justify-center w-full">
-              <div className="flex items-center gap-2">
+              <a href="/" className="flex items-center gap-2">
                 <img
                   src="/icon.png"
                   alt="LmScale Logo"
@@ -91,9 +91,8 @@ const LoginComponent = () => {
                 <span className="text-xl sm:text-4xl font-light text-neutral-800">
                   LmScale
                 </span>
-              </div>
+              </a>
             </div>
-
             <div className="relative w-full p-4 shadow-md bg-white">
               <form onSubmit={handleLogin} className="relative space-y-6 p-4">
                 <div className="flex items-center justify-between mb-4">

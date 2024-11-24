@@ -98,8 +98,6 @@ const Header = () => {
 
                 <a
                   href="/login"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="group relative inline-flex items-center justify-center overflow-hidden bg-neutral-800 p-0.5 transition-all duration-300 hover:bg-neutral-950"
                 >
                   <span className="inline-flex h-full w-full items-center justify-center px-4 py-1 text-sm font-medium text-white transition-all duration-300">
@@ -149,8 +147,6 @@ const Header = () => {
               </a>
               <a
                 href="/login"
-                target="_blank"
-                rel="noopener noreferrer"
                 onClick={() => setIsMenuOpen(false)}
                 className="flex items-center px-4 py-3 text-sm font-medium text-neutral-800 transition-colors duration-200 hover:bg-neutral-50"
               >
