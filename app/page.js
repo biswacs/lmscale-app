@@ -1,12 +1,12 @@
 import React from "react";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Details from "./components/Details";
-import Architecture from "./components/Architecture";
-import Applications from "./components/Applications";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import Models from "./components/Models";
+import Header from "./components/Landing/Header";
+import Hero from "./components/Landing/Hero";
+import Details from "./components/Landing/Details";
+import Architecture from "./components/Landing/Architecture";
+import Applications from "./components/Landing/Applications";
+import Contact from "./components/Landing/Contact";
+import Footer from "./components/Landing/Footer";
+import Models from "./components/Landing/Models";
 
 const page = () => {
   return (
