@@ -148,7 +148,7 @@ const Applications = () => {
         </svg>
       ),
       content: {
-        query: "Training progress: Medical terminology dataset",
+        query: "Training progress: Customer response dataset",
         response: (
           <div className="space-y-2">
             <div className="flex justify-between items-center">
@@ -159,7 +159,7 @@ const Applications = () => {
               <div className="bg-neutral-400 rounded-full h-2 w-[94%]"></div>
             </div>
             <div className="text-neutral-800 text-xs">
-              Fine-tuning complete: 50,000 medical terms processed
+              Fine-tuning complete: 50,000 customer queries processed
             </div>
           </div>
         ),

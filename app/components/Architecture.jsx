@@ -20,22 +20,23 @@ const ModelsTerminal = () => (
 
 const FeatureCard = ({ icon: Icon, title, description, content }) => (
   <div className="group h-[420px] bg-white border border-neutral-200">
-    <div className="relative h-full flex flex-col p-6">
-      <div className="bg-neutral-50 p-2 w-12 h-12 flex items-center justify-center border border-neutral-200">
+    <div className="relative h-full flex flex-col p-6 space-y-4">
+      <div className="flex items-center gap-4">
         <Icon className="h-6 w-6 text-neutral-800" />
+        <h3 className="text-lg font-medium tracking-tight text-neutral-800 line-clamp-1">
+          {title}
+        </h3>
       </div>
-      <h3 className="mt-6 text-xl font-medium text-neutral-800">{title}</h3>
-      <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
-        {description}
-      </p>
-      <div className="mt-6 flex-1 border border-dashed border-neutral-200 p-4 bg-neutral-50">
+
+      <p className="text-sm text-neutral-600 leading-relaxed">{description}</p>
+      <div className="flex-1 border border-dashed border-neutral-200 p-4 bg-neutral-50">
         {content}
       </div>
     </div>
   </div>
 );
 
-const Working = () => {
+const Architecture = () => {
   const features = [
     {
       icon: Cloud,
@@ -79,7 +80,8 @@ const Working = () => {
     {
       icon: Settings,
       title: "Simple Integration",
-      description: "Connect to any model with a single API endpoint.",
+      description:
+        "Access cutting-edge AI models through a single, standardized API endpoint. integrate in minutes.",
       content: (
         <div className="space-y-4">
           <pre className="text-sm font-mono">
@@ -144,4 +146,4 @@ const Working = () => {
   );
 };
 
-export default Working;
+export default Architecture;

@@ -2,7 +2,7 @@ import React from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Details from "./components/Details";
-import Working from "./components/Working";
+import Architecture from "./components/Architecture";
 import Applications from "./components/Applications";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
@@ -18,7 +18,7 @@ const page = () => {
       <Hero />
       <Applications />
       <Models />
-      <Working />
+      <Architecture />
       <Details />
       <Contact />
       <Footer />
