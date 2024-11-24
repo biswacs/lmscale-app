@@ -65,7 +65,7 @@ const Footer = () => {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
+                className="text-neutral-800 hover:text-neutral-800 transition-colors duration-200"
               >
                 <span className="sr-only">{item.name}</span>
                 <item.icon className="h-5 w-5" aria-hidden="true" />
@@ -76,7 +76,7 @@ const Footer = () => {
 
         <div className="mt-12 border-t border-neutral-200/60 pt-8">
           <div className="flex flex-col-reverse gap-4 md:flex-row md:items-center md:justify-between">
-            <p className="text-sm text-neutral-600 text-center md:text-left">
+            <p className="text-sm text-neutral-800 text-center md:text-left">
               © {new Date().getFullYear()} LmScale. All rights reserved.
             </p>
             <nav className="flex flex-wrap justify-center gap-8">
@@ -85,7 +85,7 @@ const Footer = () => {
                   <a
                     key={item}
                     href="#"
-                    className="text-sm text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
+                    className="text-sm text-neutral-800 hover:text-neutral-800 transition-colors duration-200"
                   >
                     {item}
                   </a>
