@@ -18,7 +18,7 @@ const Hero = () => {
       <div className="relative mx-auto max-w-7xl px-4">
         <div className="flex min-h-screen flex-col items-center justify-center py-16 md:py-24">
           <div className="text-center w-full">
-            <div className="mb-6 md:mb-8 inline-flex items-center border border-black/10 px-4 py-1.5 md:px-6 md:py-2 text-xs md:text-sm text-neutral-800 backdrop-blur-sm transition-all hover:bg-black/10">
+            <div className="mb-6 md:mb-8 inline-flex items-center border border-black/10 px-4 py-1.5 md:px-6 md:py-2 text-xs md:text-sm text-neutral-800">
               <Terminal className="mr-2 h-3 w-3 md:h-4 md:w-4" />
               Now Available in Beta
             </div>
