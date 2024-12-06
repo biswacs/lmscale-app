@@ -42,8 +42,8 @@ const APPLICATION_CARDS_DATA = [
         "I'd like to place a bulk order for our company. What's the process?",
       response: (
         <>
-          I'll help you with your bulk order! For purchases over $1000, you'll
-          receive:
+          I&apos;ll help you with your bulk order! For purchases over $1000,
+          you&apos;ll receive:
           <ul className="mt-2 space-y-1 text-neutral-800">
             <li>• 15% volume discount</li>
             <li>• Dedicated account manager</li>
@@ -291,25 +291,25 @@ const FEATURES_DATA = [
             <span className="text-neutral-600">{"{"}</span>
             {"\n"}
             <span className="text-neutral-600"> </span>
-            <span className="text-blue-600">"model"</span>
+            <span className="text-blue-600">&quot;model&quot;</span>
             <span className="text-neutral-600">: </span>
-            <span className="text-green-600">"mixtral-8x7b"</span>
+            <span className="text-green-600">&quot;mixtral-8x7b&quot;</span>
             <span className="text-neutral-600">,</span>
             {"\n"}
             <span className="text-neutral-600"> </span>
-            <span className="text-blue-600">"prompt"</span>
+            <span className="text-blue-600">&quot;prompt&quot;</span>
             <span className="text-neutral-600">: </span>
-            <span className="text-green-600">"Tell me about..."</span>
+            <span className="text-green-600">&quot;Tell me about...&quot;</span>
             <span className="text-neutral-600">,</span>
             {"\n"}
             <span className="text-neutral-600"> </span>
-            <span className="text-blue-600">"max_tokens"</span>
+            <span className="text-blue-600">&quot;max_tokens&quot;</span>
             <span className="text-neutral-600">: </span>
             <span className="text-orange-600">100</span>
             <span className="text-neutral-600">,</span>
             {"\n"}
             <span className="text-neutral-600"> </span>
-            <span className="text-blue-600">"temperature"</span>
+            <span className="text-blue-600">&quot;temperature&quot;</span>
             <span className="text-neutral-600">: </span>
             <span className="text-orange-600">0.7</span>
             {"\n"}

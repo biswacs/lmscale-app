@@ -1,6 +1,8 @@
 import { Loader, MoveRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -135,16 +137,19 @@ const RegisterPage = () => {
         <div className="flex min-h-screen flex-col items-center justify-center py-16 md:py-24">
           <div className="w-full">
             <div className="mb-6 md:mb-8 inline-flex items-center justify-center w-full">
-              <a href="/" className="flex items-center gap-2">
-                <img
+              <Link href="/" className="flex items-center gap-2">
+                <Image
                   src="/icon.png"
                   alt="LmScale Logo"
-                  className="h-9 w-9 object-contain"
+                  layout="fixed"
+                  width={36}
+                  height={36}
+                  objectFit="cover"
                 />
                 <span className="text-xl sm:text-4xl font-light text-neutral-800">
                   LmScale
                 </span>
-              </a>
+              </Link>
             </div>
 
             <div className="relative w-full p-4 shadow-md bg-white">
