@@ -12,15 +12,27 @@ export default function LoginPage() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    await logInUser(formData.email, formData.password);
+  const handleLogin = async () => {
+    if (!formData.email || !formData.password) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      await logInUser(formData.email, formData.password);
+    } catch (err) {
+      setError(err.message || "Failed to login");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -29,12 +41,13 @@ export default function LoginPage() {
       ...prev,
       [name]: value,
     }));
+    setError("");
   };
 
   const getInputClassName = (field) => {
     const baseClasses =
       "w-full pl-3 pr-3 py-1.5 border bg-white/50 backdrop-blur-sm transition-all duration-200 focus:outline-none";
-    const isEmpty = attemptedSubmit && !formData[field];
+    const isEmpty = !formData[field] && error;
 
     if (isEmpty) {
       return `${baseClasses} border-rose-400 focus:border-rose-500`;
@@ -73,13 +86,13 @@ export default function LoginPage() {
               </Link>
             </div>
             <div className="relative w-full p-4 shadow-md bg-white">
-              <form onSubmit={handleLogin} className="relative space-y-6 p-4">
+              <div className="relative space-y-6 p-4">
                 <div className="flex items-center justify-between mb-4">
                   <div className="text-lg font-medium">Welcome back</div>
                 </div>
 
                 {error && (
-                  <div className="text-sm mb-4 bg-rose-50 p-3 rounded border border-rose-200 text-rose-500">
+                  <div className="text-sm mb-4 bg-rose-50 p-3 border border-rose-200 text-rose-500">
                     {error}
                   </div>
                 )}
@@ -124,7 +137,8 @@ export default function LoginPage() {
                 </div>
 
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleLogin}
                   disabled={loading}
                   className="group w-full inline-flex items-center gap-2 justify-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base font-medium text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none"
                 >
@@ -148,7 +162,7 @@ export default function LoginPage() {
                     Sign up
                   </button>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>

@@ -3,65 +3,28 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useAuthentication } from "@/providers/authentication-provider";
 
-const RegisterPage = () => {
+export default function RegisterPage() {
   const router = useRouter();
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const { registerUser, submitting } = useAuthentication();
   const [error, setError] = useState("");
-  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
-    userType: "",
-    expectedUsage: "",
   });
 
-  const handleNextStep = (e) => {
-    e.preventDefault();
-    setAttemptedSubmit(true);
-
-    if (!formData.email || !formData.password) {
+  const handleSignup = async () => {
+    if (!formData.email || !formData.password || !formData.name) {
+      setError("Please fill in all fields");
       return;
     }
-
-    setStep(2);
-    setAttemptedSubmit(false);
-  };
-
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    setAttemptedSubmit(true);
-
-    if (!formData.userType) {
-      return;
-    }
-
-    setLoading(true);
-    setError("");
 
     try {
-      const response = await fetch(
-        "https://server.lmscale.tech/v1/api/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to create account");
-      }
-
-      const data = await response.json();
-      router.push("/dashboard");
+      await registerUser(formData.name, formData.email, formData.password);
     } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      setError(err.message || "Failed to create account");
     }
   };
 
@@ -71,54 +34,19 @@ const RegisterPage = () => {
       ...prev,
       [name]: value,
     }));
+    setError("");
   };
 
   const getInputClassName = (field) => {
     const baseClasses =
       "w-full pl-3 pr-3 py-1.5 border bg-white/50 backdrop-blur-sm transition-all duration-200 focus:outline-none";
-    const isEmpty = attemptedSubmit && !formData[field];
+    const isEmpty = !formData[field] && error;
 
     if (isEmpty) {
       return `${baseClasses} border-rose-400 focus:border-rose-500`;
     }
     return `${baseClasses} border-neutral-200 focus:border-neutral-400`;
   };
-
-  const getRadioClassName = (selected) => {
-    return `relative flex items-center justify-between w-full p-4 cursor-pointer border transition-all ${
-      selected
-        ? "border-neutral-900 bg-neutral-50"
-        : "border-neutral-200 hover:border-neutral-300"
-    }`;
-  };
-
-  const usageOptions = [
-    {
-      value: "hobby",
-      label: "Less than 100K tokens",
-      description: "Perfect for small projects and testing",
-    },
-    {
-      value: "startup",
-      label: "100K - 1M tokens",
-      description: "Ideal for growing applications",
-    },
-    {
-      value: "business",
-      label: "1M - 10M tokens",
-      description: "For production workloads",
-    },
-    {
-      value: "enterprise",
-      label: "10M+ tokens",
-      description: "Enterprise-scale deployments",
-    },
-    {
-      value: "undecided",
-      label: "No idea yet",
-      description: "Still exploring options",
-    },
-  ];
 
   return (
     <div className="relative min-h-screen bg-white">
@@ -153,15 +81,9 @@ const RegisterPage = () => {
             </div>
 
             <div className="relative w-full p-4 shadow-md bg-white">
-              <form
-                onSubmit={step === 1 ? handleNextStep : handleSignup}
-                className="relative space-y-6 p-4"
-              >
+              <div className="relative space-y-6 p-4">
                 <div className="flex items-center justify-between mb-4">
                   <div className="text-lg font-medium">Create Account</div>
-                  <div className="text-sm text-neutral-500">
-                    Step {step} of 2
-                  </div>
                 </div>
 
                 {error && (
@@ -170,158 +92,73 @@ const RegisterPage = () => {
                   </div>
                 )}
 
-                <div className="space-y-6">
-                  {step === 1 ? (
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <label
-                          className="text-sm text-neutral-600"
-                          htmlFor="email"
-                        >
-                          Work Email
-                        </label>
-                        <div className="relative">
-                          <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            className={getInputClassName("email")}
-                            placeholder="name@company.com"
-                            value={formData.email}
-                            onChange={handleChange}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label
-                          className="text-sm text-neutral-600"
-                          htmlFor="password"
-                        >
-                          Password
-                        </label>
-                        <div className="relative">
-                          <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            className={getInputClassName("password")}
-                            placeholder="8+ characters"
-                            value={formData.password}
-                            onChange={handleChange}
-                          />
-                        </div>
-                      </div>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-sm text-neutral-600" htmlFor="name">
+                      Full Name
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        className={getInputClassName("name")}
+                        placeholder="John Doe"
+                        value={formData.name}
+                        onChange={handleChange}
+                      />
                     </div>
-                  ) : (
-                    <div className="space-y-6">
-                      <div className="space-y-3">
-                        <label className="text-sm text-neutral-600">
-                          I am a...
-                        </label>
-                        <div className="grid grid-cols-1 gap-3">
-                          <label
-                            className={getRadioClassName(
-                              formData.userType === "founder"
-                            )}
-                          >
-                            <div className="flex items-center gap-3">
-                              <div>
-                                <div className="font-medium">
-                                  Founder / Business
-                                </div>
-                                <div className="text-sm text-neutral-500">
-                                  Building an AI-powered product
-                                </div>
-                              </div>
-                            </div>
-                            <input
-                              type="radio"
-                              name="userType"
-                              value="founder"
-                              checked={formData.userType === "founder"}
-                              onChange={handleChange}
-                              className="absolute opacity-0"
-                            />
-                          </label>
+                  </div>
 
-                          <label
-                            className={getRadioClassName(
-                              formData.userType === "developer"
-                            )}
-                          >
-                            <div className="flex items-center gap-3">
-                              <div>
-                                <div className="font-medium">Developer</div>
-                                <div className="text-sm text-neutral-500">
-                                  Integrating LLMs into applications
-                                </div>
-                              </div>
-                            </div>
-                            <input
-                              type="radio"
-                              name="userType"
-                              value="developer"
-                              checked={formData.userType === "developer"}
-                              onChange={handleChange}
-                              className="absolute opacity-0"
-                            />
-                          </label>
-                        </div>
-                      </div>
-
-                      {formData.userType && (
-                        <div className="space-y-3 animate-in fade-in slide-in-from-bottom-4">
-                          <label className="text-sm text-neutral-600">
-                            Expected monthly usage
-                          </label>
-                          <div className="grid grid-cols-1 gap-3">
-                            {usageOptions.map((option) => (
-                              <label
-                                key={option.value}
-                                className={getRadioClassName(
-                                  formData.expectedUsage === option.value
-                                )}
-                              >
-                                <div className="flex items-center gap-3">
-                                  <div>
-                                    <div className="font-medium">
-                                      {option.label}
-                                    </div>
-                                    <div className="text-sm text-neutral-500">
-                                      {option.description}
-                                    </div>
-                                  </div>
-                                </div>
-                                <input
-                                  type="radio"
-                                  name="expectedUsage"
-                                  value={option.value}
-                                  checked={
-                                    formData.expectedUsage === option.value
-                                  }
-                                  onChange={handleChange}
-                                  className="absolute opacity-0"
-                                />
-                              </label>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                  <div className="space-y-2">
+                    <label className="text-sm text-neutral-600" htmlFor="email">
+                      Work Email
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        className={getInputClassName("email")}
+                        placeholder="name@company.com"
+                        value={formData.email}
+                        onChange={handleChange}
+                      />
                     </div>
-                  )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <label
+                      className="text-sm text-neutral-600"
+                      htmlFor="password"
+                    >
+                      Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        className={getInputClassName("password")}
+                        placeholder="8+ characters"
+                        value={formData.password}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <button
-                  type="submit"
-                  disabled={loading}
+                  type="button"
+                  onClick={handleSignup}
+                  disabled={submitting}
                   className="group w-full inline-flex items-center gap-2 justify-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base font-medium text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none"
                 >
-                  {loading ? (
+                  {submitting ? (
                     <Loader className="animate-spin h-4 w-4" />
                   ) : (
                     <>
-                      {step === 1 ? "Continue" : "Create Account"}
+                      Create Account
                       <MoveRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </>
                   )}
@@ -337,13 +174,11 @@ const RegisterPage = () => {
                     Login
                   </button>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default RegisterPage;
+}

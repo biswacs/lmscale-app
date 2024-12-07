@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 const APPLICATION_CARDS_DATA = [
   {
@@ -414,81 +414,96 @@ const FOOTER_SOCIAL_LINKS = [
   },
 ];
 
+const SearchBar = React.memo(({ searchQuery, setSearchQuery }) => (
+  <div className="relative w-full sm:w-auto">
+    <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-400" />
+    <input
+      type="text"
+      placeholder="Search models..."
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      className="w-full border border-neutral-200 bg-white py-2 pl-10 pr-4 text-sm placeholder-neutral-400 shadow-sm focus:outline-none"
+    />
+  </div>
+));
+
+SearchBar.displayName = "SearchBar";
+
+const TypeFilter = React.memo(({ selectedType, setSelectedType }) => (
+  <div className="flex w-full flex-wrap gap-2 sm:w-auto">
+    {["All", "Chat", "Code"].map((type) => (
+      <button
+        key={type}
+        onClick={() => setSelectedType(type)}
+        className={`flex-1 px-4 py-2 text-sm font-medium transition-colors sm:flex-initial ${
+          selectedType === type
+            ? "bg-neutral-800 text-white"
+            : "bg-white text-neutral-600 hover:bg-neutral-100"
+        }`}
+      >
+        {type}
+      </button>
+    ))}
+  </div>
+));
+
+TypeFilter.displayName = "TypeFilter";
+
+const ModelCard = React.memo(({ icon, name, type }) => (
+  <div className="group relative h-40 overflow-hidden bg-white p-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-md">
+    <div className="relative flex h-full flex-col items-start">
+      <img src={icon} alt={name} className="h-8 w-8 sm:h-10 sm:w-10" />
+      <div className="mt-4 space-y-1">
+        <h3 className="text-sm sm:text-base font-semibold text-neutral-800 transition-colors duration-300 group-hover:text-neutral-800">
+          {name}
+        </h3>
+        <div className="flex items-center gap-2">
+          <span className="flex h-2 w-2 bg-green-500" />
+          <p className="text-xs sm:text-sm text-neutral-500 transition-colors duration-300 group-hover:text-neutral-600">
+            {type}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+));
+
+ModelCard.displayName = "ModelCard";
+
+const MoreModelsCard = React.memo(({ count }) => (
+  <div className="group relative h-40 overflow-hidden bg-white p-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-md">
+    <div className="relative flex h-full flex-col items-start">
+      <h3 className="text-4xl font-light text-neutral-800">+{count}</h3>
+      <h3 className="mt-4 text-sm sm:text-base font-light text-neutral-800">
+        More Models
+      </h3>
+    </div>
+  </div>
+));
+
+MoreModelsCard.displayName = "MoreModelsCard";
+
 function ModelsSection() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState("All");
 
-  const filteredModels = ALL_MODELS_DATA.filter((model) => {
-    const matchesSearch = model.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesType = selectedType === "All" || model.type === selectedType;
-    return matchesSearch && matchesType;
-  });
+  const filteredModels = useMemo(() => {
+    return ALL_MODELS_DATA.filter((model) => {
+      const matchesSearch = model.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const matchesType = selectedType === "All" || model.type === selectedType;
+      return matchesSearch && matchesType;
+    });
+  }, [searchQuery, selectedType]);
 
-  const displayedModels = filteredModels.slice(0, 9);
-  const remainingCount = filteredModels.length - displayedModels.length;
+  const displayedModels = useMemo(() => {
+    return filteredModels.slice(0, 9);
+  }, [filteredModels]);
 
-  const SearchBar = ({ searchQuery, setSearchQuery }) => (
-    <div className="relative w-full sm:w-auto">
-      <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-400" />
-      <input
-        type="text"
-        placeholder="Search models..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-full border border-neutral-200 bg-white py-2 pl-10 pr-4 text-sm placeholder-neutral-400 shadow-sm focus:outline-none"
-      />
-    </div>
-  );
-
-  const TypeFilter = ({ selectedType, setSelectedType }) => (
-    <div className="flex w-full flex-wrap gap-2 sm:w-auto">
-      {["All", "Chat", "Code"].map((type) => (
-        <button
-          key={type}
-          onClick={() => setSelectedType(type)}
-          className={`flex-1 px-4 py-2 text-sm font-medium transition-colors sm:flex-initial ${
-            selectedType === type
-              ? "bg-neutral-800 text-white"
-              : "bg-white text-neutral-600 hover:bg-neutral-100"
-          }`}
-        >
-          {type}
-        </button>
-      ))}
-    </div>
-  );
-
-  const ModelCard = ({ icon, name, type }) => (
-    <div className="group relative h-40 overflow-hidden bg-white p-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-md">
-      <div className="relative flex h-full flex-col items-start">
-        <img src={icon} alt={name} className="h-8 w-8 sm:h-10 sm:w-10" />
-        <div className="mt-4 space-y-1">
-          <h3 className="text-sm sm:text-base font-semibold text-neutral-800 transition-colors duration-300 group-hover:text-neutral-800">
-            {name}
-          </h3>
-          <div className="flex items-center gap-2">
-            <span className="flex h-2 w-2 bg-green-500" />
-            <p className="text-xs sm:text-sm text-neutral-500 transition-colors duration-300 group-hover:text-neutral-600">
-              {type}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const MoreModelsCard = ({ count }) => (
-    <div className="group relative h-40 overflow-hidden bg-white p-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-md">
-      <div className="relative flex h-full flex-col items-start">
-        <h3 className="text-4xl font-light text-neutral-800">+{count}</h3>
-        <h3 className="mt-4 text-sm sm:text-base font-light text-neutral-800">
-          More Models
-        </h3>
-      </div>
-    </div>
-  );
+  const remainingCount = useMemo(() => {
+    return filteredModels.length - displayedModels.length;
+  }, [filteredModels, displayedModels]);
 
   return (
     <div className="relative min-h-screen bg-white py-12 sm:py-24">
@@ -516,7 +531,7 @@ function ModelsSection() {
 
         <div className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {displayedModels.map((model, index) => (
-            <ModelCard key={index} {...model} />
+            <ModelCard key={model.name} {...model} />
           ))}
           {remainingCount > 0 && <MoreModelsCard count={remainingCount} />}
         </div>
@@ -570,6 +585,7 @@ export default function HomePage() {
     <>
       <Head>
         <title>LMScale</title>
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <main>
         <header>
@@ -604,22 +620,19 @@ export default function HomePage() {
                   <div className="hidden lg:flex items-center space-x-6">
                     <nav>
                       <ul className="flex items-center space-x-6">
-                        <li>
-                          <Link
-                            href="#"
-                            className="text-sm font-medium text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
-                          >
-                            Product
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="#"
-                            className="text-sm font-medium text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
-                          >
-                            Docs
-                          </Link>
-                        </li>
+                        {[
+                          { href: "#", text: "Product" },
+                          { href: "#", text: "Docs" },
+                        ].map((item) => (
+                          <li key={item.text}>
+                            <Link
+                              href={item.href}
+                              className="text-sm font-medium text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
+                            >
+                              {item.text}
+                            </Link>
+                          </li>
+                        ))}
                       </ul>
                     </nav>
 
@@ -627,7 +640,7 @@ export default function HomePage() {
                       href="/login"
                       className="group relative inline-flex items-center justify-center overflow-hidden bg-neutral-800 p-0.5 transition-all duration-300 hover:bg-neutral-950"
                     >
-                      <span className="inline-flex h-full w-full items-center justify-center px-4 py-1.5 md:px-6 md:py-2 text-sm md:text-base font-medium text-white transition-all duration-300">
+                      <span className="inline-flex h-full w-full items-center justify-center px-4 py-1.5 md:px-6 text-sm md:text-base font-medium text-white transition-all duration-300">
                         Login
                       </span>
                     </Link>
@@ -658,27 +671,23 @@ export default function HomePage() {
             <div className="h-full pt-20 overflow-y-auto">
               <div className="px-4 py-6">
                 <nav className="flex flex-col space-y-1">
-                  <Link
-                    href="#"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center justify-between px-4 py-3 text-sm font-medium text-neutral-600 transition-colors duration-200 hover:bg-neutral-50 hover:text-neutral-800"
-                  >
-                    Product
-                  </Link>
-                  <Link
-                    href="#"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center justify-between px-4 py-3 text-sm font-medium text-neutral-600 transition-colors duration-200 hover:bg-neutral-50 hover:text-neutral-800"
-                  >
-                    Docs
-                  </Link>
-                  <Link
-                    href="/login"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center px-4 py-3 text-sm font-medium text-neutral-800 transition-colors duration-200 hover:bg-neutral-50"
-                  >
-                    Login
-                  </Link>
+                  {[
+                    { href: "#", text: "Product" },
+                    { href: "#", text: "Docs" },
+                    { href: "/login", text: "Login" },
+                  ].map((item) => (
+                    <Link
+                      key={item.text}
+                      href={item.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="group relative flex items-center justify-between px-4 py-3 text-sm font-medium text-neutral-600 transition-all duration-300 hover:text-neutral-800"
+                    >
+                      <span className="relative">
+                        {item.text}
+                        <span className="absolute inset-x-0 -bottom-0.5 h-px w-0 bg-neutral-800 transition-all duration-300 group-hover:w-full"></span>
+                      </span>
+                    </Link>
+                  ))}
                 </nav>
               </div>
             </div>
@@ -852,12 +861,11 @@ export default function HomePage() {
             <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {FEATURES_DATA.map((feature) => (
                 <div
-                  key={feature?.name}
+                  key={feature?.title}
                   className="group h-[420px] bg-white border border-neutral-200"
                 >
                   <div className="relative h-full flex flex-col p-6 space-y-4">
                     <div className="flex items-center gap-4">
-                      {/* <Icon className="h-6 w-6 text-neutral-800" /> */}
                       <h3 className="text-lg font-medium tracking-tight text-neutral-800 line-clamp-1">
                         {feature?.title}
                       </h3>
@@ -893,7 +901,7 @@ export default function HomePage() {
             <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {DETAILS_DATA.map((item, index) => (
                 <div
-                  key={index}
+                  key={item.title || index}
                   className="group h-[180px] bg-white border border-neutral-200"
                 >
                   <div className="p-6 h-full flex flex-col">

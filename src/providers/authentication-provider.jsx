@@ -1,4 +1,4 @@
-import { API_LOGIN } from "@/api/endpoints";
+import { API_LOGIN, API_REGISTER } from "@/api/endpoints";
 import { lmScaleAPI } from "@/api/instance";
 import {
   AUTHENTICATED_ROUTES,
@@ -18,24 +18,48 @@ const AuthenticationProvider = ({ children }) => {
   const [submitting, setSubmitting] = useState(false);
 
   const logInUser = async (email, password) => {
+    if (!email || !password) {
+      throw new Error("Please fill in all fields");
+    }
+
     setSubmitting(true);
-    return lmScaleAPI
-      .post(API_LOGIN, { email, password })
-      .then((res) => {
-        localStorage.setItem("accessToken", res.data.token);
-        setAuthToken(res.data.token);
-        window.location.href = ROUTES_MAP.DASHBOARD.__;
-        return res.data;
-      })
-      .catch((err) => {
-        console.error(err);
-        throw new Error(err?.response?.data);
-      })
-      .finally(() => {
-        setSubmitting(false);
-      });
+    try {
+      const res = await lmScaleAPI.post(API_LOGIN, { email, password });
+      localStorage.setItem("accessToken", res.data.token);
+      setAuthToken(res.data.token);
+      window.location.href = ROUTES_MAP.DASHBOARD.__;
+      return res.data;
+    } catch (err) {
+      console.error(err);
+      throw new Error(err?.response?.data?.message || "Login failed");
+    } finally {
+      setSubmitting(false);
+    }
   };
-  const registerUser = async (email, password) => {};
+
+  const registerUser = async (name, email, password) => {
+    if (!name || !email || !password) {
+      throw new Error("Please fill in all fields");
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await lmScaleAPI.post(API_REGISTER, {
+        name,
+        email,
+        password,
+      });
+      localStorage.setItem("accessToken", res.data.token);
+      setAuthToken(res.data.token);
+      window.location.href = ROUTES_MAP.DASHBOARD.__;
+      return res.data;
+    } catch (err) {
+      console.error(err);
+      throw new Error(err?.response?.data?.message || "Registration failed");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const logOutUser = () => {
     localStorage.clear();
@@ -47,7 +71,7 @@ const AuthenticationProvider = ({ children }) => {
     const tokenFromQuery = router?.query?.token;
 
     if (tokenFromQuery) {
-      authAPI
+      lmScaleAPI
         .get("/api/auth/account", {
           headers: {
             Authorization: `Bearer ${tokenFromQuery}`,
@@ -89,6 +113,7 @@ const AuthenticationProvider = ({ children }) => {
   const contextValue = {
     logInUser,
     logOutUser,
+    registerUser,
     isAuthenticated: !!authToken,
     authToken,
     submitting,
