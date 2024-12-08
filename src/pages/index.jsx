@@ -616,7 +616,7 @@ export default function HomePage() {
 
                     <div className="flex items-center justify-center gap-4 md:gap-6">
                       <a
-                        href="/signup"
+                        href="/register"
                         className="group inline-flex items-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base font-medium text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg"
                       >
                         Get Started
