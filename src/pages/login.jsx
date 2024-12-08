@@ -73,12 +73,12 @@ export default function LoginPage() {
           <div className="w-full">
             <div className="mb-6 md:mb-8 inline-flex items-center justify-center w-full">
               <Link href="/" className="flex items-center gap-2">
-                <Image
+                <img
                   src="/icon.png"
                   alt="LmScale Logo"
                   width={36}
                   height={36}
-                  objectFit="contain"
+                  className="object-contain"
                 />
                 <span className="text-xl sm:text-4xl font-light text-neutral-800">
                   LmScale

@@ -2,7 +2,6 @@ import { Loader, MoveRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useAuthentication } from "@/providers/authentication-provider";
 
 export default function RegisterPage() {
@@ -20,7 +19,10 @@ export default function RegisterPage() {
       setError("Please fill in all fields");
       return;
     }
-
+    if (formData.name.length < 3) {
+      setError("Name must be at least 3 characters long");
+      return;
+    }
     try {
       await registerUser(formData.name, formData.email, formData.password);
     } catch (err) {
@@ -66,13 +68,12 @@ export default function RegisterPage() {
           <div className="w-full">
             <div className="mb-6 md:mb-8 inline-flex items-center justify-center w-full">
               <Link href="/" className="flex items-center gap-2">
-                <Image
+                <img
                   src="/icon.png"
                   alt="LmScale Logo"
-                  layout="fixed"
                   width={36}
                   height={36}
-                  objectFit="cover"
+                  className="object-cover"
                 />
                 <span className="text-xl sm:text-4xl font-light text-neutral-800">
                   LmScale
