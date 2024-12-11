@@ -84,7 +84,7 @@ export default function RegisterPage() {
             <div className="relative w-full p-4 shadow-md bg-white">
               <div className="relative space-y-6 p-4">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="text-lg font-medium">Create Account</div>
+                  <div className="text-lg font-medium">Create an Account</div>
                 </div>
 
                 {error && (
@@ -166,7 +166,7 @@ export default function RegisterPage() {
                 </button>
 
                 <div className="text-center text-sm text-neutral-600">
-                  Already have an account?{" "}
+                  Already have an account?
                   <button
                     type="button"
                     onClick={() => router.push("/login")}

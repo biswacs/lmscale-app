@@ -153,13 +153,13 @@ export default function LoginPage() {
                 </button>
 
                 <div className="text-center text-sm text-neutral-600">
-                  Don&apos;t have an account?
+                  New to LmScale?
                   <button
                     type="button"
                     onClick={() => router.push(ROUTES_MAP.REGISTER)}
                     className="text-neutral-900 hover:underline ml-1"
                   >
-                    Create account
+                    Create an Account
                   </button>
                 </div>
               </div>
