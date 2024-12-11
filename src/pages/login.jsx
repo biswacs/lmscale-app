@@ -159,7 +159,7 @@ export default function LoginPage() {
                     onClick={() => router.push(ROUTES_MAP.REGISTER)}
                     className="text-neutral-900 hover:underline ml-1"
                   >
-                    Sign up
+                    Create account
                   </button>
                 </div>
               </div>
