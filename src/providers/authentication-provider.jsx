@@ -1,10 +1,6 @@
 import { API_LOGIN, API_REGISTER } from "@/api/endpoints";
 import { lmScaleAPI } from "@/api/instance";
-import {
-  AUTHENTICATED_ROUTES,
-  ROUTES_MAP,
-  UNAUTHENTICATED_ROUTES,
-} from "@/constants/routes";
+import { AUTHENTICATED_ROUTES, ROUTES_MAP } from "@/constants/routes";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -25,8 +21,8 @@ const AuthenticationProvider = ({ children }) => {
     setSubmitting(true);
     try {
       const res = await lmScaleAPI.post(API_LOGIN, { email, password });
-      localStorage.setItem("accessToken", res.data.token);
-      setAuthToken(res.data.token);
+      localStorage.setItem("accessToken", res.data.accessToken);
+      setAuthToken(res.data.accessToken);
       window.location.href = ROUTES_MAP.DASHBOARD.__;
       return res.data;
     } catch (err) {
@@ -49,8 +45,8 @@ const AuthenticationProvider = ({ children }) => {
         email,
         password,
       });
-      localStorage.setItem("accessToken", res.data.token);
-      setAuthToken(res.data.token);
+      localStorage.setItem("accessToken", res.data.accessToken);
+      setAuthToken(res.data.accessToken);
       window.location.href = ROUTES_MAP.DASHBOARD.__;
       return res.data;
     } catch (err) {
@@ -68,7 +64,7 @@ const AuthenticationProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const tokenFromQuery = router?.query?.token;
+    const tokenFromQuery = router?.query?.accessToken;
 
     if (tokenFromQuery) {
       lmScaleAPI
@@ -84,7 +80,7 @@ const AuthenticationProvider = ({ children }) => {
           }
         })
         .catch((error) => {
-          console.error("Error validating token:", error);
+          console.error("Error validating accessToken:", error);
         })
         .finally(() => {
           setLoading(false);
