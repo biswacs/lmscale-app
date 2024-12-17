@@ -562,16 +562,16 @@ export default function HomePage() {
                   Run LLMs In The Cloud
                 </h1>
                 <div className="mt-8 md:mt-12 relative w-full p-4">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
-                  <div className="absolute inset-0 bg-white/40 backdrop-blur-[1px]" />
-                  <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2720%27%20height%3D%2720%27%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27none%27%20%2F%3E%3Ccircle%20cx%3D%271%27%20cy%3D%271%27%20r%3D%270.5%27%20fill%3D%27%2300000008%27%20%2F%3E%3C%2Fsvg%3E')] opacity-50" />
-
+                  <div className="absolute inset-0">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
+                    <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />{" "}
+                  </div>
                   <div className="relative flex flex-col items-center justify-start h-full space-y-8 p-4 md:p-8">
-                    <p className="mx-auto max-w-2xl text-base md:text-lg leading-7 md:leading-8 text-neutral-600">
+                    <p className="mx-auto max-w-2xl text-base md:text-lg font-light leading-7 md:leading-8 text-neutral-800">
                       Deploy and scale language models with zero infrastructure
                       headaches. Simple, fast, and secure cloud deployment.
                     </p>
@@ -885,9 +885,11 @@ export default function HomePage() {
                 </p>
               </div>
               <div className="flex flex-wrap gap-4">
-                <button className="group inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 bg-white text-neutral-800">
-                  <BarChart className="size-4" />
-                  View Demo
+                <button
+                  onClick={() => window.open("mailto:info@lmscale.tech")}
+                  className="group inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 bg-white text-neutral-800"
+                >
+                  Contact Us
                   <MoveRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
               </div>
