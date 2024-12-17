@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const API_BASE_URL = "https://api.lmscale.tech/api/v1";
-// export const API_BASE_URL = "http://localhost:8080";
+export const API_BASE_URL = "https://api.lmscale.tech/v1";
+// export const API_BASE_URL = "http://localhost:8080/v1";
 
 export const getNewAPIInstance = (URL) => {
   const accessToken =

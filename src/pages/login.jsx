@@ -1,7 +1,6 @@
 import { ROUTES_MAP } from "@/constants/routes";
 import { useAuthentication } from "@/providers/authentication-provider";
 import { Loader, MoveRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

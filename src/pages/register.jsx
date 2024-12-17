@@ -23,6 +23,18 @@ export default function RegisterPage() {
       setError("Name must be at least 3 characters long");
       return;
     }
+    if (formData.name.length > 24) {
+      setError("Name cannot exceed 24 characters");
+      return;
+    }
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
+    if (formData.password.length > 100) {
+      setError("Password cannot exceed 100 characters");
+      return;
+    }
     try {
       await registerUser(formData.name, formData.email, formData.password);
     } catch (err) {
