@@ -562,14 +562,12 @@ export default function HomePage() {
                   Run LLMs In The Cloud
                 </h1>
                 <div className="mt-8 md:mt-12 relative w-full p-4">
-                  <div className="absolute inset-0">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
-                    <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />{" "}
-                  </div>
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
+                  <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />
                   <div className="relative flex flex-col items-center justify-start h-full space-y-8 p-4 md:p-8">
                     <p className="mx-auto max-w-2xl text-base md:text-lg font-light leading-7 md:leading-8 text-neutral-800">
                       Deploy and scale language models with zero infrastructure
@@ -897,15 +895,12 @@ export default function HomePage() {
           </div>
         </section>
         <footer className="relative bg-white">
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
-            <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />{" "}
-          </div>
-
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
+          <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />
           <div className="relative mx-auto max-w-7xl px-4 py-12">
             <div className="flex flex-col items-center justify-between gap-8 md:flex-row md:gap-12">
               <div className="flex flex-col items-center md:items-start">
