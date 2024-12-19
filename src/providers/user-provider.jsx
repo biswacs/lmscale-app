@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { API_PROFILE } from "@/api/endpoints";
-import { getNewAPIInstance, API_BASE_URL } from "@/api/instance";
+import { lmScaleAPI } from "@/api/instance";
 import { useAuthentication } from "./authentication-provider";
 
 const UserContext = createContext({});
@@ -11,20 +11,14 @@ const UserProvider = ({ children }) => {
   const [submitting, setSubmitting] = useState(false);
   const { isAuthenticated, authToken } = useAuthentication();
 
-  const getAPIWithToken = () => {
-    const api = getNewAPIInstance(API_BASE_URL);
-    if (authToken) {
-      api.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
-    }
-    return api;
-  };
-
   const fetchUser = async () => {
     try {
       setLoading(true);
-      const api = getAPIWithToken();
-      const response = await api.get(API_PROFILE);
-      // Update to handle the nested user object in the response
+      const response = await lmScaleAPI.get(API_PROFILE, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
       setUser(response.data.user);
       return response.data.user;
     } catch (error) {
@@ -38,8 +32,11 @@ const UserProvider = ({ children }) => {
   const updateUser = async (userData) => {
     try {
       setSubmitting(true);
-      const api = getAPIWithToken();
-      const response = await api.put(API_PROFILE, userData);
+      const response = await lmScaleAPI.put(API_PROFILE, userData, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
       setUser(response.data.user);
       return response.data.user;
     } catch (error) {
