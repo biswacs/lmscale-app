@@ -429,10 +429,6 @@ export default function HomePage() {
 
   return (
     <>
-      <Head>
-        <title>LMScale</title>
-        <link rel="icon" href="/favicon.png" />
-      </Head>
       <main>
         <header>
           <div
