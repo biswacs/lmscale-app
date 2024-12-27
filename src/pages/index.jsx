@@ -13,138 +13,8 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect, useState, useMemo } from "react";
-
-const APPLICATION_CARDS_DATA = [
-  {
-    title: "Customer Support",
-    description:
-      "Deploy conversational AI agents that understand your product documentation and previous support tickets. Provides 24/7 support with human-like interactions.",
-    icon: (
-      <svg
-        className="h-6 w-6 text-neutral-800"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-        />
-      </svg>
-    ),
-    content: {
-      query:
-        "I'd like to place a bulk order for our company. What's the process?",
-      response: (
-        <>
-          I&apos;ll help you with your bulk order! For purchases over $1000,
-          you&apos;ll receive:
-          <ul className="mt-2 space-y-1 text-neutral-800">
-            <li>• 15% volume discount</li>
-            <li>• Dedicated account manager</li>
-          </ul>
-        </>
-      ),
-    },
-  },
-  {
-    title: "Code Generation",
-    description:
-      "Generate high-quality, production-ready code with AI that understands your codebase, style guides, and best practices. Supports multiple languages and frameworks.",
-    icon: (
-      <svg
-        className="h-6 w-6 text-neutral-800"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-        />
-      </svg>
-    ),
-    content: {
-      query: "Create a button component with hover effects",
-      response: (
-        <pre className="whitespace-pre-wrap break-all ">
-          {
-            '<button class="bg-neutral-100 px-4 py-2 text-neutral-800 hover:bg-neutral-200">Click me</button>'
-          }
-        </pre>
-      ),
-    },
-  },
-  {
-    title: "Content Generation",
-    description:
-      "Transform your content creation with AI that maintains your brand voice. Generate blog posts, marketing copy, product descriptions, and more at scale.",
-    icon: (
-      <svg
-        className="h-6 w-6 text-neutral-800"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2"
-        />
-      </svg>
-    ),
-    content: {
-      query: "Write a product description for our new AI platform",
-      response:
-        "Unlock the power of AI with our enterprise-grade development platform. Built for scale, security, and performance, our platform enables seamless integration of state-of-the-art language models into your existing workflows.",
-    },
-  },
-  {
-    title: "Custom LLM Tools",
-    description:
-      "Fine-tune language models on your specific data and use cases. Get a custom AI solution that speaks your industry's language and understands your unique requirements.",
-    icon: (
-      <svg
-        className="h-6 w-6 text-neutral-800"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-        />
-      </svg>
-    ),
-    content: {
-      query: "Training progress: Customer response dataset",
-      response: (
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <span>Model accuracy</span>
-            <span className="font-medium">94.2%</span>
-          </div>
-          <div className="w-full bg-neutral-200 rounded-full h-2">
-            <div className="bg-neutral-400 rounded-full h-2 w-[94%]"></div>
-          </div>
-          <div className="text-neutral-800 text-xs">
-            Fine-tuning complete: 50,000 customer queries processed
-          </div>
-        </div>
-      ),
-    },
-  },
-];
 
 const ALL_MODELS_DATA = [
   {
@@ -224,39 +94,173 @@ const ALL_MODELS_DATA = [
   },
 ];
 
+const APPLICATION_CARDS_DATA = [
+  {
+    title: "Custom Support Bots",
+    description:
+      "Train AI bots on your support documentation and chat history. Deploy ready-to-use customer support bots within seconds using efficient small language models.",
+    icon: (
+      <svg
+        className="h-6 w-6 text-neutral-800"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+        />
+      </svg>
+    ),
+    content: {
+      query: "Training: Upload support documentation (10MB)",
+      response: (
+        <>
+          Training complete! Your custom support bot is ready:
+          <ul className="mt-2 space-y-1 text-neutral-800">
+            <li>• Model: Mistral 7B</li>
+            <li>• API Endpoint: api.lmscale.tech/v1/custom-bot-xyz</li>
+          </ul>
+        </>
+      ),
+    },
+  },
+  {
+    title: "Data Training Pipeline",
+    description:
+      "Upload your training data and get a fine-tuned model within seconds. Supports various formats including text, CSV, and PDF documents.",
+    icon: (
+      <svg
+        className="h-6 w-6 text-neutral-800"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+        />
+      </svg>
+    ),
+    content: {
+      query: "Training Progress: Product Manual Dataset",
+      response: (
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <span>Training Progress</span>
+            <span className="font-medium">100%</span>
+          </div>
+          <div className="w-full bg-neutral-200 rounded-full h-2">
+            <div className="bg-neutral-400 rounded-full h-2 w-full"></div>
+          </div>
+          <div className="text-neutral-800 text-xs">
+            Model ready: Endpoint generated for immediate use
+          </div>
+        </div>
+      ),
+    },
+  },
+  {
+    title: "API Integration",
+    description:
+      "Access your trained models through simple REST APIs. Easy integration with your existing applications, websites, or chat interfaces.",
+    icon: (
+      <svg
+        className="h-6 w-6 text-neutral-800"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2"
+        />
+      </svg>
+    ),
+    content: {
+      query: "GET /v1/models/custom-bot-xyz/predict",
+      response:
+        "{'response': 'Your custom-trained model response here', 'confidence': 0.95, 'model': 'mistral-7b-custom'}",
+    },
+  },
+  {
+    title: "Model Management",
+    description:
+      "Monitor your deployed models, track usage, and manage multiple versions. Easy updating of training data and instant model redeployment.",
+    icon: (
+      <svg
+        className="h-6 w-6 text-neutral-800"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+        />
+      </svg>
+    ),
+    content: {
+      query: "Model: custom-support-bot-v1",
+      response: (
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <span>Uptime</span>
+            <span className="font-medium">99.9%</span>
+          </div>
+          <div className="text-neutral-800 text-xs">
+            Base: Mistral 7B | Daily Requests: 1,240 | Avg Response Time: 150ms
+          </div>
+        </div>
+      ),
+    },
+  },
+];
+
+// 2. Update FEATURES_DATA to focus on the training platform
 const FEATURES_DATA = [
   {
     icon: Cloud,
-    title: "Base LLM Instance",
+    title: "Instant Training",
     description:
-      "Single GPU cluster running multiple domain-specific models efficiently.",
+      "Train custom models on your data within seconds using optimized small language models.",
     content: (
       <pre className="text-sm space-y-1 font-mono">
         <code>
-          <span className="text-blue-600">├─ Base LLM</span>
+          <span className="text-blue-600">Training Pipeline</span>
           {"\n"}
-          <span className="text-purple-600">│ ├─ Domain LLM 1</span>
+          <span className="text-purple-600">├─ Data Processing</span>
           {"\n"}
-          <span className="text-green-600">│ ├─ Domain LLM 2</span>
+          <span className="text-green-600">├─ Model Fine-tuning</span>
           {"\n"}
-          <span className="text-red-600">│ ├─ Domain LLM 3</span>
+          <span className="text-red-600">├─ API Generation</span>
           {"\n"}
-          <span className="text-orange-600">└─ Domain LLM 4</span>
+          <span className="text-orange-600">└─ Deployment</span>
         </code>
       </pre>
     ),
   },
   {
     icon: Zap,
-    title: "Hot-swap Models",
+    title: "Easy Integration",
     description:
-      "Zero downtime model swapping with no GPU memory fragmentation.",
+      "Get instant API endpoints for your trained models with zero setup required.",
     content: (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Server className="h-4 w-4 text-neutral-800" />
-            <span className="text-sm text-neutral-600">GPU Cluster 1</span>
+            <span className="text-sm text-neutral-600">
+              Model: custom-bot-1
+            </span>
           </div>
           <span className="flex items-center text-emerald-600 text-sm">
             <span className="mr-2 h-2 w-2 bg-emerald-500"></span>
@@ -265,12 +269,12 @@ const FEATURES_DATA = [
         </div>
         <pre className="text-sm font-mono mt-4">
           <code>
-            <span className="text-purple-600">Model Switch</span>{" "}
-            <span className="text-blue-600">Domain LLM 1 → 2</span>
+            <span className="text-purple-600">Endpoint:</span>{" "}
+            <span className="text-blue-600">/v1/models/custom-bot-1</span>
             {"\n"}
-            <span className="text-emerald-600">Status: Hot-swap Complete</span>
+            <span className="text-emerald-600">Status: Ready</span>
             {"\n"}
-            <span className="text-orange-600">Memory Usage: Optimized</span>
+            <span className="text-orange-600">Base Model: Mistral 7B</span>
           </code>
         </pre>
       </div>
@@ -278,42 +282,20 @@ const FEATURES_DATA = [
   },
   {
     icon: Settings,
-    title: "Simple Integration",
+    title: "Model Management",
     description:
-      "Access cutting-edge AI models through a single, standardized API endpoint. integrate in minutes.",
+      "Monitor and manage your trained models through a simple dashboard interface.",
     content: (
       <div className="space-y-4">
         <pre className="text-sm font-mono">
           <code>
-            <span className="text-purple-600">POST</span>{" "}
-            <span className="text-neutral-800">/v1/completion</span>
-            {"\n\n"}
-            <span className="text-neutral-600">{"{"}</span>
+            <span className="text-purple-600">Model Status</span>
             {"\n"}
-            <span className="text-neutral-600"> </span>
-            <span className="text-blue-600">&quot;model&quot;</span>
-            <span className="text-neutral-600">: </span>
-            <span className="text-green-600">&quot;mixtral-8x7b&quot;</span>
-            <span className="text-neutral-600">,</span>
+            <span className="text-blue-600">Uptime: 99.9%</span>
             {"\n"}
-            <span className="text-neutral-600"> </span>
-            <span className="text-blue-600">&quot;prompt&quot;</span>
-            <span className="text-neutral-600">: </span>
-            <span className="text-green-600">&quot;Tell me about...&quot;</span>
-            <span className="text-neutral-600">,</span>
+            <span className="text-green-600">Requests: 1,240/day</span>
             {"\n"}
-            <span className="text-neutral-600"> </span>
-            <span className="text-blue-600">&quot;max_tokens&quot;</span>
-            <span className="text-neutral-600">: </span>
-            <span className="text-orange-600">100</span>
-            <span className="text-neutral-600">,</span>
-            {"\n"}
-            <span className="text-neutral-600"> </span>
-            <span className="text-blue-600">&quot;temperature&quot;</span>
-            <span className="text-neutral-600">: </span>
-            <span className="text-orange-600">0.7</span>
-            {"\n"}
-            <span className="text-neutral-600">{"}"}</span>
+            <span className="text-orange-600">Response Time: 150ms</span>
           </code>
         </pre>
       </div>
@@ -321,57 +303,54 @@ const FEATURES_DATA = [
   },
 ];
 
+// 3. Update DETAILS_DATA to reflect platform benefits
 const DETAILS_DATA = [
   {
     type: "numeric",
-    title: "Lower deployment costs vs custom infrastructure",
+    title: "Average training time for custom models",
     icon: <Server className="h-6 w-6" />,
-    value: "40%",
-    description:
-      "Compared to building and maintaining your own LLM infrastructure",
+    value: "30s",
+    description: "From data upload to deployment-ready model",
   },
   {
     type: "numeric",
-    title: "Faster model integration",
+    title: "Reduced deployment complexity",
     icon: <Code className="h-6 w-6" />,
-    value: "15x",
-    description: "Reduce integration time from months to days with our APIs",
+    value: "90%",
+    description: "Compared to traditional model deployment methods",
   },
   {
     type: "numeric",
-    title: "Cost reduction vs proprietary APIs",
+    title: "Cost savings vs custom infrastructure",
     icon: <BarChart className="h-6 w-6" />,
-    value: "80%",
-    description: "Compared to using commercial LLM APIs at scale",
+    value: "75%",
+    description: "Lower operational costs with efficient SLMs",
   },
   {
     type: "numeric",
-    title: "Context processing per day",
+    title: "Average response time",
     icon: <Cpu className="h-6 w-6" />,
-    value: "4TB",
-    description: "Handle massive data volumes with optimized infrastructure",
+    value: "150ms",
+    description: "Fast inference with optimized deployment",
   },
-
   {
-    title: "LLM Implementation",
-    description:
-      "Streamlined deployment of open-source models with production-ready APIs.",
+    title: "Simple Integration",
+    description: "Deploy trained models with just a few API calls",
     icon: <Cloud className="h-6 w-6" />,
   },
   {
-    title: "Custom Integration",
-    description:
-      "Tailored solutions for your specific use cases and existing stack.",
+    title: "Instant Training",
+    description: "Get custom-trained models within seconds",
     icon: <Code className="h-6 w-6" />,
   },
   {
-    title: "Continuous Optimization",
-    description: "Performance monitoring and automatic model upgrades.",
+    title: "Easy Updates",
+    description: "Update training data and redeploy models instantly",
     icon: <Zap className="h-6 w-6" />,
   },
   {
-    title: "Enterprise Controls",
-    description: "Advanced security, audit logs, and access management.",
+    title: "Secure Platform",
+    description: "Enterprise-grade security for your data and models",
     icon: <Shield className="h-6 w-6" />,
   },
 ];
