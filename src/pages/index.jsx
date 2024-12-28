@@ -885,14 +885,46 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <section id="__contact_section" className="relative bg-white py-24">
+        <div className="absolute inset-0">
+          <div
+            className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"
+            style={{
+              mask: "radial-gradient(circle at center, white 30%, transparent 70%)",
+              WebkitMask:
+                "radial-gradient(circle at center, white 30%, transparent 70%)",
+            }}
+          />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-4">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+            <div className="space-y-4">
+              <h2 className="text-3xl font-light text-neutral-800">
+                Need a custom solution?
+              </h2>
+              <p className="text-lg font-light text-neutral-800">
+                Let&apos;s discuss your specific LLM deployment requirements
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-4">
+              <button
+                onClick={() => window.open("mailto:info@lmscale.tech")}
+                className="group inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 bg-black text-white"
+              >
+                Contact Us
+                <MoveRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
       <footer className="relative bg-white">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
-        <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />
-
+        <div className="absolute inset-0 bg-white/40 backdrop-blur-[1px]" />
         <div className="relative mx-auto max-w-7xl px-4 py-12">
           <div className="flex flex-col items-center justify-between gap-8 md:flex-row md:gap-12">
             <div className="flex flex-col items-center md:items-start">
@@ -903,17 +935,7 @@ export default function HomePage() {
                 Empowering businesses with secure, scalable local LLM solutions
                 in the cloud.
               </p>
-              <div className="mt-6">
-                <button
-                  onClick={() => window.open("mailto:info@lmscale.tech")}
-                  className="group inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 bg-neutral-800 text-white hover:bg-neutral-700"
-                >
-                  Contact Us
-                  <MoveRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
-              </div>
             </div>
-
             <div className="flex items-center gap-8">
               <Link
                 href="#"
@@ -929,6 +951,7 @@ export default function HomePage() {
                   <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
                 </svg>
               </Link>
+
               <Link
                 href="#"
                 className="text-neutral-800 hover:text-neutral-800 transition-colors duration-200"
