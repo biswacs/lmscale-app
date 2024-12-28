@@ -1,386 +1,12 @@
-import {
-  BarChart,
-  Cloud,
-  Code,
-  Cpu,
-  Menu,
-  MoveRight,
-  Search,
-  Server,
-  Settings,
-  Shield,
-  Terminal,
-  X,
-  Zap,
-} from "lucide-react";
+import { Menu, MoveRight, Terminal, X } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useState, useMemo } from "react";
-
-const ALL_MODELS_DATA = [
-  {
-    icon: "/llama.svg",
-    name: "Llama 3.1 8B",
-    type: "Chat",
-  },
-  {
-    icon: "/mistral.svg",
-    name: "Mistral 7B",
-    type: "Chat",
-  },
-  {
-    icon: "/mistral.svg",
-    name: "Mixtral 8×7B",
-    type: "Chat",
-  },
-  {
-    icon: "/llama.svg",
-    name: "Llama 3.1 70B",
-    type: "Chat",
-  },
-  {
-    icon: "/llama.svg",
-    name: "Llama 3.1 405B",
-    type: "Chat",
-  },
-  {
-    icon: "/mistral.svg",
-    name: "Mixtral 8×22B",
-    type: "Chat",
-  },
-  {
-    icon: "/gemma.svg",
-    name: "Gemma 2 27B",
-    type: "Chat",
-  },
-  {
-    icon: "/llama.svg",
-    name: "Codellama 34B",
-    type: "Code",
-  },
-  {
-    icon: "/llama.svg",
-    name: "Llama 2 70B",
-    type: "Chat",
-  },
-  {
-    icon: "/mistral.svg",
-    name: "Mistral 8×7B",
-    type: "Chat",
-  },
-  {
-    icon: "/llama.svg",
-    name: "Llama 2 13B",
-    type: "Chat",
-  },
-  {
-    icon: "/mistral.svg",
-    name: "Mistral 7B Instruct",
-    type: "Chat",
-  },
-  {
-    icon: "/phi.svg",
-    name: "Phi-2",
-    type: "Chat",
-  },
-  {
-    icon: "/gemma.svg",
-    name: "Gemma 2 7B",
-    type: "Chat",
-  },
-  {
-    icon: "/llama.svg",
-    name: "Codellama 7B",
-    type: "Code",
-  },
-];
-
-const APPLICATION_CARDS_DATA = [
-  {
-    title: "Custom Support Bots",
-    description:
-      "Train AI bots on your support documentation and chat history. Deploy ready-to-use customer support bots within seconds using efficient small language models.",
-    icon: (
-      <svg
-        className="h-6 w-6 text-neutral-800"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-        />
-      </svg>
-    ),
-    content: {
-      query: "Training: Upload support documentation (10MB)",
-      response: (
-        <>
-          Training complete! Your custom support bot is ready:
-          <ul className="mt-2 space-y-1 text-neutral-800">
-            <li>• Model: Mistral 7B</li>
-            <li>• API Endpoint: api.lmscale.tech/v1/custom-bot-xyz</li>
-          </ul>
-        </>
-      ),
-    },
-  },
-  {
-    title: "Data Training Pipeline",
-    description:
-      "Upload your training data and get a fine-tuned model within seconds. Supports various formats including text, CSV, and PDF documents.",
-    icon: (
-      <svg
-        className="h-6 w-6 text-neutral-800"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-        />
-      </svg>
-    ),
-    content: {
-      query: "Training Progress: Product Manual Dataset",
-      response: (
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <span>Training Progress</span>
-            <span className="font-medium">100%</span>
-          </div>
-          <div className="w-full bg-neutral-200 rounded-full h-2">
-            <div className="bg-neutral-400 rounded-full h-2 w-full"></div>
-          </div>
-          <div className="text-neutral-800 text-xs">
-            Model ready: Endpoint generated for immediate use
-          </div>
-        </div>
-      ),
-    },
-  },
-  {
-    title: "API Integration",
-    description:
-      "Access your trained models through simple REST APIs. Easy integration with your existing applications, websites, or chat interfaces.",
-    icon: (
-      <svg
-        className="h-6 w-6 text-neutral-800"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2"
-        />
-      </svg>
-    ),
-    content: {
-      query: "GET /v1/models/custom-bot-xyz/predict",
-      response:
-        "{'response': 'Your custom-trained model response here', 'confidence': 0.95, 'model': 'mistral-7b-custom'}",
-    },
-  },
-  {
-    title: "Model Management",
-    description:
-      "Monitor your deployed models, track usage, and manage multiple versions. Easy updating of training data and instant model redeployment.",
-    icon: (
-      <svg
-        className="h-6 w-6 text-neutral-800"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-        />
-      </svg>
-    ),
-    content: {
-      query: "Model: custom-support-bot-v1",
-      response: (
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <span>Uptime</span>
-            <span className="font-medium">99.9%</span>
-          </div>
-          <div className="text-neutral-800 text-xs">
-            Base: Mistral 7B | Daily Requests: 1,240 | Avg Response Time: 150ms
-          </div>
-        </div>
-      ),
-    },
-  },
-];
-
-// 2. Update FEATURES_DATA to focus on the training platform
-const FEATURES_DATA = [
-  {
-    icon: Cloud,
-    title: "Instant Training",
-    description:
-      "Train custom models on your data within seconds using optimized small language models.",
-    content: (
-      <pre className="text-sm space-y-1 font-mono">
-        <code>
-          <span className="text-blue-600">Training Pipeline</span>
-          {"\n"}
-          <span className="text-purple-600">├─ Data Processing</span>
-          {"\n"}
-          <span className="text-green-600">├─ Model Fine-tuning</span>
-          {"\n"}
-          <span className="text-red-600">├─ API Generation</span>
-          {"\n"}
-          <span className="text-orange-600">└─ Deployment</span>
-        </code>
-      </pre>
-    ),
-  },
-  {
-    icon: Zap,
-    title: "Easy Integration",
-    description:
-      "Get instant API endpoints for your trained models with zero setup required.",
-    content: (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Server className="h-4 w-4 text-neutral-800" />
-            <span className="text-sm text-neutral-600">
-              Model: custom-bot-1
-            </span>
-          </div>
-          <span className="flex items-center text-emerald-600 text-sm">
-            <span className="mr-2 h-2 w-2 bg-emerald-500"></span>
-            Active
-          </span>
-        </div>
-        <pre className="text-sm font-mono mt-4">
-          <code>
-            <span className="text-purple-600">Endpoint:</span>{" "}
-            <span className="text-blue-600">/v1/models/custom-bot-1</span>
-            {"\n"}
-            <span className="text-emerald-600">Status: Ready</span>
-            {"\n"}
-            <span className="text-orange-600">Base Model: Mistral 7B</span>
-          </code>
-        </pre>
-      </div>
-    ),
-  },
-  {
-    icon: Settings,
-    title: "Model Management",
-    description:
-      "Monitor and manage your trained models through a simple dashboard interface.",
-    content: (
-      <div className="space-y-4">
-        <pre className="text-sm font-mono">
-          <code>
-            <span className="text-purple-600">Model Status</span>
-            {"\n"}
-            <span className="text-blue-600">Uptime: 99.9%</span>
-            {"\n"}
-            <span className="text-green-600">Requests: 1,240/day</span>
-            {"\n"}
-            <span className="text-orange-600">Response Time: 150ms</span>
-          </code>
-        </pre>
-      </div>
-    ),
-  },
-];
-
-// 3. Update DETAILS_DATA to reflect platform benefits
-const DETAILS_DATA = [
-  {
-    type: "numeric",
-    title: "Average training time for custom models",
-    icon: <Server className="h-6 w-6" />,
-    value: "30s",
-    description: "From data upload to deployment-ready model",
-  },
-  {
-    type: "numeric",
-    title: "Reduced deployment complexity",
-    icon: <Code className="h-6 w-6" />,
-    value: "90%",
-    description: "Compared to traditional model deployment methods",
-  },
-  {
-    type: "numeric",
-    title: "Cost savings vs custom infrastructure",
-    icon: <BarChart className="h-6 w-6" />,
-    value: "75%",
-    description: "Lower operational costs with efficient SLMs",
-  },
-  {
-    type: "numeric",
-    title: "Average response time",
-    icon: <Cpu className="h-6 w-6" />,
-    value: "150ms",
-    description: "Fast inference with optimized deployment",
-  },
-  {
-    title: "Simple Integration",
-    description: "Deploy trained models with just a few API calls",
-    icon: <Cloud className="h-6 w-6" />,
-  },
-  {
-    title: "Instant Training",
-    description: "Get custom-trained models within seconds",
-    icon: <Code className="h-6 w-6" />,
-  },
-  {
-    title: "Easy Updates",
-    description: "Update training data and redeploy models instantly",
-    icon: <Zap className="h-6 w-6" />,
-  },
-  {
-    title: "Secure Platform",
-    description: "Enterprise-grade security for your data and models",
-    icon: <Shield className="h-6 w-6" />,
-  },
-];
+import React, { useEffect, useState } from "react";
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedType, setSelectedType] = useState("All");
-
-  const filteredModels = useMemo(() => {
-    return ALL_MODELS_DATA.filter((model) => {
-      const matchesSearch = model.name
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-      const matchesType = selectedType === "All" || model.type === selectedType;
-      return matchesSearch && matchesType;
-    });
-  }, [searchQuery, selectedType]);
-
-  const displayedModels = useMemo(
-    () => filteredModels.slice(0, 9),
-    [filteredModels]
-  );
-  const remainingCount = useMemo(
-    () => filteredModels.length - displayedModels.length,
-    [filteredModels]
-  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -408,182 +34,185 @@ export default function HomePage() {
 
   return (
     <>
-      <main>
-        <header>
+      <header>
+        <div
+          className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-in-out ${
+            isVisible ? "translate-y-0" : "-translate-y-full"
+          }`}
+        >
           <div
-            className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-in-out ${
-              isVisible ? "translate-y-0" : "-translate-y-full"
+            className={`w-full transition-all duration-300 ${
+              scrolled || isMenuOpen
+                ? "bg-white/80 backdrop-blur-xl"
+                : "bg-transparent"
             }`}
           >
-            <div
-              className={`w-full transition-all duration-300 ${
-                scrolled || isMenuOpen
-                  ? "bg-white/80 backdrop-blur-xl"
-                  : "bg-transparent"
-              }`}
-            >
-              <div className="mx-auto max-w-full">
-                <div className="flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8">
-                  <div className="flex items-center">
-                    <Link
-                      href="/"
-                      className="group flex items-center gap-2 text-xl sm:text-2xl font-bold text-neutral-800"
-                    >
-                      <img
-                        src="/icon.png"
-                        alt="LmScale Logo"
-                        className="h-7 w-7 sm:h-8 sm:w-8 object-contain"
-                      />
-                      <div className="font-light">LmScale</div>
-                    </Link>
-                  </div>
-
-                  <div className="hidden lg:flex items-center space-x-6">
-                    <nav>
-                      <ul className="flex items-center space-x-6">
-                        {[
-                          { href: "#", text: "Product" },
-                          { href: "#", text: "Docs" },
-                        ].map((item) => (
-                          <li key={item.text}>
-                            <Link
-                              href={item.href}
-                              className="text-sm font-medium text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
-                            >
-                              {item.text}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </nav>
-
-                    <Link
-                      href="/login"
-                      className="group relative inline-flex items-center justify-center overflow-hidden bg-neutral-800 p-0.5 transition-all duration-300 hover:bg-neutral-950"
-                    >
-                      <span className="inline-flex h-full w-full items-center justify-center px-4 py-1.5 md:px-6 text-sm md:text-base font-medium text-white transition-all duration-300">
-                        Login
-                      </span>
-                    </Link>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="inline-flex items-center justify-center p-2 text-neutral-600 transition-colors duration-200 hover:bg-neutral-100 lg:hidden"
-                    aria-label="Toggle menu"
+            <div className="mx-auto max-w-full">
+              <div className="flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center">
+                  <Link
+                    href="/"
+                    className="group flex items-center gap-2 text-xl sm:text-2xl font-bold text-neutral-800"
                   >
-                    {isMenuOpen ? (
-                      <X className="h-5 w-5 sm:h-6 sm:w-6" />
-                    ) : (
-                      <Menu className="h-5 w-5 sm:h-6 sm:w-6" />
-                    )}
-                  </button>
+                    <img
+                      src="/icon.png"
+                      alt="LmScale Logo"
+                      className="h-7 w-7 sm:h-8 sm:w-8 object-contain"
+                    />
+                    <div className="font-light">LmScale</div>
+                  </Link>
                 </div>
+
+                <div className="hidden lg:flex items-center space-x-6">
+                  <nav>
+                    <ul className="flex items-center space-x-6">
+                      {[
+                        { href: "#", text: "Product" },
+                        { href: "#", text: "Docs" },
+                      ].map((item) => (
+                        <li key={item.text}>
+                          <Link
+                            href={item.href}
+                            className="text-sm font-medium text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
+                          >
+                            {item.text}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+
+                  <Link
+                    href="/login"
+                    className="group relative inline-flex items-center justify-center overflow-hidden bg-neutral-800 p-0.5 transition-all duration-300 hover:bg-neutral-950"
+                  >
+                    <span className="inline-flex h-full w-full items-center justify-center px-4 py-1.5 md:px-6 text-sm md:text-base font-medium text-white transition-all duration-300">
+                      Login
+                    </span>
+                  </Link>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="inline-flex items-center justify-center p-2 text-neutral-600 transition-colors duration-200 hover:bg-neutral-100 lg:hidden"
+                  aria-label="Toggle menu"
+                >
+                  {isMenuOpen ? (
+                    <X className="h-5 w-5 sm:h-6 sm:w-6" />
+                  ) : (
+                    <Menu className="h-5 w-5 sm:h-6 sm:w-6" />
+                  )}
+                </button>
               </div>
             </div>
           </div>
+        </div>
 
+        <div
+          className={`fixed inset-0 z-40 bg-white/90 backdrop-blur-xl transition-all duration-300 lg:hidden ${
+            isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          <div className="h-full pt-20 overflow-y-auto">
+            <div className="px-4 py-6">
+              <nav className="flex flex-col space-y-1">
+                {[
+                  { href: "#", text: "Product" },
+                  { href: "#", text: "Docs" },
+                  { href: "/login", text: "Login" },
+                ].map((item) => (
+                  <Link
+                    key={item.text}
+                    href={item.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="group relative flex items-center justify-between px-4 py-3 text-sm font-medium text-neutral-600 transition-all duration-300 hover:text-neutral-800"
+                  >
+                    <span className="relative">
+                      {item.text}
+                      <span className="absolute inset-x-0 -bottom-0.5 h-px w-0 bg-neutral-800 transition-all duration-300 group-hover:w-full"></span>
+                    </span>
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          </div>
+        </div>
+      </header>
+      <section
+        id="Hero"
+        className="relative min-h-screen bg-white overflow-hidden"
+      >
+        <div className="absolute inset-0">
           <div
-            className={`fixed inset-0 z-40 bg-white/90 backdrop-blur-xl transition-all duration-300 lg:hidden ${
-              isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
-          >
-            <div className="h-full pt-20 overflow-y-auto">
-              <div className="px-4 py-6">
-                <nav className="flex flex-col space-y-1">
-                  {[
-                    { href: "#", text: "Product" },
-                    { href: "#", text: "Docs" },
-                    { href: "/login", text: "Login" },
-                  ].map((item) => (
-                    <Link
-                      key={item.text}
-                      href={item.href}
-                      onClick={() => setIsMenuOpen(false)}
-                      className="group relative flex items-center justify-between px-4 py-3 text-sm font-medium text-neutral-600 transition-all duration-300 hover:text-neutral-800"
-                    >
-                      <span className="relative">
-                        {item.text}
-                        <span className="absolute inset-x-0 -bottom-0.5 h-px w-0 bg-neutral-800 transition-all duration-300 group-hover:w-full"></span>
-                      </span>
-                    </Link>
-                  ))}
-                </nav>
+            className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"
+            style={{
+              mask: "radial-gradient(circle at center, white 30%, transparent 70%)",
+              WebkitMask:
+                "radial-gradient(circle at center, white 30%, transparent 70%)",
+            }}
+          ></div>
+        </div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
+        <div className="absolute top-40 -left-40 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
+        <div className="relative mx-auto max-w-7xl px-4 pt-20 pb-16 sm:pt-24 sm:pb-24">
+          <div className="text-center">
+            <div className="flex justify-center mb-8">
+              <div className="mb-6 md:mb-8 inline-flex items-center border border-black/10 px-4 py-1.5 md:px-6 md:py-2 text-xs md:text-sm text-neutral-800">
+                <Terminal className="mr-2 h-3 w-3 md:h-4 md:w-4" />
+                Now Available in Beta
               </div>
             </div>
-          </div>
-        </header>
-        <section id="__hero_section" className="relative min-h-screen bg-white">
-          <div className="absolute inset-0">
-            <div
-              className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"
-              style={{
-                mask: "radial-gradient(circle at center, white 30%, transparent 70%)",
-                WebkitMask:
-                  "radial-gradient(circle at center, white 30%, transparent 70%)",
-              }}
-            />
-          </div>
+            <h1 className="mx-auto max-w-4xl font-display text-4xl font-light tracking-tight text-neutral-800 sm:text-6xl">
+              Run LLMs In The Cloud
+            </h1>
+            <p className="mx-auto font-light mt-6 max-w-2xl text-lg sm:text-xl leading-8 text-neutral-600">
+              Deploy and scale language models with zero infrastructure
+              headaches. Simple, fast, and secure cloud deployment.
+            </p>
 
-          <div className="relative mx-auto max-w-7xl px-4">
-            <div className="flex min-h-screen flex-col items-center justify-center py-16 md:py-24">
-              <div className="text-center w-full">
-                <div className="mb-6 md:mb-8 inline-flex items-center border border-black/10 px-4 py-1.5 md:px-6 md:py-2 text-xs md:text-sm text-neutral-800">
-                  <Terminal className="mr-2 h-3 w-3 md:h-4 md:w-4" />
-                  Now Available in Beta
-                </div>
-                <h1 className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tight text-neutral-800">
-                  Run LLMs In The Cloud
-                </h1>
-                <div className="mt-8 md:mt-12 relative w-full p-4">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
-                  <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />
-                  <div className="relative flex flex-col items-center justify-start h-full space-y-8 p-4 md:p-8">
-                    <p className="mx-auto max-w-2xl text-base md:text-lg font-light leading-7 md:leading-8 text-neutral-800">
-                      Deploy and scale language models with zero infrastructure
-                      headaches. Simple, fast, and secure cloud deployment.
-                    </p>
+            <div className="mt-10 flex items-center justify-center gap-4 md:gap-6">
+              <Link
+                href="/register"
+                className="group inline-flex items-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base font-medium text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg"
+              >
+                Get Started
+                <svg
+                  className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </Link>
+            </div>
 
-                    <div className="flex items-center justify-center gap-4 md:gap-6">
-                      <Link
-                        href="/register"
-                        className="group inline-flex items-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base font-medium text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg"
-                      >
-                        Get Started
-                        <svg
-                          className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </Link>
-                    </div>
-                  </div>
-
-                  <div
-                    className="mx-4 mt-8 bg-white/80 p-3 md:p-4 backdrop-blur 
+            <div className="mt-8 md:mt-12 relative w-full p-4">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#ec4899,transparent_40%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
+              <div className="absolute inset-0 bg-white/40 backdrop-blur-[1px]" />
+              <div
+                className="m-4 bg-white/80 p-4 backdrop-blur 
 -sm"
-                  >
-                    <div className="flex items-center space-x-2 mb-3">
-                      <div className="h-2.5 w-2.5 md:h-3 md:w-3 rounded-full bg-[#FF5F57]"></div>
-                      <div className="h-2.5 w-2.5 md:h-3 md:w-3 rounded-full bg-[#FFBD2E]"></div>
-                      <div className="h-2.5 w-2.5 md:h-3 md:w-3 rounded-full bg-[#28CA41]"></div>
-                    </div>
-                    <pre className="text-left text-xs md:text-sm text-neutral-600 overflow-x-auto scrollbar-thin scrollbar-thumb-neutral-300 scrollbar-track-transparent">
-                      <code>
-                        {`curl -X POST "https://api.lmscale.tech/v1/completion" \\
+              >
+                <div className="flex items-center space-x-2 mb-3">
+                  <div className="h-2.5 w-2.5 md:h-3 md:w-3  bg-[#FF5F57]"></div>
+                  <div className="h-2.5 w-2.5 md:h-3 md:w-3  bg-[#FFBD2E]"></div>
+                  <div className="h-2.5 w-2.5 md:h-3 md:w-3  bg-[#28CA41]"></div>
+                </div>
+                <pre className="text-left text-xs md:text-sm text-neutral-600 overflow-x-auto scrollbar-thin scrollbar-thumb-neutral-300 scrollbar-track-transparent">
+                  <code>
+                    {`curl -X POST "https://api.lmscale.tech/v1/completion" \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer your-api-key" \\
   -d '{
@@ -592,361 +221,757 @@ export default function HomePage() {
     "temperature": 0.7,
     "model": "gpt-4"
   }'`}
-                      </code>
-                    </pre>
-                  </div>
-                </div>
+                  </code>
+                </pre>
+              </div>
+            </div>
+            <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4 items-center justify-center text-neutral-800">
+              <div className="flex flex-col items-center gap-2 px-4 py-6 bg-white/50 backdrop-blur-sm ">
+                <span className="text-3xl font-light">40%</span>
+                <span className="text-sm text-center">
+                  Lower Deployment Cost
+                </span>
+              </div>
+              <div className="flex flex-col items-center gap-2 px-4 py-6 bg-white/50 backdrop-blur-sm ">
+                <span className="text-3xl font-light">15x</span>
+                <span className="text-sm text-center">Faster Integration</span>
+              </div>
+              <div className="flex flex-col items-center gap-2 px-4 py-6 bg-white/50 backdrop-blur-sm ">
+                <span className="text-3xl font-light">99.9%</span>
+                <span className="text-sm text-center">Uptime SLA</span>
+              </div>
+              <div className="flex flex-col items-center gap-2 px-4 py-6 bg-white/50 backdrop-blur-sm ">
+                <span className="text-3xl font-light">4TB</span>
+                <span className="text-sm text-center">Daily Processing</span>
               </div>
             </div>
           </div>
-        </section>
-        <section
-          id="__applications_section"
-          className="relative overflow-hidden bg-white py-24"
-        >
-          <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl lg:max-w-none">
-              <div className="mx-auto mb-16 flex flex-col items-center text-center">
-                <h1 className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tight text-neutral-800">
-                  Applications
-                </h1>
-                <p className="mt-4 max-w-2xl text-lg font-light text-neutral-800">
-                  Enterprise-grade LLM solutions customized for your specific
-                  needs. Deploy, fine-tune, and scale AI models with confidence.
-                </p>
-              </div>
-
-              <div className="grid gap-8 grid-cols-1 sm:grid-cols-2">
-                {APPLICATION_CARDS_DATA.map((app) => (
-                  <div
-                    key={app.title}
-                    className="group relative border border-neutral-200/60 bg-white p-4 transition-all duration-300 hover:shadow-md"
-                  >
-                    <div className="relative space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div className="flex h-12 w-12 items-center justify-center">
-                            {app?.icon}
-                          </div>
-                          <h3 className=" text-lg font-medium tracking-tight text-neutral-800 line-clamp-1">
-                            {app?.title}
-                          </h3>
-                        </div>
-                      </div>
-                      <p className="text-neutral-800 leading-relaxed line-clamp-2 h-12">
-                        {app?.description}
-                      </p>
-
-                      <div className="space-y-4">
-                        <div className="flex items-start">
-                          <div className="flex-1">
-                            <div className="bg-white p-4 text-sm text-neutral-800 shadow-sm border border-neutral-50">
-                              {app?.content.query}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-start">
-                          <div className="flex-1">
-                            <div className="bg-neutral-50 p-4 text-sm text-neutral-800 space-y-2">
-                              {app?.content.response}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+        </div>
+      </section>
+      <section
+        id="Features"
+        className="relative py-24 bg-white overflow-hidden"
+      >
+        <div className="absolute inset-0">
+          <div
+            className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"
+            style={{
+              mask: "radial-gradient(circle at center, white 30%, transparent 70%)",
+              WebkitMask:
+                "radial-gradient(circle at center, white 30%, transparent 70%)",
+            }}
+          ></div>
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl lg:text-5xl font-light text-neutral-800 mb-4">
+              Enterprise-Grade LLM Infrastructure
+            </h2>
+            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+              Deploy, manage and scale AI models with industry-leading
+              performance and reliability
+            </p>
           </div>
-        </section>
-        <section
-          id="__models_section"
-          className="relative min-h-screen bg-white py-12 sm:py-24"
-        >
-          <div className="relative mx-auto max-w-7xl px-4">
-            <div className="text-center">
-              <h1 className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tight text-neutral-800">
-                Open Source models
-              </h1>
-              <p className="mx-auto mt-4 text-sm sm:text-lg text-neutral-600">
-                Future of AI is open-source and LmScale helps you to build with
-                the best open-source LLMs.
-              </p>
-            </div>
-
-            <div className="mt-8 sm:mt-12 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
-              <div className="relative w-full sm:w-auto">
-                <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-400" />
-                <input
-                  type="text"
-                  placeholder="Search models..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full border border-neutral-200 bg-white py-2 pl-10 pr-4 text-sm placeholder-neutral-400 shadow-sm focus:outline-none"
-                />
-              </div>
-              <div className="flex w-full flex-wrap gap-2 sm:w-auto">
-                {["All", "Chat", "Code"].map((type) => (
-                  <button
-                    key={type}
-                    onClick={() => setSelectedType(type)}
-                    className={`flex-1 px-4 py-2 text-sm font-medium transition-colors sm:flex-initial ${
-                      selectedType === type
-                        ? "bg-neutral-800 text-white"
-                        : "bg-white text-neutral-600 hover:bg-neutral-100"
-                    }`}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="group relative bg-white p-6  transition-all duration-300 hover:shadow-xl border border-neutral-200/60">
+              <div className="flex items-start justify-between mb-6">
+                <div className="p-3 bg-neutral-50  border border-neutral-200/60">
+                  <svg
+                    className="w-6 h-6 text-neutral-800"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    {type}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {displayedModels.map(({ icon, name, type }) => (
-                <div
-                  key={name}
-                  className="group relative h-40 overflow-hidden bg-white p-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-md"
-                >
-                  <div className="relative flex h-full flex-col items-start">
-                    <img
-                      src={icon}
-                      alt={name}
-                      className="h-8 w-8 sm:h-10 sm:w-10"
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
                     />
-                    <div className="mt-4 space-y-1">
-                      <h3 className="text-sm sm:text-base font-semibold text-neutral-800 transition-colors duration-300 group-hover:text-neutral-800">
-                        {name}
-                      </h3>
-                      <div className="flex items-center gap-2">
-                        <span className="flex h-2 w-2 bg-green-500" />
-                        <p className="text-xs sm:text-sm text-neutral-500 transition-colors duration-300 group-hover:text-neutral-600">
-                          {type}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  </svg>
                 </div>
-              ))}
-
-              {remainingCount > 0 && (
-                <div className="group relative h-40 overflow-hidden bg-white p-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-md">
-                  <div className="relative flex h-full flex-col items-start">
-                    <h3 className="text-4xl font-light text-neutral-800">
-                      +{remainingCount}
-                    </h3>
-                    <h3 className="mt-4 text-sm sm:text-base font-light text-neutral-800">
-                      More Models
-                    </h3>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-        <section
-          id="__architecture_section"
-          className="relative min-h-screen bg-white py-24"
-        >
-          <div className="relative mx-auto max-w-7xl px-4">
-            <div className="text-center">
-              <h1 className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tight text-neutral-800">
-                Multi Model Architecture
-              </h1>
-              <p className="mx-auto mt-4 text-sm sm:text-lg text-neutral-600">
-                Deploy multiple domain-specific models on a single GPU
-                infrastructure with optimized resource allocation and seamless
-                scaling.
-              </p>
-            </div>
-
-            <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {FEATURES_DATA.map((feature) => (
-                <div
-                  key={feature?.title}
-                  className="group h-[420px] bg-white border border-neutral-200"
-                >
-                  <div className="relative h-full flex flex-col p-6 space-y-4">
-                    <div className="flex items-center gap-4">
-                      <h3 className="text-lg font-medium tracking-tight text-neutral-800 line-clamp-1">
-                        {feature?.title}
-                      </h3>
-                    </div>
-
-                    <p className="text-sm text-neutral-600 leading-relaxed">
-                      {feature?.description}
-                    </p>
-                    <div className="flex-1 border border-dashed border-neutral-200 p-4 bg-neutral-50">
-                      {feature?.content}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        <section
-          id="__details_section"
-          className="relative min-h-screen bg-white py-24"
-        >
-          <div className="relative mx-auto max-w-7xl px-4">
-            <div className="text-center">
-              <h1 className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tight text-neutral-800">
-                Scale with Open Source LLMs
-              </h1>
-              <p className="mx-auto mt-4 max-w-2xl text-sm sm:text-lg text-neutral-600">
-                Enterprise-grade infrastructure for AI-first companies,
-                delivering performance at scale
-              </p>
-            </div>
-
-            <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {DETAILS_DATA.map((item, index) => (
-                <div
-                  key={item.title || index}
-                  className="group h-[180px] bg-white border border-neutral-200"
-                >
-                  <div className="p-6 h-full flex flex-col">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="bg-neutral-50 p-2 border border-neutral-200">
-                          {item?.icon}
-                        </div>
-                        {"numeric" === item?.type ? (
-                          <h3 className="text-4xl font-light text-neutral-800">
-                            {item?.value}
-                          </h3>
-                        ) : (
-                          <h3 className="font-medium text-neutral-800">
-                            {item?.title}
-                          </h3>
-                        )}
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      {"numeric" === item?.type ? (
-                        <>
-                          <p className="text-sm font-medium text-neutral-800">
-                            {item?.title}
-                          </p>
-                          <p className="mt-2 text-sm text-neutral-600">
-                            {item?.description}
-                          </p>
-                        </>
-                      ) : (
-                        <p className="text-sm text-neutral-600">
-                          {item?.description}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        <section id="__contact_section" className="relative bg-black py-24">
-          <div className="relative mx-auto max-w-7xl px-4">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-              <div className="space-y-4">
-                <h2 className="text-3xl font-light text-white">
-                  Need a custom solution?
-                </h2>
-                <p className="text-lg text-neutral-200">
-                  Let&apos;s discuss your specific LLM deployment requirements
-                </p>
+                <span className="text-xs font-medium text-neutral-600 bg-neutral-100 px-2 py-1 ">
+                  Enterprise
+                </span>
               </div>
-              <div className="flex flex-wrap gap-4">
+              <h3 className="text-xl font-medium text-neutral-800 mb-2">
+                High-Performance Inference
+              </h3>
+              <p className="text-neutral-600 mb-4">
+                150ms average response time with optimized model serving and
+                dynamic batching
+              </p>
+              <div className="bg-neutral-50 p-4  border border-neutral-200/60">
+                <div className="space-y-3 font-mono text-sm">
+                  <div className="flex justify-between items-center">
+                    <span className="text-neutral-600">Throughput</span>
+                    <span className="text-neutral-800">1000 req/s</span>
+                  </div>
+                  <div className="w-full bg-neutral-200  h-1.5">
+                    <div
+                      className="bg-green-500 h-1.5 "
+                      style={{ width: "85%" }}
+                    />
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-neutral-600">Latency</span>
+                    <span className="text-neutral-800">150ms</span>
+                  </div>
+                  <div className="w-full bg-neutral-200  h-1.5">
+                    <div
+                      className="bg-blue-500 h-1.5 "
+                      style={{ width: "92%" }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="group relative bg-white p-6  transition-all duration-300 hover:shadow-xl border border-neutral-200/60">
+              <div className="flex items-start justify-between mb-6">
+                <div className="p-3 bg-neutral-50  border border-neutral-200/60">
+                  <svg
+                    className="w-6 h-6 text-neutral-800"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
+                    />
+                  </svg>
+                </div>
+                <span className="text-xs font-medium text-neutral-600 bg-neutral-100 px-2 py-1 ">
+                  Advanced
+                </span>
+              </div>
+              <h3 className="text-xl font-medium text-neutral-800 mb-2">
+                Multi-Model Deployment
+              </h3>
+              <p className="text-neutral-600 mb-4">
+                Deploy multiple models on shared infrastructure with intelligent
+                resource allocation
+              </p>
+              <div className="bg-neutral-50 p-4  border border-neutral-200/60">
+                <pre className="text-sm font-mono text-neutral-800">
+                  {"              "}
+                  <code>
+                    {"\n"}├─ Base LLM{"\n"}│{"  "}├─ Chat Model{"\n"}│{"  "}├─
+                    Code Model{"\n"}│{"  "}└─ Custom Model{"\n"}└─ API Endpoint
+                  </code>
+                  {"\n"}
+                  {"            "}
+                </pre>
+              </div>
+            </div>
+            <div className="group relative bg-white p-6  transition-all duration-300 hover:shadow-xl border border-neutral-200/60">
+              <div className="flex items-start justify-between mb-6">
+                <div className="p-3 bg-neutral-50  border border-neutral-200/60">
+                  <svg
+                    className="w-6 h-6 text-neutral-800"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
+                  </svg>
+                </div>
+                <span className="text-xs font-medium text-neutral-600 bg-neutral-100 px-2 py-1 ">
+                  Secure
+                </span>
+              </div>
+              <h3 className="text-xl font-medium text-neutral-800 mb-2">
+                Enterprise Security
+              </h3>
+              <p className="text-neutral-600 mb-4">
+                SOC2 compliant infrastructure with end-to-end encryption and
+                access controls
+              </p>
+              <div className="bg-neutral-50 p-4  border border-neutral-200/60">
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center space-x-2">
+                    <span className="flex h-2 w-2 bg-green-500 " />
+                    <span className="text-neutral-800">
+                      End-to-end Encryption
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="flex h-2 w-2 bg-green-500 " />
+                    <span className="text-neutral-800">Role-based Access</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="flex h-2 w-2 bg-green-500 " />
+                    <span className="text-neutral-800">Audit Logging</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="Models" className="relative py-24 bg-white overflow-hidden">
+        <div className="absolute inset-0">
+          <div
+            className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"
+            style={{
+              mask: "radial-gradient(circle at center, white 30%, transparent 70%)",
+              WebkitMask:
+                "radial-gradient(circle at center, white 30%, transparent 70%)",
+            }}
+          ></div>
+        </div>
+        <div className="relative max-w-5xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-light text-neutral-800 mb-4">
+              Open Source Model Hub
+            </h2>
+            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+              Access and deploy state-of-the-art open source language models
+              with a single API call
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+            <div className="w-full max-w-sm bg-white p-6  transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-neutral-200">
+              <div className="flex items-center space-x-4 mb-8">
+                <div className="h-12 w-12 bg-neutral-50  border border-neutral-200 flex items-center justify-center">
+                  <img src="/mistral.svg" alt="Mistral" className="h-8 w-8" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium text-neutral-800">
+                    Mistral
+                  </h3>
+                  <p className="text-sm text-neutral-600">Chat Model</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-neutral-600">Context Length</span>
+                  <span className="text-neutral-800 font-medium">32K</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-neutral-600">Response Time</span>
+                  <span className="text-neutral-800 font-medium">~150ms</span>
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-neutral-100 space-y-4">
+                <div className="flex items-center gap-2 text-sm text-neutral-600">
+                  <img
+                    src="/mistral.svg"
+                    alt="Mistral 7B"
+                    className="h-6 w-6"
+                  />
+                  <span>Mistral 7B</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-neutral-600">
+                  <img
+                    src="/mistral.svg"
+                    alt="Mixtral 8x7B"
+                    className="h-6 w-6"
+                  />
+                  <span>Mixtral 8x7B</span>
+                </div>
+                <button className="w-full px-4 py-2 bg-neutral-800 text-white text-sm font-medium hover:bg-neutral-700 transition-colors">
+                  Deploy Model
+                </button>
+              </div>
+            </div>
+
+            <div className="w-full max-w-sm bg-gradient-to-br from-neutral-900 to-neutral-800 p-6  text-white">
+              <div className="flex items-center space-x-4 mb-8">
+                <div className="h-12 w-12 bg-white/10  flex items-center justify-center">
+                  <img src="/llama.svg" alt="Llama" className="h-8 w-8" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium">Llama</h3>
+                  <p className="text-sm text-neutral-300">Chat Model</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-neutral-300">Context Length</span>
+                  <span className="text-white font-medium">100K</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-neutral-300">Response Time</span>
+                  <span className="text-white font-medium">~200ms</span>
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/10 space-y-4">
+                <div className="flex items-center gap-2 text-sm text-neutral-300">
+                  <img
+                    src="/llama.svg"
+                    alt="Llama 3.1 8B"
+                    className="h-6 w-6"
+                  />
+                  <span>Llama 3.1 8B</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-neutral-300">
+                  <img
+                    src="/llama.svg"
+                    alt="Llama 3.1 70B"
+                    className="h-6 w-6"
+                  />
+                  <span>Llama 3.1 70B</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-neutral-300">
+                  <img
+                    src="/llama.svg"
+                    alt="Llama 3.1 405B"
+                    className="h-6 w-6"
+                  />
+                  <span>Llama 3.1 405B</span>
+                </div>
+                <button className="w-full px-4 py-2 bg-white text-neutral-800 text-sm font-medium hover:bg-neutral-100 transition-colors">
+                  Deploy Model
+                </button>
+              </div>
+            </div>
+
+            <div className="w-full max-w-sm bg-white p-6  transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-neutral-200">
+              <div className="flex items-center space-x-4 mb-8">
+                <div className="h-12 w-12 bg-neutral-50  border border-neutral-200 flex items-center justify-center">
+                  <img src="/gemma.svg" alt="Gemma" className="h-8 w-8" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium text-neutral-800">
+                    Gemma
+                  </h3>
+                  <p className="text-sm text-neutral-600">Chat Model</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-neutral-600">Context Length</span>
+                  <span className="text-neutral-800 font-medium">8K</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-neutral-600">Response Time</span>
+                  <span className="text-neutral-800 font-medium">~120ms</span>
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-neutral-100 space-y-4">
+                <div className="flex items-center gap-2 text-sm text-neutral-600">
+                  <img src="/gemma.svg" alt="Gemma 2B" className="h-6 w-6" />
+                  <span>Gemma 2B</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-neutral-600">
+                  <img src="/gemma.svg" alt="Gemma 7B" className="h-6 w-6" />
+                  <span>Gemma 7B</span>
+                </div>
+                <button className="w-full px-4 py-2 bg-neutral-800 text-white text-sm font-medium hover:bg-neutral-700 transition-colors">
+                  Deploy Model
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        id="Architecture"
+        className="relative py-24 bg-white overflow-hidden"
+      >
+        <div className="absolute inset-0">
+          <div
+            className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"
+            style={{
+              mask: "radial-gradient(circle at center, white 30%, transparent 70%)",
+              WebkitMask:
+                "radial-gradient(circle at center, white 30%, transparent 70%)",
+            }}
+          ></div>
+        </div>{" "}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-light text-neutral-800 mb-4">
+              Multi-Model Architecture
+            </h2>
+            <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
+              Deploy multiple domain-specific models with intelligent resource
+              allocation and dynamic scaling
+            </p>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-8">
+            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-neutral-50  border border-neutral-200">
+                  <svg
+                    className="w-6 h-6 text-blue-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-medium text-neutral-800 mb-2">
+                    Resource Optimization
+                  </h3>
+                  <p className="text-neutral-600 text-sm">
+                    Intelligent allocation of GPU resources across multiple
+                    models with automatic scaling
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 bg-neutral-50 p-4  font-mono text-sm">
+                <pre className="text-neutral-800">
+                  GPU Cluster 1{"\n"}├─ Model A: 40% utilization{"\n"}├─ Model
+                  B: 35% utilization{"\n"}└─ Model C: 25% utilization
+                </pre>
+              </div>
+              <div className="mt-4 bg-blue-50 p-4 ">
+                <div className="text-center">
+                  <div className="font-medium text-blue-600">99.9%</div>
+                  <div className="text-sm text-blue-600">Uptime</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-neutral-50  border border-neutral-200">
+                  <svg
+                    className="w-6 h-6 text-green-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-medium text-neutral-800 mb-2">
+                    Zero-Downtime Updates
+                  </h3>
+                  <p className="text-neutral-600 text-sm">
+                    Seamless model updates and deployments without service
+                    interruption
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 bg-neutral-50 p-4  font-mono text-sm">
+                <pre className="text-neutral-800">
+                  Hot Swap Status:{"\n"}├─ Previous: Model v1 ✓{"\n"}├─ Current:
+                  Model v2 ⟳{"\n"}└─ Transition: 0ms downtime
+                </pre>
+              </div>
+              <div className="mt-4 bg-green-50 p-4 ">
+                <div className="text-center">
+                  <div className="font-medium text-green-600">150ms</div>
+                  <div className="text-sm text-green-600">Latency</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-neutral-50  border border-neutral-200">
+                  <svg
+                    className="w-6 h-6 text-purple-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-medium text-neutral-800 mb-2">
+                    Request Routing
+                  </h3>
+                  <p className="text-neutral-600 text-sm">
+                    Intelligent request distribution and load balancing across
+                    model instances
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 bg-neutral-50 p-4  font-mono text-sm">
+                <pre className="text-neutral-800">
+                  Request Flow:{"\n"}├─ Load Balancer → {"\n"}├─ Model Router →
+                  {"\n"}└─ Optimal Instance
+                </pre>
+              </div>
+              <div className="mt-4 bg-purple-50 p-4 ">
+                <div className="text-center">
+                  <div className="font-medium text-purple-600">4TB</div>
+                  <div className="text-sm text-purple-600">
+                    Daily Processing
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        id="Security"
+        className="relative py-24 bg-white overflow-hidden"
+      >
+        <div className="absolute inset-0">
+          <div
+            className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"
+            style={{
+              mask: "radial-gradient(circle at center, white 30%, transparent 70%)",
+              WebkitMask:
+                "radial-gradient(circle at center, white 30%, transparent 70%)",
+            }}
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-light text-neutral-800 mb-4">
+              Enterprise-Grade Security
+            </h2>
+            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+              Advanced security measures to protect your models, data, and
+              inference pipeline
+            </p>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-8">
+            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-neutral-50  border border-neutral-200">
+                  <svg
+                    className="w-6 h-6 text-blue-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-medium text-neutral-800">
+                    Model Security
+                  </h3>
+                  <p className="text-neutral-600 text-sm mt-2">
+                    Protected model weights and secure deployment pipeline
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 bg-neutral-50 p-4 ">
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <span className="px-3 py-1 text-xs font-medium bg-blue-50 text-blue-600 ">
+                    Encrypted Weights
+                  </span>
+                  <span className="px-3 py-1 text-xs font-medium bg-green-50 text-green-600 ">
+                    Secure Loading
+                  </span>
+                </div>
+              </div>
+              <div className="mt-4 bg-blue-50 p-4 ">
+                <div className="text-center">
+                  <div className="font-medium text-blue-600">256-bit</div>
+                  <div className="text-sm text-blue-600">Model Encryption</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-neutral-50  border border-neutral-200">
+                  <svg
+                    className="w-6 h-6 text-purple-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-medium text-neutral-800">
+                    Inference Protection
+                  </h3>
+                  <p className="text-neutral-600 text-sm mt-2">
+                    Secure inference environment with request isolation
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 bg-neutral-50 p-4 ">
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <span className="px-3 py-1 text-xs font-medium bg-purple-50 text-purple-600 ">
+                    Request Isolation
+                  </span>
+                  <span className="px-3 py-1 text-xs font-medium bg-orange-50 text-orange-600 ">
+                    Memory Protection
+                  </span>
+                </div>
+              </div>
+              <div className="mt-4 bg-purple-50 p-4 ">
+                <div className="text-center">
+                  <div className="font-medium text-purple-600">100%</div>
+                  <div className="text-sm text-purple-600">
+                    Request Isolation
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-neutral-50  border border-neutral-200">
+                  <svg
+                    className="w-6 h-6 text-green-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-medium text-neutral-800">
+                    API Security
+                  </h3>
+                  <p className="text-neutral-600 text-sm mt-2">
+                    Secure API endpoints with advanced rate limiting
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 bg-neutral-50 p-4  space-y-2 font-mono text-sm">
+                <div className="flex justify-between text-neutral-600">
+                  <span>Authentication</span>
+                  <span className="text-green-600">API Keys / OAuth</span>
+                </div>
+              </div>
+              <div className="mt-4 bg-green-50 p-4 ">
+                <div className="text-center">
+                  <div className="font-medium text-green-600">10K req/s</div>
+                  <div className="text-sm text-green-600">Rate Limit</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <footer className="relative bg-white">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
+        <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />
+
+        <div className="relative mx-auto max-w-7xl px-4 py-12">
+          <div className="flex flex-col items-center justify-between gap-8 md:flex-row md:gap-12">
+            <div className="flex flex-col items-center md:items-start">
+              <div className="text-2xl font-light text-neutral-800">
+                LmScale
+              </div>
+              <p className="mt-4 max-w-xs text-center md:text-left text-sm text-neutral-800">
+                Empowering businesses with secure, scalable local LLM solutions
+                in the cloud.
+              </p>
+              <div className="mt-6">
                 <button
                   onClick={() => window.open("mailto:info@lmscale.tech")}
-                  className="group inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 bg-white text-neutral-800"
+                  className="group inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 bg-neutral-800 text-white hover:bg-neutral-700"
                 >
                   Contact Us
                   <MoveRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
               </div>
             </div>
-          </div>
-        </section>
-        <footer className="relative bg-white">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
-          <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />
-          <div className="relative mx-auto max-w-7xl px-4 py-12">
-            <div className="flex flex-col items-center justify-between gap-8 md:flex-row md:gap-12">
-              <div className="flex flex-col items-center md:items-start">
-                <div className="text-2xl font-light text-neutral-800">
-                  LmScale
-                </div>
-                <p className="mt-4 max-w-xs text-center md:text-left text-sm text-neutral-800">
-                  Empowering businesses with secure, scalable local LLM
-                  solutions in the cloud.
-                </p>
-              </div>
-              <div className="flex items-center gap-8">
-                <Link
-                  href="#"
-                  className="text-neutral-800 hover:text-neutral-800 transition-colors duration-200"
-                >
-                  <span className="sr-only">Twitter</span>
-                  <svg
-                    className="h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                  </svg>
-                </Link>
 
-                <Link
-                  href="#"
-                  className="text-neutral-800 hover:text-neutral-800 transition-colors duration-200"
+            <div className="flex items-center gap-8">
+              <Link
+                href="#"
+                className="text-neutral-800 hover:text-neutral-800 transition-colors duration-200"
+              >
+                <span className="sr-only">Twitter</span>
+                <svg
+                  className="h-5 w-5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
-                  <span className="sr-only">GitHub</span>
-                  <svg
-                    className="h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-
-            <div className="mt-12 border-t border-neutral-200/60 pt-8">
-              <div className="flex flex-col-reverse gap-4 md:flex-row md:items-center md:justify-between">
-                <p className="text-sm text-neutral-800 text-center md:text-left">
-                  © {new Date().getFullYear()} LmScale. All rights reserved.
-                </p>
-                <nav className="flex flex-wrap justify-center gap-8">
-                  {["Privacy Policy", "Terms of Service", "Documentation"].map(
-                    (item) => (
-                      <Link
-                        key={item}
-                        href="#"
-                        className="text-sm text-neutral-800 hover:text-neutral-800 transition-colors duration-200"
-                      >
-                        {item}
-                      </Link>
-                    )
-                  )}
-                </nav>
-              </div>
+                  <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                </svg>
+              </Link>
+              <Link
+                href="#"
+                className="text-neutral-800 hover:text-neutral-800 transition-colors duration-200"
+              >
+                <span className="sr-only">GitHub</span>
+                <svg
+                  className="h-5 w-5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </Link>
             </div>
           </div>
-        </footer>
-      </main>
+
+          <div className="mt-12 border-t border-neutral-200/60 pt-8">
+            <div className="flex flex-col-reverse gap-4 md:flex-row md:items-center md:justify-between">
+              <p className="text-sm text-neutral-800 text-center md:text-left">
+                © {new Date().getFullYear()} LmScale. All rights reserved.
+              </p>
+              <nav className="flex flex-wrap justify-center gap-8">
+                {["Privacy Policy", "Terms of Service", "Documentation"].map(
+                  (item) => (
+                    <Link
+                      key={item}
+                      href="#"
+                      className="text-sm text-neutral-800 hover:text-neutral-800 transition-colors duration-200"
+                    >
+                      {item}
+                    </Link>
+                  )
+                )}
+              </nav>
+            </div>
+          </div>
+        </div>
+      </footer>
     </>
   );
 }
