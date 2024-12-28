@@ -153,9 +153,6 @@ export default function HomePage() {
             }}
           ></div>
         </div>
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
-        <div className="absolute top-40 -left-40 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
         <div className="relative mx-auto max-w-7xl px-4 pt-20 pb-16 sm:pt-24 sm:pb-24">
           <div className="text-center">
             <div className="flex justify-center mb-8">
@@ -172,7 +169,7 @@ export default function HomePage() {
               headaches. Simple, fast, and secure cloud deployment.
             </p>
 
-            <div className="mt-10 flex items-center justify-center gap-4 md:gap-6">
+            <div className="my-10 flex items-center justify-center gap-4 md:gap-6">
               <Link
                 href="/register"
                 className="group inline-flex items-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base font-medium text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg"
@@ -194,7 +191,7 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="mt-8 md:mt-12 relative w-full p-4">
+            <div className="relative w-full p-2 md:p-4">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#ec4899,transparent_40%)]" />
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
@@ -206,9 +203,9 @@ export default function HomePage() {
 -sm"
               >
                 <div className="flex items-center space-x-2 mb-3">
-                  <div className="h-2.5 w-2.5 md:h-3 md:w-3  bg-[#FF5F57]"></div>
-                  <div className="h-2.5 w-2.5 md:h-3 md:w-3  bg-[#FFBD2E]"></div>
-                  <div className="h-2.5 w-2.5 md:h-3 md:w-3  bg-[#28CA41]"></div>
+                  <div className="h-2.5 w-2.5 md:h-3 md:w-3 rounded-full bg-[#FF5F57]"></div>
+                  <div className="h-2.5 w-2.5 md:h-3 md:w-3 rounded-full bg-[#FFBD2E]"></div>
+                  <div className="h-2.5 w-2.5 md:h-3 md:w-3 rounded-full bg-[#28CA41]"></div>
                 </div>
                 <pre className="text-left text-xs md:text-sm text-neutral-600 overflow-x-auto scrollbar-thin scrollbar-thumb-neutral-300 scrollbar-track-transparent">
                   <code>
