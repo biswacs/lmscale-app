@@ -272,9 +272,9 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="group relative bg-white p-6  transition-all duration-300 hover:shadow-xl border border-neutral-200/60">
               <div className="flex items-start justify-between mb-6">
-                <div className="p-3 bg-neutral-50  border border-neutral-200/60">
+                <div className="p-3 bg-blue-50  border border-blue-100">
                   <svg
-                    className="w-6 h-6 text-neutral-800"
+                    className="w-6 h-6 text-blue-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -287,7 +287,7 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <span className="text-xs font-medium text-neutral-600 bg-neutral-100 px-2 py-1 ">
+                <span className="text-xs font-medium text-blue-500 bg-blue-50 px-2 py-1">
                   Enterprise
                 </span>
               </div>
@@ -325,9 +325,9 @@ export default function HomePage() {
             </div>
             <div className="group relative bg-white p-6  transition-all duration-300 hover:shadow-xl border border-neutral-200/60">
               <div className="flex items-start justify-between mb-6">
-                <div className="p-3 bg-neutral-50  border border-neutral-200/60">
+                <div className="p-3 bg-green-50  border border-green-100">
                   <svg
-                    className="w-6 h-6 text-neutral-800"
+                    className="w-6 h-6 text-green-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -340,7 +340,7 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <span className="text-xs font-medium text-neutral-600 bg-neutral-100 px-2 py-1 ">
+                <span className="text-xs font-medium text-green-500 bg-green-50 px-2 py-1 ">
                   Advanced
                 </span>
               </div>
@@ -365,9 +365,9 @@ export default function HomePage() {
             </div>
             <div className="group relative bg-white p-6  transition-all duration-300 hover:shadow-xl border border-neutral-200/60">
               <div className="flex items-start justify-between mb-6">
-                <div className="p-3 bg-neutral-50  border border-neutral-200/60">
+                <div className="p-3 bg-purple-50  border border-purple-100">
                   <svg
-                    className="w-6 h-6 text-neutral-800"
+                    className="w-6 h-6 text-purple-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -380,7 +380,7 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <span className="text-xs font-medium text-neutral-600 bg-neutral-100 px-2 py-1 ">
+                <span className="text-xs font-medium text-purple-500 bg-purple-50 px-2 py-1 ">
                   Secure
                 </span>
               </div>
@@ -599,7 +599,7 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row gap-8">
             <div className="flex-1 relative bg-white p-6  border border-neutral-200">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-neutral-50  border border-neutral-200">
+                <div className="p-3 bg-blue-50  border border-blue-100">
                   <svg
                     className="w-6 h-6 text-blue-500"
                     fill="none"
@@ -640,7 +640,7 @@ export default function HomePage() {
 
             <div className="flex-1 relative bg-white p-6  border border-neutral-200">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-neutral-50  border border-neutral-200">
+                <div className="p-3 bg-green-50  border border-green-100">
                   <svg
                     className="w-6 h-6 text-green-500"
                     fill="none"
@@ -681,7 +681,7 @@ export default function HomePage() {
 
             <div className="flex-1 relative bg-white p-6  border border-neutral-200">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-neutral-50  border border-neutral-200">
+                <div className="p-3 bg-purple-50  border border-purple-100">
                   <svg
                     className="w-6 h-6 text-purple-500"
                     fill="none"
@@ -752,7 +752,7 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row gap-8">
             <div className="flex-1 relative bg-white p-6  border border-neutral-200">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-neutral-50  border border-neutral-200">
+                <div className="p-3 bg-blue-50  border border-blue-100">
                   <svg
                     className="w-6 h-6 text-blue-500"
                     fill="none"
@@ -793,10 +793,48 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-
             <div className="flex-1 relative bg-white p-6  border border-neutral-200">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-neutral-50  border border-neutral-200">
+                <div className="p-3 bg-green-50  border border-green-100">
+                  <svg
+                    className="w-6 h-6 text-green-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-medium text-neutral-800">
+                    API Security
+                  </h3>
+                  <p className="text-neutral-600 text-sm mt-2">
+                    Secure API endpoints with advanced rate limiting
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 bg-neutral-50 p-4  space-y-2 font-mono text-sm">
+                <div className="flex justify-between text-neutral-600">
+                  <span>Authentication</span>
+                  <span className="text-green-600">API Keys / OAuth</span>
+                </div>
+              </div>
+              <div className="mt-4 bg-green-50 p-4 ">
+                <div className="text-center">
+                  <div className="font-medium text-green-600">10K req/s</div>
+                  <div className="text-sm text-green-600">Rate Limit</div>
+                </div>
+              </div>
+            </div>
+            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-purple-50  border border-purple-100">
                   <svg
                     className="w-6 h-6 text-purple-500"
                     fill="none"
@@ -839,50 +877,10 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-
-            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-neutral-50  border border-neutral-200">
-                  <svg
-                    className="w-6 h-6 text-green-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                      d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
-                    />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-medium text-neutral-800">
-                    API Security
-                  </h3>
-                  <p className="text-neutral-600 text-sm mt-2">
-                    Secure API endpoints with advanced rate limiting
-                  </p>
-                </div>
-              </div>
-              <div className="mt-4 bg-neutral-50 p-4  space-y-2 font-mono text-sm">
-                <div className="flex justify-between text-neutral-600">
-                  <span>Authentication</span>
-                  <span className="text-green-600">API Keys / OAuth</span>
-                </div>
-              </div>
-              <div className="mt-4 bg-green-50 p-4 ">
-                <div className="text-center">
-                  <div className="font-medium text-green-600">10K req/s</div>
-                  <div className="text-sm text-green-600">Rate Limit</div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
-      <section id="__contact_section" className="relative bg-white py-24">
+      <section id="Contact" className="relative bg-white py-24">
         <div className="absolute inset-0">
           <div
             className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"
