@@ -223,21 +223,21 @@ export default function HomePage() {
               </div>
             </div>
             <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4 items-center justify-center text-neutral-800">
-              <div className="flex flex-col items-center gap-2 px-4 py-6 bg-white/50 backdrop-blur-sm ">
+              <div className="flex flex-col items-center gap-2 px-4 py-6">
                 <span className="text-3xl font-light">40%</span>
                 <span className="text-sm text-center">
                   Lower Deployment Cost
                 </span>
               </div>
-              <div className="flex flex-col items-center gap-2 px-4 py-6 bg-white/50 backdrop-blur-sm ">
+              <div className="flex flex-col items-center gap-2 px-4 py-6">
                 <span className="text-3xl font-light">15x</span>
                 <span className="text-sm text-center">Faster Integration</span>
               </div>
-              <div className="flex flex-col items-center gap-2 px-4 py-6 bg-white/50 backdrop-blur-sm ">
+              <div className="flex flex-col items-center gap-2 px-4 py-6">
                 <span className="text-3xl font-light">99.9%</span>
                 <span className="text-sm text-center">Uptime SLA</span>
               </div>
-              <div className="flex flex-col items-center gap-2 px-4 py-6 bg-white/50 backdrop-blur-sm ">
+              <div className="flex flex-col items-center gap-2 px-4 py-6">
                 <span className="text-3xl font-light">4TB</span>
                 <span className="text-sm text-center">Daily Processing</span>
               </div>
@@ -909,13 +909,13 @@ export default function HomePage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
-              <a
+              <Link
                 href="/register"
                 className="group inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 bg-black text-white"
               >
                 Get Started
                 <MoveRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
