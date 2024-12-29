@@ -1,3 +1,10 @@
+import { AppLayout } from "@/components/_shared/app-layout";
+import { SettingsContainer } from "@/components/dashboard/settings-container";
+
 export default function SettingsPage() {
-  return <div>SettingsPage</div>;
+  return (
+    <AppLayout>
+      <SettingsContainer />
+    </AppLayout>
+  );
 }

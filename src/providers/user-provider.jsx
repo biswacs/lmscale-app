@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { API_PROFILE } from "@/api/endpoints";
 import { lmScaleAPI } from "@/api/instance";
 import { useAuthentication } from "./authentication-provider";
 
@@ -14,7 +13,7 @@ const UserProvider = ({ children }) => {
   const fetchUser = async () => {
     try {
       setLoading(true);
-      const response = await lmScaleAPI.get(API_PROFILE, {
+      const response = await lmScaleAPI.get("/user/profile", {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -26,26 +25,6 @@ const UserProvider = ({ children }) => {
       setUser(null);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const updateUser = async (userData) => {
-    try {
-      setSubmitting(true);
-      const response = await lmScaleAPI.put(API_PROFILE, userData, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-      setUser(response.data.user);
-      return response.data.user;
-    } catch (error) {
-      console.error("Error updating user:", error);
-      throw new Error(
-        error?.response?.data?.message || "Failed to update profile"
-      );
-    } finally {
-      setSubmitting(false);
     }
   };
 
@@ -63,7 +42,6 @@ const UserProvider = ({ children }) => {
     loading,
     submitting,
     fetchUser,
-    updateUser,
   };
 
   return (

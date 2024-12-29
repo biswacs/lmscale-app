@@ -1,5 +1,10 @@
-import { DashboardContainer } from "@/components/dashboard/dashboard-container";
+import { AppLayout } from "@/components/_shared/app-layout";
+import { PlaygroundContainer } from "@/components/dashboard/playground-container";
 
 export default function DashboardPage() {
-  return <DashboardContainer />;
+  return (
+    <AppLayout>
+      <PlaygroundContainer />
+    </AppLayout>
+  );
 }

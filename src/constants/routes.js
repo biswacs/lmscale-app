@@ -1,9 +1,9 @@
 export const ROUTES_MAP = {
   DASHBOARD: {
     __: "/dashboard",
+    DEPLOYMENTS: "/dashboard/deployments",
+    MONITORING: "/dashboard/monitoring",
     SETTINGS: "/dashboard/settings",
-    ACCOUNT: "/dashboard/account",
-    DEPLOY: "/dashboard/deploy",
   },
   LOGIN: "/login",
   REGISTER: "/register",

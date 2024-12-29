@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import { LogOut, Settings, Box } from "lucide-react";
+import { LogOut, Settings, Box, Bell } from "lucide-react";
 import { useAuthentication } from "@/providers/authentication-provider";
 import { useUser } from "@/providers/user-provider";
 
@@ -13,14 +13,14 @@ export function Header() {
 
   const menuItems = [
     {
-      label: "Settings",
+      label: "Profile",
       icon: Settings,
-      href: "/settings",
+      href: "/dashboard/profile",
     },
     {
       label: "Deployments",
       icon: Box,
-      href: "/deployments",
+      href: "/dashboard/deployments",
     },
   ];
 
@@ -29,27 +29,30 @@ export function Header() {
   };
 
   return (
-    <div className="w-full h-14 bg-white border-b border-neutral-200 px-4">
-      <div className="h-full flex items-center justify-between">
+    <header className="h-14 border-b border-neutral-200 bg-white">
+      <div className="mx-auto flex h-full items-center justify-between px-4">
         <Link
-          href="/"
-          className="flex items-center gap-2 text-xl sm:text-2xl font-bold text-neutral-800"
+          href="/dashboard"
+          className="flex items-center gap-2 text-xl font-bold text-neutral-800"
         >
           <img
             src="/icon.png"
             alt="LmScale Logo"
-            className="h-7 w-7 sm:h-8 sm:w-8 object-contain"
+            className="h-8 w-8 object-contain"
           />
           <span className="font-light">LmScale</span>
         </Link>
 
-        <div className="items-center">
+        <div className="flex items-center gap-4">
           <div className="relative">
             <button
               onClick={() => setShowDropdown(!showDropdown)}
-              className="border border-neutral-200 size-8 flex items-center justify-center rounded-full hover:bg-neutral-50 transition-colors duration-200 text-sm font-medium text-neutral-600 uppercase"
+              className="flex items-center gap-2 rounded-full border border-neutral-200 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50"
             >
-              {userDisplayName?.[0] || "?"}
+              <div className="size-6 flex items-center justify-center rounded-full bg-neutral-100 text-xs font-medium uppercase">
+                {userDisplayName[0]}
+              </div>
+              <span>{userDisplayName}</span>
             </button>
 
             {showDropdown && (
@@ -58,7 +61,7 @@ export function Header() {
                   className="fixed inset-0 z-10"
                   onClick={handleClickOutside}
                 />
-                <div className="absolute right-0 mt-4 w-56 bg-white rounded-md shadow-lg border border-neutral-200 z-20">
+                <div className="absolute right-0 mt-2 w-56 rounded-md border border-neutral-200 bg-white shadow-lg z-20">
                   <div className="py-1">
                     {menuItems.map((item) => (
                       <Link
@@ -85,8 +88,6 @@ export function Header() {
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
-
-export default Header;

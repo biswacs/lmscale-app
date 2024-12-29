@@ -1,4 +1,3 @@
-import { API_LOGIN, API_REGISTER } from "@/api/endpoints";
 import { lmScaleAPI } from "@/api/instance";
 import { AUTHENTICATED_ROUTES, ROUTES_MAP } from "@/constants/routes";
 import { useRouter } from "next/router";
@@ -20,7 +19,7 @@ const AuthenticationProvider = ({ children }) => {
 
     setSubmitting(true);
     try {
-      const res = await lmScaleAPI.post(API_LOGIN, { email, password });
+      const res = await lmScaleAPI.post("/user/login", { email, password });
       localStorage.setItem("accessToken", res.data.accessToken);
       setAuthToken(res.data.accessToken);
       window.location.href = ROUTES_MAP.DASHBOARD.__;
@@ -40,7 +39,7 @@ const AuthenticationProvider = ({ children }) => {
 
     setSubmitting(true);
     try {
-      const res = await lmScaleAPI.post(API_REGISTER, {
+      const res = await lmScaleAPI.post("/user/register", {
         name,
         email,
         password,
