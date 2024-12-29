@@ -30,7 +30,6 @@ export function PlaygroundContainer() {
     setMessage("");
     setIsLoading(true);
 
-    // Clear previous messages and add new user message
     setMessages([
       { role: "user", content: userMessage },
       { role: "assistant", content: "", loading: true },
@@ -69,7 +68,6 @@ export function PlaygroundContainer() {
                 const newMessages = [...prev];
                 const lastMessage = newMessages[newMessages.length - 1];
                 lastMessage.content = fullResponse;
-                // Set loading to false after receiving first chunk
                 if (isFirstChunk) {
                   lastMessage.loading = false;
                   isFirstChunk = false;
@@ -85,7 +83,7 @@ export function PlaygroundContainer() {
     } catch (error) {
       console.error("Error:", error);
       setMessages((prev) => [
-        prev[0], // Keep user message
+        prev[0],
         {
           role: "assistant",
           content: `Error: ${error.message}`,
@@ -105,8 +103,34 @@ export function PlaygroundContainer() {
   };
 
   return (
-    <div className="h-full flex flex-col">
-      <div>
+    <div className="h-full flex flex-col relative">
+      <div className="absolute inset-0 overflow-y-auto">
+        <div className="min-h-full pb-24 pt-4">
+          {messages.map((msg, index) => (
+            <div key={index} className="px-4 py-4">
+              <div className="max-w-3xl mx-auto">
+                <div className="flex items-start gap-3">
+                  <div className="size-8 bg-neutral-900 flex-shrink-0 flex items-center justify-center text-white font-medium">
+                    {msg.role === "user" ? "U" : "A"}
+                  </div>
+                  <div className="flex-1 font-mono text-sm break-words">
+                    {msg.loading ? (
+                      <div className="flex items-center gap-2 text-neutral-500">
+                        <Loader className="h-4 w-4 animate-spin" />
+                      </div>
+                    ) : (
+                      msg.content
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+
+      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-neutral-200">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-end gap-2 relative p-4">
             <textarea
@@ -117,8 +141,8 @@ export function PlaygroundContainer() {
               placeholder="Send a message"
               rows="1"
               className="flex-1 resize-none border border-neutral-200 p-3 pr-10
-                       text-neutral-900 focus:outline-none focus:border-neutral-400
-                       text-sm max-h-36 overflow-y-auto"
+                     text-neutral-900 focus:outline-none focus:border-neutral-400
+                     text-sm max-h-36 overflow-y-auto"
               style={{ minHeight: "44px" }}
             />
             <button
@@ -134,30 +158,6 @@ export function PlaygroundContainer() {
             </button>
           </div>
         </div>
-      </div>
-
-      <div className="flex-1 overflow-y-auto">
-        {messages.map((msg, index) => (
-          <div key={index} className="px-4 py-6 ">
-            <div className="max-w-3xl mx-auto">
-              <div className="flex items-start gap-4">
-                <div className="size-8 bg-neutral-900 flex-shrink-0 flex items-center justify-center text-white font-medium">
-                  {msg.role === "user" ? "U" : "A"}
-                </div>
-                <div className="flex-1 font-mono text-sm">
-                  {msg.loading ? (
-                    <div className="flex items-center gap-2 text-neutral-500">
-                      <Loader className="h-4 w-4 animate-spin" />
-                    </div>
-                  ) : (
-                    msg.content
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-        <div ref={messagesEndRef} />
       </div>
     </div>
   );

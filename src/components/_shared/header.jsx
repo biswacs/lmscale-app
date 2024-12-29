@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Settings, Terminal, Server, Activity } from "lucide-react";
+import { Settings, Terminal, Server, Activity, Menu, X } from "lucide-react";
 import { useUser } from "@/providers/user-provider";
 
 const navigation = [
@@ -12,6 +12,7 @@ const navigation = [
 ];
 
 export function Header() {
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const { user, loading } = useUser();
   const pathname = usePathname();
@@ -23,16 +24,28 @@ export function Header() {
         <div className="h-full px-4 flex items-center justify-between">
           <Link
             href="/dashboard"
-            className="flex items-center gap-3 text-lg text-neutral-800"
+            className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg text-neutral-800"
           >
             <img
               src="/icon.png"
               alt="LmScale Logo"
-              className="h-7 w-7 object-contain"
+              className="h-6 w-6 sm:h-7 sm:w-7 object-contain"
             />
             <span className="font-light tracking-tight">LmScale</span>
           </Link>
-          <div className="flex items-center">
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+              className="sm:hidden p-2"
+            >
+              {showMobileMenu ? (
+                <X className="h-5 w-5 text-neutral-600" />
+              ) : (
+                <Menu className="h-5 w-5 text-neutral-600" />
+              )}
+            </button>
+
             <div className="relative">
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
@@ -47,7 +60,33 @@ export function Header() {
         </div>
       </header>
 
-      <nav className="h-12 border-b border-neutral-200 px-4">
+      {showMobileMenu && (
+        <div className="sm:hidden border-b border-neutral-200">
+          {navigation.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`
+                  flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200
+                  ${
+                    isActive
+                      ? "bg-neutral-50 text-neutral-800 font-medium"
+                      : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800"
+                  }
+                `}
+                onClick={() => setShowMobileMenu(false)}
+              >
+                <item.icon className="h-4 w-4" />
+                {item.name}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+
+      <nav className="hidden sm:block h-12 border-b border-neutral-200 px-4">
         <div className="flex h-full relative">
           {navigation.map((item) => {
             const isActive = pathname === item.href;
