@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send } from "lucide-react";
+import { Send, Loader } from "lucide-react";
 
 export function PlaygroundContainer() {
   const [message, setMessage] = useState("");
@@ -30,9 +30,10 @@ export function PlaygroundContainer() {
     setMessage("");
     setIsLoading(true);
 
-    setMessages((prev) => [
-      ...prev,
-      { role: "user", content: userMessage, hidden: true },
+    // Clear previous messages and add new user message
+    setMessages([
+      { role: "user", content: userMessage },
+      { role: "assistant", content: "", loading: true },
     ]);
 
     try {
@@ -49,8 +50,7 @@ export function PlaygroundContainer() {
       let fullResponse = "";
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-
-      setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+      let isFirstChunk = true;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -64,9 +64,16 @@ export function PlaygroundContainer() {
             try {
               const data = JSON.parse(line.slice(6));
               fullResponse += data.response || data.text || "";
+
               setMessages((prev) => {
                 const newMessages = [...prev];
-                newMessages[newMessages.length - 1].content = fullResponse;
+                const lastMessage = newMessages[newMessages.length - 1];
+                lastMessage.content = fullResponse;
+                // Set loading to false after receiving first chunk
+                if (isFirstChunk) {
+                  lastMessage.loading = false;
+                  isFirstChunk = false;
+                }
                 return newMessages;
               });
             } catch (e) {
@@ -78,10 +85,11 @@ export function PlaygroundContainer() {
     } catch (error) {
       console.error("Error:", error);
       setMessages((prev) => [
-        ...prev,
+        prev[0], // Keep user message
         {
           role: "assistant",
           content: `Error: ${error.message}`,
+          loading: false,
         },
       ]);
     } finally {
@@ -98,9 +106,9 @@ export function PlaygroundContainer() {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="bg-white mb-4">
+      <div>
         <div className="max-w-3xl mx-auto">
-          <div className="flex items-end gap-2 relative">
+          <div className="flex items-end gap-2 relative p-4">
             <textarea
               ref={textareaRef}
               value={message}
@@ -116,7 +124,7 @@ export function PlaygroundContainer() {
             <button
               onClick={sendMessage}
               disabled={isLoading || !message.trim()}
-              className={`absolute right-3 bottom-3 p-1 ${
+              className={`absolute right-6 bottom-7 p-1 ${
                 isLoading || !message.trim()
                   ? "text-neutral-300"
                   : "text-neutral-900 hover:text-neutral-600"
@@ -129,26 +137,26 @@ export function PlaygroundContainer() {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        {messages.map(
-          (msg, index) =>
-            !msg.hidden && (
-              <div
-                key={index}
-                className="px-4 py-6 border-b border-neutral-100"
-              >
-                <div className="max-w-3xl mx-auto">
-                  <div className="flex items-start gap-4">
-                    <div className="size-8 bg-neutral-100 flex-shrink-0 flex items-center justify-center border border-neutral-100">
-                      A
+        {messages.map((msg, index) => (
+          <div key={index} className="px-4 py-6 ">
+            <div className="max-w-3xl mx-auto">
+              <div className="flex items-start gap-4">
+                <div className="size-8 bg-neutral-900 flex-shrink-0 flex items-center justify-center text-white font-medium">
+                  {msg.role === "user" ? "U" : "A"}
+                </div>
+                <div className="flex-1 font-mono text-sm">
+                  {msg.loading ? (
+                    <div className="flex items-center gap-2 text-neutral-500">
+                      <Loader className="h-4 w-4 animate-spin" />
                     </div>
-                    <div className="flex-1 font-mono text-sm">
-                      {msg.content}
-                    </div>
-                  </div>
+                  ) : (
+                    msg.content
+                  )}
                 </div>
               </div>
-            )
-        )}
+            </div>
+          </div>
+        ))}
         <div ref={messagesEndRef} />
       </div>
     </div>

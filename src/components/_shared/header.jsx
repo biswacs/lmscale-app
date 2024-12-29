@@ -1,93 +1,79 @@
 import { useState } from "react";
 import Link from "next/link";
-import { LogOut, Settings, Box, Bell } from "lucide-react";
-import { useAuthentication } from "@/providers/authentication-provider";
+import { usePathname } from "next/navigation";
+import { Settings, Terminal, Server, Activity } from "lucide-react";
 import { useUser } from "@/providers/user-provider";
+
+const navigation = [
+  { name: "Playground", href: "/dashboard", icon: Terminal },
+  { name: "Deployments", href: "/dashboard/deployments", icon: Server },
+  { name: "Monitoring", href: "/dashboard/monitoring", icon: Activity },
+  { name: "Settings", href: "/dashboard/settings", icon: Settings },
+];
 
 export function Header() {
   const [showDropdown, setShowDropdown] = useState(false);
-  const { logOutUser } = useAuthentication();
   const { user, loading } = useUser();
-
+  const pathname = usePathname();
   const userDisplayName = loading ? "Loading..." : user?.name || "Guest";
 
-  const menuItems = [
-    {
-      label: "Profile",
-      icon: Settings,
-      href: "/dashboard/profile",
-    },
-    {
-      label: "Deployments",
-      icon: Box,
-      href: "/dashboard/deployments",
-    },
-  ];
-
-  const handleClickOutside = () => {
-    setShowDropdown(false);
-  };
-
   return (
-    <header className="h-14 border-b border-neutral-200 bg-white">
-      <div className="mx-auto flex h-full items-center justify-between px-4">
-        <Link
-          href="/dashboard"
-          className="flex items-center gap-2 text-xl font-bold text-neutral-800"
-        >
-          <img
-            src="/icon.png"
-            alt="LmScale Logo"
-            className="h-8 w-8 object-contain"
-          />
-          <span className="font-light">LmScale</span>
-        </Link>
-
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <button
-              onClick={() => setShowDropdown(!showDropdown)}
-              className="flex items-center gap-2 rounded-full border border-neutral-200 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50"
-            >
-              <div className="size-6 flex items-center justify-center rounded-full bg-neutral-100 text-xs font-medium uppercase">
-                {userDisplayName[0]}
-              </div>
-              <span>{userDisplayName}</span>
-            </button>
-
-            {showDropdown && (
-              <>
-                <div
-                  className="fixed inset-0 z-10"
-                  onClick={handleClickOutside}
-                />
-                <div className="absolute right-0 mt-2 w-56 rounded-md border border-neutral-200 bg-white shadow-lg z-20">
-                  <div className="py-1">
-                    {menuItems.map((item) => (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
-                      >
-                        <item.icon className="h-4 w-4" />
-                        {item.label}
-                      </Link>
-                    ))}
-                    <hr className="my-1 border-neutral-200" />
-                    <button
-                      onClick={logOutUser}
-                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-neutral-50"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      Logout
-                    </button>
-                  </div>
+    <div className="flex flex-col bg-white">
+      <header className="h-12 border-b border-neutral-200">
+        <div className="h-full px-4 flex items-center justify-between">
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-3 text-lg text-neutral-800"
+          >
+            <img
+              src="/icon.png"
+              alt="LmScale Logo"
+              className="h-7 w-7 object-contain"
+            />
+            <span className="font-light tracking-tight">LmScale</span>
+          </Link>
+          <div className="flex items-center">
+            <div className="relative">
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="flex items-center h-8 w-8 border border-neutral-200 hover:bg-neutral-50"
+              >
+                <div className="w-full h-full flex items-center justify-center bg-neutral-100 text-sm font-medium text-neutral-700 uppercase">
+                  {userDisplayName[0]}
                 </div>
-              </>
-            )}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      <nav className="h-12 border-b border-neutral-200 px-4">
+        <div className="flex h-full relative">
+          {navigation.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`
+                  relative flex items-center gap-2 px-4 text-sm transition-colors duration-200
+                  ${
+                    isActive
+                      ? "text-neutral-800 font-medium"
+                      : "text-neutral-500 hover:text-neutral-800"
+                  }
+                `}
+              >
+                <item.icon className="h-4 w-4" />
+                {item.name}
+                {isActive && (
+                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-neutral-800 transition-transform duration-200" />
+                )}
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+    </div>
   );
 }

@@ -14,7 +14,9 @@ export default function RegisterPage() {
     password: "",
   });
 
-  const handleregister = async () => {
+  const handleregister = async (e) => {
+    if (e) e.preventDefault();
+
     if (!formData.email || !formData.password || !formData.name) {
       setError("Please fill in all fields");
       return;
@@ -94,7 +96,10 @@ export default function RegisterPage() {
             </div>
 
             <div className="relative w-full p-4 shadow-md bg-white">
-              <div className="relative space-y-6 p-4">
+              <form
+                onSubmit={handleregister}
+                className="relative space-y-6 p-4"
+              >
                 <div className="flex items-center justify-between mb-4">
                   <div className="text-lg font-medium">Create an Account</div>
                 </div>
@@ -162,8 +167,7 @@ export default function RegisterPage() {
                 </div>
 
                 <button
-                  type="button"
-                  onClick={handleregister}
+                  type="submit"
                   disabled={submitting}
                   className="group w-full inline-flex items-center gap-2 justify-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base font-medium text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none"
                 >
@@ -187,7 +191,7 @@ export default function RegisterPage() {
                     Login
                   </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>

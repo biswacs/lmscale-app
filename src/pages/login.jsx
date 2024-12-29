@@ -16,7 +16,9 @@ export default function LoginPage() {
     password: "",
   });
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    if (e) e.preventDefault();
+
     if (!formData.email || !formData.password) {
       setError("Please fill in all fields");
       return;
@@ -85,7 +87,7 @@ export default function LoginPage() {
               </Link>
             </div>
             <div className="relative w-full p-4 shadow-md bg-white">
-              <div className="relative space-y-6 p-4">
+              <form onSubmit={handleLogin} className="relative space-y-6 p-4">
                 <div className="flex items-center justify-between mb-4">
                   <div className="text-lg font-medium">Welcome back</div>
                 </div>
@@ -136,8 +138,7 @@ export default function LoginPage() {
                 </div>
 
                 <button
-                  type="button"
-                  onClick={handleLogin}
+                  type="submit"
                   disabled={loading}
                   className="group w-full inline-flex items-center gap-2 justify-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base font-medium text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none"
                 >
@@ -161,7 +162,7 @@ export default function LoginPage() {
                     Create an Account
                   </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
