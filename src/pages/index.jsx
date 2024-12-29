@@ -199,7 +199,7 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
               <div className="absolute inset-0 bg-white/40 backdrop-blur-[1px]" />
               <div
-                className="m-4 bg-white/80 p-4 backdrop-blur 
+                className="m-4 bg-white/80 p-4 backdrop-blur
 -sm"
               >
                 <div className="flex items-center space-x-2 mb-3">
@@ -259,9 +259,10 @@ export default function HomePage() {
             }}
           ></div>
         </div>
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <h2 className="text-4xl lg:text-5xl font-light text-neutral-800 mb-4">
+            <h2 className="text-4xl lg:text-5xl font-light text-neutral-900 mb-4">
               Enterprise-Grade LLM Infrastructure
             </h2>
             <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
@@ -269,12 +270,13 @@ export default function HomePage() {
               performance and reliability
             </p>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="group relative bg-white p-6  transition-all duration-300 hover:shadow-xl border border-neutral-200/60">
+            <div className="group bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-neutral-200">
               <div className="flex items-start justify-between mb-6">
-                <div className="p-3 bg-blue-50  border border-blue-100">
+                <div className="p-3 bg-neutral-900 text-white">
                   <svg
-                    className="w-6 h-6 text-blue-500"
+                    className="w-6 h-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -287,47 +289,48 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <span className="text-xs font-medium text-blue-500 bg-blue-50 px-2 py-1">
+                <span className="text-xs font-medium text-neutral-600 bg-neutral-50 px-2 py-1">
                   Enterprise
                 </span>
               </div>
-              <h3 className="text-xl font-medium text-neutral-800 mb-2">
+              <h3 className="text-xl font-medium text-neutral-900 mb-2">
                 High-Performance Inference
               </h3>
               <p className="text-neutral-600 mb-4">
                 150ms average response time with optimized model serving and
                 dynamic batching
               </p>
-              <div className="bg-neutral-50 p-4  border border-neutral-200/60">
+              <div className="bg-neutral-50 p-4 border border-neutral-200">
                 <div className="space-y-3 font-mono text-sm">
                   <div className="flex justify-between items-center">
                     <span className="text-neutral-600">Throughput</span>
-                    <span className="text-neutral-800">1000 req/s</span>
+                    <span className="text-neutral-900">1000 req/s</span>
                   </div>
-                  <div className="w-full bg-neutral-200  h-1.5">
+                  <div className="w-full bg-neutral-200 h-1.5">
                     <div
-                      className="bg-green-500 h-1.5 "
+                      className="bg-neutral-600 h-1.5"
                       style={{ width: "85%" }}
                     />
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-neutral-600">Latency</span>
-                    <span className="text-neutral-800">150ms</span>
+                    <span className="text-neutral-900">150ms</span>
                   </div>
-                  <div className="w-full bg-neutral-200  h-1.5">
+                  <div className="w-full bg-neutral-200 h-1.5">
                     <div
-                      className="bg-blue-500 h-1.5 "
+                      className="bg-neutral-600 h-1.5"
                       style={{ width: "92%" }}
                     />
                   </div>
                 </div>
               </div>
             </div>
-            <div className="group relative bg-white p-6  transition-all duration-300 hover:shadow-xl border border-neutral-200/60">
+
+            <div className="group bg-neutral-900 p-6 text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
               <div className="flex items-start justify-between mb-6">
-                <div className="p-3 bg-green-50  border border-green-100">
+                <div className="p-3 bg-white/10">
                   <svg
-                    className="w-6 h-6 text-green-500"
+                    className="w-6 h-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -340,34 +343,29 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <span className="text-xs font-medium text-green-500 bg-green-50 px-2 py-1 ">
+                <span className="text-xs font-medium text-neutral-200 bg-neutral-500/20 px-2 py-1">
                   Advanced
                 </span>
               </div>
-              <h3 className="text-xl font-medium text-neutral-800 mb-2">
+              <h3 className="text-xl font-medium text-white mb-2">
                 Multi-Model Deployment
               </h3>
-              <p className="text-neutral-600 mb-4">
+              <p className="text-neutral-300 mb-4">
                 Deploy multiple models on shared infrastructure with intelligent
                 resource allocation
               </p>
-              <div className="bg-neutral-50 p-4  border border-neutral-200/60">
-                <pre className="text-sm font-mono text-neutral-800">
-                  {"              "}
-                  <code>
-                    {"\n"}├─ Base LLM{"\n"}│{"  "}├─ Chat Model{"\n"}│{"  "}├─
-                    Code Model{"\n"}│{"  "}└─ Custom Model{"\n"}└─ API Endpoint
-                  </code>
-                  {"\n"}
-                  {"            "}
+              <div className="bg-neutral-800 p-4">
+                <pre className="text-sm font-mono text-neutral-200">
+                  {`├─ Base LLM\n│  ├─ Chat Model\n│  ├─ Code Model\n│  └─ Custom Model\n└─ API Endpoint`}
                 </pre>
               </div>
             </div>
-            <div className="group relative bg-white p-6  transition-all duration-300 hover:shadow-xl border border-neutral-200/60">
+
+            <div className="group bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-neutral-200">
               <div className="flex items-start justify-between mb-6">
-                <div className="p-3 bg-purple-50  border border-purple-100">
+                <div className="p-3 bg-neutral-900 text-white">
                   <svg
-                    className="w-6 h-6 text-purple-500"
+                    className="w-6 h-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -380,32 +378,32 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <span className="text-xs font-medium text-purple-500 bg-purple-50 px-2 py-1 ">
+                <span className="text-xs font-medium text-neutral-600 bg-neutral-50 px-2 py-1">
                   Secure
                 </span>
               </div>
-              <h3 className="text-xl font-medium text-neutral-800 mb-2">
+              <h3 className="text-xl font-medium text-neutral-900 mb-2">
                 Enterprise Security
               </h3>
               <p className="text-neutral-600 mb-4">
                 SOC2 compliant infrastructure with end-to-end encryption and
                 access controls
               </p>
-              <div className="bg-neutral-50 p-4  border border-neutral-200/60">
+              <div className="bg-neutral-50 p-4 border border-neutral-200">
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center space-x-2">
-                    <span className="flex h-2 w-2 bg-green-500 " />
-                    <span className="text-neutral-800">
+                    <span className="flex h-2 w-2 bg-neutral-600" />
+                    <span className="text-neutral-900">
                       End-to-end Encryption
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="flex h-2 w-2 bg-green-500 " />
-                    <span className="text-neutral-800">Role-based Access</span>
+                    <span className="flex h-2 w-2 bg-neutral-600" />
+                    <span className="text-neutral-900">Role-based Access</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="flex h-2 w-2 bg-green-500 " />
-                    <span className="text-neutral-800">Audit Logging</span>
+                    <span className="flex h-2 w-2 bg-neutral-600" />
+                    <span className="text-neutral-900">Audit Logging</span>
                   </div>
                 </div>
               </div>
@@ -481,7 +479,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="w-full max-w-sm bg-gradient-to-br from-neutral-900 to-neutral-800 p-6  text-white">
+            <div className="w-full max-w-sm bg-neutral-900 p-6  text-white">
               <div className="flex items-center space-x-4 mb-8">
                 <div className="h-12 w-12 bg-white/10  flex items-center justify-center">
                   <img src="/llama.svg" alt="Llama" className="h-8 w-8" />
@@ -583,25 +581,26 @@ export default function HomePage() {
               WebkitMask:
                 "radial-gradient(circle at center, white 30%, transparent 70%)",
             }}
-          ></div>
-        </div>{" "}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-light text-neutral-800 mb-4">
+            <h2 className="text-4xl lg:text-5xl font-light text-neutral-900 mb-4">
               Multi-Model Architecture
             </h2>
             <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
               Deploy multiple domain-specific models with intelligent resource
-              allocation and dynamic scaling
+              allocation
             </p>
           </div>
 
           <div className="flex flex-col md:flex-row gap-8">
-            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+            <div className="flex-1 bg-white p-6 border border-neutral-200 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-blue-50  border border-blue-100">
+                <div className="p-3 bg-neutral-900 text-white">
                   <svg
-                    className="w-6 h-6 text-blue-500"
+                    className="w-6 h-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -614,35 +613,34 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-medium text-neutral-800 mb-2">
+                <div>
+                  <h3 className="text-lg font-medium text-neutral-900">
                     Resource Optimization
                   </h3>
-                  <p className="text-neutral-600 text-sm">
-                    Intelligent allocation of GPU resources across multiple
-                    models with automatic scaling
+                  <p className="text-neutral-600">
+                    Intelligent allocation of GPU resources
                   </p>
                 </div>
               </div>
-              <div className="mt-4 bg-neutral-50 p-4  font-mono text-sm">
+              <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200 font-mono text-sm">
                 <pre className="text-neutral-800">
                   GPU Cluster 1{"\n"}├─ Model A: 40% utilization{"\n"}├─ Model
                   B: 35% utilization{"\n"}└─ Model C: 25% utilization
                 </pre>
               </div>
-              <div className="mt-4 bg-blue-50 p-4 ">
+              <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className="font-medium text-blue-600">99.9%</div>
-                  <div className="text-sm text-blue-600">Uptime</div>
+                  <div className="font-medium text-neutral-900">99.9%</div>
+                  <div className="text-sm text-neutral-600">Uptime</div>
                 </div>
               </div>
             </div>
 
-            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+            <div className="flex-1 bg-neutral-900 p-6 text-white">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-green-50  border border-green-100">
+                <div className="p-3 bg-white/10">
                   <svg
-                    className="w-6 h-6 text-green-500"
+                    className="w-6 h-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -655,35 +653,32 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-medium text-neutral-800 mb-2">
-                    Zero-Downtime Updates
-                  </h3>
-                  <p className="text-neutral-600 text-sm">
-                    Seamless model updates and deployments without service
-                    interruption
+                <div>
+                  <h3 className="text-lg font-medium">Zero-Downtime Updates</h3>
+                  <p className="text-neutral-300">
+                    Seamless model updates and deployments
                   </p>
                 </div>
               </div>
-              <div className="mt-4 bg-neutral-50 p-4  font-mono text-sm">
-                <pre className="text-neutral-800">
+              <div className="mt-4 bg-neutral-800 p-4 font-mono text-sm text-neutral-300">
+                <pre>
                   Hot Swap Status:{"\n"}├─ Previous: Model v1 ✓{"\n"}├─ Current:
                   Model v2 ⟳{"\n"}└─ Transition: 0ms downtime
                 </pre>
               </div>
-              <div className="mt-4 bg-green-50 p-4 ">
+              <div className="mt-4 bg-neutral-800 p-4">
                 <div className="text-center">
-                  <div className="font-medium text-green-600">150ms</div>
-                  <div className="text-sm text-green-600">Latency</div>
+                  <div className="font-medium text-white">150ms</div>
+                  <div className="text-sm text-neutral-400">Latency</div>
                 </div>
               </div>
             </div>
 
-            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+            <div className="flex-1 bg-white p-6 border border-neutral-200 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-purple-50  border border-purple-100">
+                <div className="p-3 bg-neutral-900 text-white">
                   <svg
-                    className="w-6 h-6 text-purple-500"
+                    className="w-6 h-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -696,26 +691,25 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-medium text-neutral-800 mb-2">
+                <div>
+                  <h3 className="text-lg font-medium text-neutral-900">
                     Request Routing
                   </h3>
-                  <p className="text-neutral-600 text-sm">
-                    Intelligent request distribution and load balancing across
-                    model instances
+                  <p className="text-neutral-600">
+                    Intelligent request distribution
                   </p>
                 </div>
               </div>
-              <div className="mt-4 bg-neutral-50 p-4  font-mono text-sm">
+              <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200 font-mono text-sm">
                 <pre className="text-neutral-800">
-                  Request Flow:{"\n"}├─ Load Balancer → {"\n"}├─ Model Router →
+                  Request Flow:{"\n"}├─ Load Balancer → {"\n"}├─ Model Router →{" "}
                   {"\n"}└─ Optimal Instance
                 </pre>
               </div>
-              <div className="mt-4 bg-purple-50 p-4 ">
+              <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className="font-medium text-purple-600">4TB</div>
-                  <div className="text-sm text-purple-600">
+                  <div className="font-medium text-neutral-900">4TB</div>
+                  <div className="text-sm text-neutral-600">
                     Daily Processing
                   </div>
                 </div>
@@ -738,9 +732,10 @@ export default function HomePage() {
             }}
           />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div className="relative max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-light text-neutral-800 mb-4">
+            <h2 className="text-4xl lg:text-5xl font-light text-neutral-900 mb-4">
               Enterprise-Grade Security
             </h2>
             <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
@@ -749,12 +744,12 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="bg-white p-6 border border-neutral-200 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-blue-50  border border-blue-100">
+                <div className="p-3 bg-neutral-900 text-white">
                   <svg
-                    className="w-6 h-6 text-blue-500"
+                    className="w-6 h-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -767,37 +762,40 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-medium text-neutral-800">
+                <div>
+                  <h3 className="text-lg font-medium text-neutral-900">
                     Model Security
                   </h3>
-                  <p className="text-neutral-600 text-sm mt-2">
-                    Protected model weights and secure deployment pipeline
+                  <p className="text-neutral-600">
+                    Protected model weights and secure deployment
                   </p>
                 </div>
               </div>
-              <div className="mt-4 bg-neutral-50 p-4 ">
-                <div className="flex flex-wrap gap-2 justify-center">
-                  <span className="px-3 py-1 text-xs font-medium bg-blue-50 text-blue-600 ">
-                    Encrypted Weights
-                  </span>
-                  <span className="px-3 py-1 text-xs font-medium bg-green-50 text-green-600 ">
-                    Secure Loading
-                  </span>
+              <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200">
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center space-x-2">
+                    <span className="flex h-2 w-2 bg-neutral-900" />
+                    <span className="text-neutral-600">Encrypted Weights</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="flex h-2 w-2 bg-neutral-900" />
+                    <span className="text-neutral-600">Secure Loading</span>
+                  </div>
                 </div>
               </div>
-              <div className="mt-4 bg-blue-50 p-4 ">
+              <div className="mt-3 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className="font-medium text-blue-600">256-bit</div>
-                  <div className="text-sm text-blue-600">Model Encryption</div>
+                  <div className="font-medium text-neutral-900">256-bit</div>
+                  <div className="text-sm text-neutral-600">Encryption</div>
                 </div>
               </div>
             </div>
-            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+
+            <div className="bg-neutral-900 p-6 text-white">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-green-50  border border-green-100">
+                <div className="p-3 bg-white/10">
                   <svg
-                    className="w-6 h-6 text-green-500"
+                    className="w-6 h-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -810,33 +808,42 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-medium text-neutral-800">
-                    API Security
-                  </h3>
-                  <p className="text-neutral-600 text-sm mt-2">
-                    Secure API endpoints with advanced rate limiting
+                <div>
+                  <h3 className="text-lg font-medium">API Security</h3>
+                  <p className="text-neutral-300">
+                    Advanced API protection with intelligent rate limiting
                   </p>
                 </div>
               </div>
-              <div className="mt-4 bg-neutral-50 p-4  space-y-2 font-mono text-sm">
-                <div className="flex justify-between text-neutral-600">
-                  <span>Authentication</span>
-                  <span className="text-green-600">API Keys / OAuth</span>
+              <div className="mt-4 bg-neutral-800 p-4">
+                <div className="space-y-3 font-mono text-sm text-neutral-300">
+                  <div className="flex justify-between">
+                    <span>Rate Limit</span>
+                    <span>10K req/s</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Auth Method</span>
+                    <span>JWT</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>SSL/TLS</span>
+                    <span>v1.3</span>
+                  </div>
                 </div>
               </div>
-              <div className="mt-4 bg-green-50 p-4 ">
+              <div className="mt-3 bg-neutral-800 p-4">
                 <div className="text-center">
-                  <div className="font-medium text-green-600">10K req/s</div>
-                  <div className="text-sm text-green-600">Rate Limit</div>
+                  <div className="font-medium text-white">10K/s</div>
+                  <div className="text-sm text-neutral-400">Request Rate</div>
                 </div>
               </div>
             </div>
-            <div className="flex-1 relative bg-white p-6  border border-neutral-200">
+
+            <div className="bg-white p-6 border border-neutral-200 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-purple-50  border border-purple-100">
+                <div className="p-3 bg-neutral-900 text-white">
                   <svg
-                    className="w-6 h-6 text-purple-500"
+                    className="w-6 h-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -849,38 +856,38 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-medium text-neutral-800">
+                <div>
+                  <h3 className="text-lg font-medium text-neutral-900">
                     Inference Protection
                   </h3>
-                  <p className="text-neutral-600 text-sm mt-2">
-                    Secure inference environment with request isolation
+                  <p className="text-neutral-600">
+                    Secure inference with request isolation
                   </p>
                 </div>
               </div>
-              <div className="mt-4 bg-neutral-50 p-4 ">
-                <div className="flex flex-wrap gap-2 justify-center">
-                  <span className="px-3 py-1 text-xs font-medium bg-purple-50 text-purple-600 ">
-                    Request Isolation
-                  </span>
-                  <span className="px-3 py-1 text-xs font-medium bg-orange-50 text-orange-600 ">
-                    Memory Protection
-                  </span>
+              <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200">
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center space-x-2">
+                    <span className="flex h-2 w-2 bg-neutral-900" />
+                    <span className="text-neutral-600">Request Isolation</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="flex h-2 w-2 bg-neutral-900" />
+                    <span className="text-neutral-600">Memory Protection</span>
+                  </div>
                 </div>
               </div>
-              <div className="mt-4 bg-purple-50 p-4 ">
+              <div className="mt-3 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className="font-medium text-purple-600">100%</div>
-                  <div className="text-sm text-purple-600">
-                    Request Isolation
-                  </div>
+                  <div className="font-medium text-neutral-900">100%</div>
+                  <div className="text-sm text-neutral-600">Isolation</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <section id="Contact" className="relative bg-white py-24">
+      <section id="GetStarted" className="relative bg-white py-24">
         <div className="absolute inset-0">
           <div
             className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"
@@ -895,20 +902,20 @@ export default function HomePage() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
             <div className="space-y-4">
               <h2 className="text-3xl font-light text-neutral-800">
-                Need a custom solution?
+                Get Started with LMScale Playground
               </h2>
               <p className="text-lg font-light text-neutral-800">
-                Let&apos;s discuss your specific LLM deployment requirements
+                Experience the power of efficient LLM deployment firsthand
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
-              <button
-                onClick={() => window.open("mailto:info@lmscale.tech")}
+              <a
+                href="/register"
                 className="group inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 bg-black text-white"
               >
-                Contact Us
+                Get Started
                 <MoveRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
+              </a>
             </div>
           </div>
         </div>
