@@ -192,7 +192,7 @@ export default function HomePage() {
             </div>
 
             <div className="relative w-full p-2 md:p-4">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#ec4899,transparent_40%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
