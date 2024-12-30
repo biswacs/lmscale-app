@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Send, Loader } from "lucide-react";
+import { usePlayground } from "@/providers/playground-provider";
 
 export function PlaygroundContainer() {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { messages, isLoading, sendMessage } = usePlayground();
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
 
@@ -23,82 +23,17 @@ export function PlaygroundContainer() {
     }
   }, [message]);
 
-  const sendMessage = async () => {
+  const handleSendMessage = async () => {
     if (!message.trim()) return;
-
-    const userMessage = message.trim();
+    const messageToSend = message.trim();
     setMessage("");
-    setIsLoading(true);
-
-    setMessages([
-      { role: "user", content: userMessage },
-      { role: "assistant", content: "", loading: true },
-    ]);
-
-    try {
-      const response = await fetch("http://13.232.229.112:8000/chat/stream", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      let fullResponse = "";
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let isFirstChunk = true;
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split("\n").filter((line) => line.trim() !== "");
-
-        for (const line of lines) {
-          if (line.startsWith("data: ")) {
-            try {
-              const data = JSON.parse(line.slice(6));
-              fullResponse += data.response || data.text || "";
-
-              setMessages((prev) => {
-                const newMessages = [...prev];
-                const lastMessage = newMessages[newMessages.length - 1];
-                lastMessage.content = fullResponse;
-                if (isFirstChunk) {
-                  lastMessage.loading = false;
-                  isFirstChunk = false;
-                }
-                return newMessages;
-              });
-            } catch (e) {
-              console.error("Error parsing JSON:", e);
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setMessages((prev) => [
-        prev[0],
-        {
-          role: "assistant",
-          content: `Error: ${error.message}`,
-          loading: false,
-        },
-      ]);
-    } finally {
-      setIsLoading(false);
-    }
+    await sendMessage(messageToSend);
   };
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
-      sendMessage();
+      handleSendMessage();
     }
   };
 
@@ -146,7 +81,7 @@ export function PlaygroundContainer() {
               style={{ minHeight: "44px" }}
             />
             <button
-              onClick={sendMessage}
+              onClick={handleSendMessage}
               disabled={isLoading || !message.trim()}
               className={`absolute right-6 bottom-7 p-1 ${
                 isLoading || !message.trim()
