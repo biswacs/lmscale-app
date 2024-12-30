@@ -40,7 +40,7 @@ export function PlaygroundContainer() {
   return (
     <div className="h-full flex flex-col relative">
       <div className="absolute inset-0 overflow-y-auto">
-        <div className="min-h-full pb-24 pt-4">
+        <div className="min-h-full pb-24">
           {messages.map((msg, index) => (
             <div key={index} className="px-4 py-4">
               <div className="max-w-3xl mx-auto">
