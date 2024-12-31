@@ -209,7 +209,7 @@ export default function HomePage() {
                 </div>
                 <pre className="text-left text-xs md:text-sm text-neutral-600 overflow-x-auto scrollbar-thin scrollbar-thumb-neutral-300 scrollbar-track-transparent">
                   <code>
-                    {`curl -X POST "https://api.lmscale.tech/v1/completion" \\
+                    {`curl -X POST "https://api.lmscale.tech/v1/chat/completion" \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer your-api-key" \\
   -d '{

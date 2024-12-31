@@ -37,25 +37,31 @@ export function PlaygroundContainer() {
     }
   };
 
+  const renderMessageContent = (msg) => {
+    if (msg.loading) {
+      return (
+        <div className="flex items-center gap-2 text-neutral-500">
+          <Loader className="h-4 w-4 animate-spin" />
+        </div>
+      );
+    }
+
+    return <div className="whitespace-pre-wrap">{msg.content}</div>;
+  };
+
   return (
     <div className="h-full flex flex-col relative">
       <div className="absolute inset-0 overflow-y-auto">
         <div className="min-h-full pb-24">
           {messages.map((msg, index) => (
-            <div key={index} className="px-4 py-4">
+            <div key={`${msg.role}-${index}`} className="px-4 py-4">
               <div className="max-w-3xl mx-auto">
                 <div className="flex items-start gap-3">
                   <div className="size-8 bg-neutral-900 flex-shrink-0 flex items-center justify-center text-white font-medium">
                     {msg.role === "user" ? "U" : "A"}
                   </div>
                   <div className="flex-1 font-mono text-sm break-words">
-                    {msg.loading ? (
-                      <div className="flex items-center gap-2 text-neutral-500">
-                        <Loader className="h-4 w-4 animate-spin" />
-                      </div>
-                    ) : (
-                      msg.content
-                    )}
+                    {renderMessageContent(msg)}
                   </div>
                 </div>
               </div>
@@ -75,9 +81,7 @@ export function PlaygroundContainer() {
               onKeyPress={handleKeyPress}
               placeholder="Send a message"
               rows="1"
-              className="flex-1 resize-none border border-neutral-200 p-3 pr-10
-                     text-neutral-900 focus:outline-none focus:border-neutral-400
-                     text-sm max-h-36 overflow-y-auto"
+              className="flex-1 resize-none border border-neutral-200 p-3 pr-10 text-neutral-900 focus:outline-none focus:border-neutral-400 text-sm max-h-36 overflow-y-auto"
               style={{ minHeight: "44px" }}
             />
             <button

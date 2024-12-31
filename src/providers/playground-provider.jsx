@@ -1,13 +1,11 @@
 import { createContext, useContext, useState } from "react";
 import { lmScaleAPI } from "@/api/instance";
-import { useAuthentication } from "./authentication-provider";
 
 const PlaygroundContext = createContext({});
 
-const PlaygroundProvider = ({ children }) => {
+export const PlaygroundProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { authToken } = useAuthentication();
 
   const sendMessage = async (message) => {
     if (!message.trim()) return;
@@ -15,19 +13,21 @@ const PlaygroundProvider = ({ children }) => {
     const userMessage = message.trim();
     setIsLoading(true);
 
-    setMessages([
-      { role: "user", content: userMessage },
+    setMessages([{ role: "user", content: userMessage }]);
+
+    setMessages((prev) => [
+      ...prev,
       { role: "assistant", content: "", loading: true },
     ]);
 
     try {
       const response = await fetch(
-        `${lmScaleAPI.defaults.baseURL}/playground/chat`,
+        `${lmScaleAPI.defaults.baseURL}/chat/completion`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
           body: JSON.stringify({ message: userMessage }),
         }
@@ -37,10 +37,11 @@ const PlaygroundProvider = ({ children }) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      let fullResponse = "";
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-      let isFirstChunk = true;
+
+      let isFirstResponse = true;
+      let accumulatedText = "";
 
       while (true) {
         const { done, value } = await reader.read();
@@ -52,23 +53,36 @@ const PlaygroundProvider = ({ children }) => {
         for (const line of lines) {
           if (line.startsWith("data: ")) {
             try {
-              const data = JSON.parse(line.slice(6));
-              fullResponse += data.response || data.text || "";
+              const jsonData = line.slice(6);
+              const data = JSON.parse(jsonData);
 
-              setMessages([
-                { role: "user", content: userMessage },
-                {
-                  role: "assistant",
-                  content: fullResponse,
-                  loading: isFirstChunk,
-                },
-              ]);
+              if (data.response) {
+                accumulatedText += data.response;
 
-              if (isFirstChunk) {
-                isFirstChunk = false;
+                setMessages((prev) => {
+                  const newMessages = [...prev];
+                  const lastMessage = newMessages[newMessages.length - 1];
+                  if (lastMessage.role === "assistant") {
+                    return [
+                      ...prev.slice(0, -1),
+                      {
+                        ...lastMessage,
+                        content: accumulatedText,
+                        loading: false,
+                      },
+                    ];
+                  }
+                  return newMessages;
+                });
+
+                if (!isFirstResponse) {
+                  await new Promise((resolve) => setTimeout(resolve, 10));
+                }
+                isFirstResponse = false;
               }
             } catch (e) {
-              console.error("Error parsing JSON:", e);
+              console.error("JSON parsing error:", e);
+              console.error("Problematic line:", line);
             }
           }
         }
@@ -79,7 +93,11 @@ const PlaygroundProvider = ({ children }) => {
         { role: "user", content: userMessage },
         {
           role: "assistant",
-          content: `Error: ${error.message}`,
+          content: `Error: ${
+            error?.response?.data?.message ||
+            error.message ||
+            "Something went wrong"
+          }`,
           loading: false,
         },
       ]);
@@ -88,9 +106,7 @@ const PlaygroundProvider = ({ children }) => {
     }
   };
 
-  const clearMessages = () => {
-    setMessages([]);
-  };
+  const clearMessages = () => setMessages([]);
 
   const contextValue = {
     messages,
