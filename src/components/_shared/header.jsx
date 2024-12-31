@@ -22,17 +22,22 @@ export function Header() {
     <div className="flex flex-col bg-white">
       <header className="h-12 border-b border-neutral-200">
         <div className="h-full px-4 flex items-center justify-between">
-          <Link
-            href="/dashboard"
-            className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg text-neutral-800"
-          >
-            <img
-              src="/icon.png"
-              alt="LmScale Logo"
-              className="h-6 w-6 sm:h-7 sm:w-7 object-contain"
-            />
-            <span className="font-light tracking-tight">LmScale</span>
-          </Link>
+          <div className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg text-neutral-800">
+            <Link href="/dashboard">
+              <img
+                src="/icon.png"
+                alt="LmScale Logo"
+                className="h-6 w-6 sm:h-7 sm:w-7 object-contain"
+              />
+            </Link>
+            <span className="text-neutral-400 font-thin text-xl">|</span>
+            <Link
+              href="/dashboard/settings"
+              className="ml-0.5 flex items-center justify-center text-normal size-7 border border-neutral-200 uppercase bg-neutral-50 font-light text-neutral-600"
+            >
+              {userDisplayName[0]}
+            </Link>
+          </div>
 
           <div className="flex items-center gap-2">
             <button
@@ -45,17 +50,6 @@ export function Header() {
                 <Menu className="h-5 w-5 text-neutral-600" />
               )}
             </button>
-
-            <div className="relative">
-              <button
-                onClick={() => setShowDropdown(!showDropdown)}
-                className="flex items-center h-8 w-8 border border-neutral-200 hover:bg-neutral-50"
-              >
-                <div className="w-full h-full flex items-center justify-center bg-neutral-100 text-sm font-medium text-neutral-700 uppercase">
-                  {userDisplayName[0]}
-                </div>
-              </button>
-            </div>
           </div>
         </div>
       </header>

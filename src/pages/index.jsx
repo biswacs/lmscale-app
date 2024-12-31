@@ -199,7 +199,7 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
               <div className="absolute inset-0 bg-white/40 backdrop-blur-[1px]" />
               <div
-                className="m-4 bg-white/80 p-4 backdrop-blur
+                className="m-4 bg-white/80 p-2 md:p-4 backdrop-blur
 -sm"
               >
                 <div className="flex items-center space-x-2 mb-3">

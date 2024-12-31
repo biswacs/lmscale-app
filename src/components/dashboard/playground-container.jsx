@@ -81,7 +81,7 @@ export function PlaygroundContainer() {
               onKeyPress={handleKeyPress}
               placeholder="Send a message"
               rows="1"
-              className="flex-1 resize-none border border-neutral-200 p-3 pr-10 text-neutral-900 focus:outline-none focus:border-neutral-400 text-sm max-h-36 overflow-y-auto"
+              className="flex-1 resize-none border border-neutral-200 p-3 pr-10 text-neutral-900 focus:outline-none focus:border-neutral-400/60 text-sm max-h-36 overflow-y-auto"
               style={{ minHeight: "44px" }}
             />
             <button
