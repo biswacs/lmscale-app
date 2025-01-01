@@ -20,8 +20,8 @@ const AuthenticationProvider = ({ children }) => {
     setSubmitting(true);
     try {
       const res = await lmScaleAPI.post("/user/login", { email, password });
-      localStorage.setItem("accessToken", res.data.accessToken);
-      setAuthToken(res.data.accessToken);
+      localStorage.setItem("lm_auth_token", res.data.lm_auth_token);
+      setAuthToken(res.data.lm_auth_token);
       window.location.href = ROUTES_MAP.DASHBOARD.__;
       return res.data;
     } catch (err) {
@@ -44,8 +44,8 @@ const AuthenticationProvider = ({ children }) => {
         email,
         password,
       });
-      localStorage.setItem("accessToken", res.data.accessToken);
-      setAuthToken(res.data.accessToken);
+      localStorage.setItem("lm_auth_token", res.data.lm_auth_token);
+      setAuthToken(res.data.lm_auth_token);
       window.location.href = ROUTES_MAP.DASHBOARD.__;
       return res.data;
     } catch (err) {
@@ -63,7 +63,7 @@ const AuthenticationProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const tokenFromQuery = router?.query?.accessToken;
+    const tokenFromQuery = router?.query?.lm_auth_token;
 
     if (tokenFromQuery) {
       lmScaleAPI
@@ -74,20 +74,20 @@ const AuthenticationProvider = ({ children }) => {
         })
         .then((response) => {
           if (response.status === 200) {
-            localStorage.setItem("accessToken", tokenFromQuery);
+            localStorage.setItem("lm_auth_token", tokenFromQuery);
             setAuthToken(tokenFromQuery);
           }
         })
         .catch((error) => {
-          console.error("Error validating accessToken:", error);
+          console.error("Error validating lm_auth_token:", error);
         })
         .finally(() => {
           setLoading(false);
         });
     }
 
-    const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
-    setAuthToken(accessTokenFromLocalStorage);
+    const lm_auth_tokenFromLocalStorage = localStorage.getItem("lm_auth_token");
+    setAuthToken(lm_auth_tokenFromLocalStorage);
     setLoading(false);
   }, [router]);
 

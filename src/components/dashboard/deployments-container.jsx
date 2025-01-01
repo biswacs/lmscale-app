@@ -42,7 +42,7 @@ function CreateDeploymentModal({ isOpen, onClose, onCreateSuccess }) {
       const response = await fetch(`${API_BASE_URL}/deployment/create`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("lm_auth_token")}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
@@ -142,7 +142,7 @@ export function DeploymentsContainer() {
     try {
       const response = await fetch(`${API_BASE_URL}/user/deployments`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("lm_auth_token")}`,
         },
       });
 

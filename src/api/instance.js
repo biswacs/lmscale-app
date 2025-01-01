@@ -5,9 +5,13 @@ export const API_BASE_URL = "https://api.lmscale.tech/v1";
 // export const API_BASE_URL = "http://localhost:8080/v1";
 
 export const getNewAPIInstance = (URL) => {
-  const accessToken =
-    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-  const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+  const lm_auth_token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("lm_auth_token")
+      : null;
+  const headers = lm_auth_token
+    ? { Authorization: `Bearer ${lm_auth_token}` }
+    : {};
 
   return axios.create({
     baseURL: URL || API_BASE_URL,

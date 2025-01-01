@@ -27,7 +27,7 @@ export const PlaygroundProvider = ({ children }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem("lm_auth_token")}`,
           },
           body: JSON.stringify({ message: userMessage }),
         }
