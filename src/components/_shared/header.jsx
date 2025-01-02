@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Terminal, Server, Menu, X } from "lucide-react";
+import { Terminal, Menu, X, Bot } from "lucide-react";
 import { useUser } from "@/providers/user-provider";
 
 const navigation = [
-  { name: "Playground", href: "/dashboard", icon: Terminal },
-  { name: "Deployments", href: "/dashboard/deployments", icon: Server },
+  { name: "Agents", href: "/agents", icon: Bot },
+  { name: "Playground", href: "/playground", icon: Terminal },
 ];
 
 export function Header() {
@@ -21,7 +21,7 @@ export function Header() {
         <div className="flex h-12 items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-center">
-              <Link href="/dashboard" className="flex items-center gap-2">
+              <Link href="/agents" className="flex items-center gap-2">
                 <img
                   src="/icon.png"
                   alt="LmScale Logo"
@@ -32,7 +32,6 @@ export function Header() {
                 </span>
               </Link>
             </div>
-            <span className="text-xl font-extralight text-neutral-400">|</span>
             <div className="hidden md:flex">
               {navigation.map((item) => {
                 const isActive = pathname === item.href;
@@ -40,7 +39,7 @@ export function Header() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`relative flex h-12 items-center gap-2 mx-4 px-1 text-sm transition-colors duration-200 ${
+                    className={`relative flex h-12 items-center gap-2 mx-2 px-1 text-sm transition-colors duration-200 ${
                       isActive
                         ? "text-neutral-800 "
                         : "text-neutral-500 hover:text-neutral-800"
@@ -58,8 +57,8 @@ export function Header() {
           </div>
           <div className="flex items-center">
             <Link
-              href="/dashboard/settings"
-              className="hidden md:flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm  text-neutral-600 hover:bg-neutral-100 transition-colors duration-200"
+              href="/profile"
+              className="hidden uppercase md:flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm  text-neutral-600 hover:bg-neutral-100 transition-colors duration-200"
             >
               {userDisplayName[0]}
             </Link>
@@ -99,14 +98,14 @@ export function Header() {
               );
             })}
             <Link
-              href="/dashboard/settings"
+              href="/profile"
               className="flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800"
               onClick={() => setShowMobileMenu(false)}
             >
-              <div className="flex h-4 w-4 items-center justify-center text-xs">
+              <div className="uppercase flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm text-neutral-600">
                 {userDisplayName[0]}
               </div>
-              Profile Settings
+              Profile
             </Link>
           </div>
         )}

@@ -24,11 +24,10 @@ function Modal({ isOpen, onClose, children, title }) {
   );
 }
 
-function CreateDeploymentModal({ isOpen, onClose, onCreateSuccess }) {
+function CreateAgentModal({ isOpen, onClose, onCreateSuccess }) {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    prompt: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -39,7 +38,7 @@ function CreateDeploymentModal({ isOpen, onClose, onCreateSuccess }) {
     setError(null);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/deployment/create`, {
+      const response = await fetch(`${API_BASE_URL}/agent/create`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("lm_auth_token")}`,
@@ -49,7 +48,7 @@ function CreateDeploymentModal({ isOpen, onClose, onCreateSuccess }) {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create deployment");
+        throw new Error("Failed to create agent");
       }
 
       onCreateSuccess();
@@ -62,11 +61,11 @@ function CreateDeploymentModal({ isOpen, onClose, onCreateSuccess }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Create New Deployment">
+    <Modal isOpen={isOpen} onClose={onClose} title="Create New Agent">
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && <div className="text-red-500 text-sm">{error}</div>}
         <div className="space-y-2">
-          <label className="text-sm  text-neutral-900">Name</label>
+          <label className="text-sm text-neutral-900">Name</label>
           <input
             type="text"
             value={formData.name}
@@ -78,7 +77,7 @@ function CreateDeploymentModal({ isOpen, onClose, onCreateSuccess }) {
           />
         </div>
         <div className="space-y-2">
-          <label className="text-sm  text-neutral-900">Description</label>
+          <label className="text-sm text-neutral-900">Description</label>
           <input
             type="text"
             value={formData.description}
@@ -88,34 +87,23 @@ function CreateDeploymentModal({ isOpen, onClose, onCreateSuccess }) {
             className="w-full border border-neutral-200 p-2 text-sm focus:outline-none focus:border-neutral-400 "
           />
         </div>
-        <div className="space-y-2">
-          <label className="text-sm  text-neutral-900">Initial Prompt</label>
-          <textarea
-            value={formData.prompt}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, prompt: e.target.value }))
-            }
-            className="w-full border border-neutral-200 p-2 text-sm focus:outline-none focus:border-neutral-400  min-h-[100px]"
-            required
-          />
-        </div>
         <div className="flex justify-end gap-2 pt-4">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-sm  text-neutral-600 hover:text-neutral-900"
+            className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isLoading}
-            className="bg-neutral-900 text-white px-4 py-2 text-sm  hover:bg-neutral-800 disabled:opacity-50 "
+            className="bg-neutral-900 text-white px-4 py-2 text-sm hover:bg-neutral-800 disabled:opacity-50 "
           >
             {isLoading ? (
               <Loader2 className="animate-spin h-4 w-4" />
             ) : (
-              "Create Deployment"
+              "Create Agent"
             )}
           </button>
         </div>
@@ -124,30 +112,30 @@ function CreateDeploymentModal({ isOpen, onClose, onCreateSuccess }) {
   );
 }
 
-export function DeploymentsContainer() {
-  const [deployments, setDeployments] = useState([]);
+export function AgentsContainer() {
+  const [agents, setAgents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   useEffect(() => {
-    fetchDeployments();
+    fetchAgents();
   }, []);
 
-  const fetchDeployments = async () => {
+  const fetchAgents = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/user/deployments`, {
+      const response = await fetch(`${API_BASE_URL}/user/agents`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("lm_auth_token")}`,
         },
       });
 
       if (!response.ok) {
-        throw new Error("Failed to fetch deployments");
+        throw new Error("Failed to fetch agents");
       }
 
       const result = await response.json();
-      setDeployments(result.data.deployments);
+      setAgents(result.data.agents);
       setIsLoading(false);
     } catch (err) {
       setError(err.message);
@@ -177,65 +165,64 @@ export function DeploymentsContainer() {
         <div className="min-h-full pb-24">
           <div className="px-4 py-4">
             <div className="max-w-3xl mx-auto space-y-6">
-              <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-semibold text-neutral-900">
-                  Deployments
-                </h1>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
+                <h1 className="text-xl sm:text-2xl text-neutral-900">Agents</h1>
                 <button
                   onClick={() => setIsCreateModalOpen(true)}
-                  className="bg-neutral-900 text-white px-4 py-2 text-sm  hover:bg-neutral-800 "
+                  className="w-full sm:w-auto bg-neutral-900 text-white px-4 py-2 text-sm hover:bg-neutral-800 "
                 >
-                  New Deployment
+                  New Agent
                 </button>
               </div>
 
-              <div className="border border-neutral-200 bg-white ">
-                <div className="grid grid-cols-6 gap-4 p-4 border-b border-neutral-200 text-sm  text-neutral-500">
+              <div className="border border-neutral-200 bg-white  overflow-x-auto">
+                <div className="hidden sm:grid grid-cols-5 gap-4 p-4 border-b border-neutral-200 text-sm text-neutral-500">
                   <div className="col-span-2">Name</div>
                   <div>Status</div>
-                  <div>Description</div>
                   <div>Created</div>
                   <div>Last Updated</div>
                 </div>
 
-                {deployments.map((deployment) => (
+                {agents.map((agent) => (
                   <div
-                    key={deployment.id}
-                    className="grid grid-cols-6 gap-4 p-4 border-b border-neutral-200 text-sm hover:bg-neutral-50"
+                    key={agent.id}
+                    className="flex flex-col sm:grid sm:grid-cols-5 gap-2 sm:gap-4 p-4 border-b border-neutral-200 text-sm hover:bg-neutral-50"
                   >
-                    <div className="col-span-2  text-neutral-900">
-                      {deployment.name}
+                    <div className="col-span-2 text-neutral-900 font-medium">
+                      <span className="sm:hidden text-neutral-500">Name: </span>
+                      {agent.name}
                     </div>
                     <div>
+                      <span className="sm:hidden text-neutral-500">
+                        Status:{" "}
+                      </span>
                       <span className="inline-flex items-center gap-1.5">
                         <span
                           className={`size-2 rounded-full ${
-                            deployment.isActive
-                              ? "bg-green-500"
-                              : "bg-yellow-500"
+                            agent.isActive ? "bg-green-500" : "bg-yellow-500"
                           }`}
                         />
-                        {deployment.isActive ? "Active" : "Inactive"}
+                        {agent.isActive ? "Active" : "Inactive"}
                       </span>
                     </div>
-                    <div
-                      className="text-neutral-600 truncate"
-                      title={deployment.description}
-                    >
-                      {deployment.description}
+                    <div className="text-neutral-600">
+                      <span className="sm:hidden text-neutral-500">
+                        Created:{" "}
+                      </span>
+                      {new Date(agent.createdAt).toLocaleDateString()}
                     </div>
                     <div className="text-neutral-600">
-                      {new Date(deployment.createdAt).toLocaleDateString()}
-                    </div>
-                    <div className="text-neutral-600">
-                      {new Date(deployment.updatedAt).toLocaleDateString()}
+                      <span className="sm:hidden text-neutral-500">
+                        Updated:{" "}
+                      </span>
+                      {new Date(agent.updatedAt).toLocaleDateString()}
                     </div>
                   </div>
                 ))}
 
-                {deployments.length === 0 && (
+                {agents.length === 0 && (
                   <div className="p-8 text-center text-neutral-500">
-                    No deployments found
+                    No agents found
                   </div>
                 )}
               </div>
@@ -244,10 +231,10 @@ export function DeploymentsContainer() {
         </div>
       </div>
 
-      <CreateDeploymentModal
+      <CreateAgentModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-        onCreateSuccess={fetchDeployments}
+        onCreateSuccess={fetchAgents}
       />
     </div>
   );
