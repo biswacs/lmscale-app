@@ -66,7 +66,7 @@ function CreateDeploymentModal({ isOpen, onClose, onCreateSuccess }) {
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && <div className="text-red-500 text-sm">{error}</div>}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-neutral-900">Name</label>
+          <label className="text-sm  text-neutral-900">Name</label>
           <input
             type="text"
             value={formData.name}
@@ -78,9 +78,7 @@ function CreateDeploymentModal({ isOpen, onClose, onCreateSuccess }) {
           />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-neutral-900">
-            Description
-          </label>
+          <label className="text-sm  text-neutral-900">Description</label>
           <input
             type="text"
             value={formData.description}
@@ -91,9 +89,7 @@ function CreateDeploymentModal({ isOpen, onClose, onCreateSuccess }) {
           />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-neutral-900">
-            Initial Prompt
-          </label>
+          <label className="text-sm  text-neutral-900">Initial Prompt</label>
           <textarea
             value={formData.prompt}
             onChange={(e) =>
@@ -107,14 +103,14 @@ function CreateDeploymentModal({ isOpen, onClose, onCreateSuccess }) {
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900"
+            className="px-4 py-2 text-sm  text-neutral-600 hover:text-neutral-900"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isLoading}
-            className="bg-neutral-900 text-white px-4 py-2 text-sm font-medium hover:bg-neutral-800 disabled:opacity-50 "
+            className="bg-neutral-900 text-white px-4 py-2 text-sm  hover:bg-neutral-800 disabled:opacity-50 "
           >
             {isLoading ? (
               <Loader2 className="animate-spin h-4 w-4" />
@@ -187,14 +183,14 @@ export function DeploymentsContainer() {
                 </h1>
                 <button
                   onClick={() => setIsCreateModalOpen(true)}
-                  className="bg-neutral-900 text-white px-4 py-2 text-sm font-medium hover:bg-neutral-800 "
+                  className="bg-neutral-900 text-white px-4 py-2 text-sm  hover:bg-neutral-800 "
                 >
                   New Deployment
                 </button>
               </div>
 
               <div className="border border-neutral-200 bg-white ">
-                <div className="grid grid-cols-6 gap-4 p-4 border-b border-neutral-200 text-sm font-medium text-neutral-500">
+                <div className="grid grid-cols-6 gap-4 p-4 border-b border-neutral-200 text-sm  text-neutral-500">
                   <div className="col-span-2">Name</div>
                   <div>Status</div>
                   <div>Description</div>
@@ -207,7 +203,7 @@ export function DeploymentsContainer() {
                     key={deployment.id}
                     className="grid grid-cols-6 gap-4 p-4 border-b border-neutral-200 text-sm hover:bg-neutral-50"
                   >
-                    <div className="col-span-2 font-medium text-neutral-900">
+                    <div className="col-span-2  text-neutral-900">
                       {deployment.name}
                     </div>
                     <div>

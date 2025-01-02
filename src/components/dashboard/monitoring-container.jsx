@@ -35,16 +35,14 @@ export function MonitoringContainer() {
             key={stat.label}
             className="bg-white border border-neutral-200 p-4"
           >
-            <div className="text-sm font-medium text-neutral-500">
-              {stat.label}
-            </div>
+            <div className="text-sm  text-neutral-500">{stat.label}</div>
             <div className="text-2xl font-semibold mt-1">{stat.value}</div>
           </div>
         ))}
       </div>
 
       <div className="bg-white border border-neutral-200 p-4">
-        <h2 className="text-lg font-medium mb-4">Request Volume</h2>
+        <h2 className="text-lg  mb-4">Request Volume</h2>
         <div className="h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data}>

@@ -57,7 +57,7 @@ export function PlaygroundContainer() {
             <div key={`${msg.role}-${index}`} className="px-4 py-4">
               <div className="max-w-3xl mx-auto">
                 <div className="flex items-start gap-3">
-                  <div className="size-8 bg-neutral-900 flex-shrink-0 flex items-center justify-center text-white font-medium">
+                  <div className="size-8 bg-neutral-900 flex-shrink-0 flex items-center justify-center text-white ">
                     {msg.role === "user" ? "U" : "A"}
                   </div>
                   <div className="flex-1 font-mono text-sm break-words">

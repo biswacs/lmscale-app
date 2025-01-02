@@ -27,7 +27,7 @@ export function SettingsContainer() {
                 </h1>
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2 border border-neutral-200 text-sm font-medium text-neutral-600 hover:text-neutral-900 hover:border-neutral-300"
+                  className="px-4 py-2 border border-neutral-200 text-sm  text-neutral-600 hover:text-neutral-900 hover:border-neutral-300"
                 >
                   Logout
                 </button>
@@ -35,7 +35,7 @@ export function SettingsContainer() {
 
               <div className="bg-white border border-neutral-200">
                 <div className="px-4 py-5 border-b border-neutral-200">
-                  <h2 className="text-lg font-medium text-neutral-900">
+                  <h2 className="text-lg  text-neutral-900">
                     API Configuration
                   </h2>
                   <p className="mt-1 text-sm text-neutral-500">
@@ -45,7 +45,7 @@ export function SettingsContainer() {
 
                 <div className="p-4 space-y-4">
                   <div className="max-w-xl space-y-2">
-                    <label className="block text-sm font-medium text-neutral-700">
+                    <label className="block text-sm  text-neutral-700">
                       API Key
                     </label>
                     <div className="flex gap-2">
@@ -55,14 +55,14 @@ export function SettingsContainer() {
                         readOnly
                         className="flex-1 border border-neutral-200 p-2 text-sm focus:outline-none focus:border-neutral-400"
                       />
-                      <button className="px-4 py-2 bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800">
+                      <button className="px-4 py-2 bg-neutral-900 text-white text-sm  hover:bg-neutral-800">
                         Regenerate
                       </button>
                     </div>
                   </div>
 
                   <div className="max-w-xl space-y-2">
-                    <label className="block text-sm font-medium text-neutral-700">
+                    <label className="block text-sm  text-neutral-700">
                       Webhook URL
                     </label>
                     <input
@@ -78,7 +78,7 @@ export function SettingsContainer() {
                   <div className="max-w-xl space-y-4 pt-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="font-medium">Enable Notifications</div>
+                        <div className="">Enable Notifications</div>
                         <div className="text-sm text-neutral-500">
                           Receive notifications for important events
                         </div>
@@ -108,7 +108,7 @@ export function SettingsContainer() {
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="font-medium">Enable Logging</div>
+                        <div className="">Enable Logging</div>
                         <div className="text-sm text-neutral-500">
                           Log all API requests and responses
                         </div>

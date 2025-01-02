@@ -73,7 +73,7 @@ export default function HomePage() {
                         <li key={item.text}>
                           <Link
                             href={item.href}
-                            className="text-sm font-medium text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
+                            className="text-sm  text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
                           >
                             {item.text}
                           </Link>
@@ -86,7 +86,7 @@ export default function HomePage() {
                     href="/login"
                     className="group relative inline-flex items-center justify-center overflow-hidden bg-neutral-800 p-0.5 transition-all duration-300 hover:bg-neutral-950"
                   >
-                    <span className="inline-flex h-full w-full items-center justify-center px-4 py-1.5 md:px-6 text-sm md:text-base font-medium text-white transition-all duration-300">
+                    <span className="inline-flex h-full w-full items-center justify-center px-4 py-1.5 md:px-6 text-sm md:text-base  text-white transition-all duration-300">
                       Login
                     </span>
                   </Link>
@@ -126,7 +126,7 @@ export default function HomePage() {
                     key={item.text}
                     href={item.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className="group relative flex items-center justify-between px-4 py-3 text-sm font-medium text-neutral-600 transition-all duration-300 hover:text-neutral-800"
+                    className="group relative flex items-center justify-between px-4 py-3 text-sm  text-neutral-600 transition-all duration-300 hover:text-neutral-800"
                   >
                     <span className="relative">
                       {item.text}
@@ -172,7 +172,7 @@ export default function HomePage() {
             <div className="my-10 flex items-center justify-center gap-4 md:gap-6">
               <Link
                 href="/register"
-                className="group inline-flex items-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base font-medium text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg"
+                className="group inline-flex items-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base  text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg"
               >
                 Get Started
                 <svg
@@ -289,11 +289,11 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <span className="text-xs font-medium text-neutral-600 bg-neutral-50 px-2 py-1">
+                <span className="text-xs  text-neutral-600 bg-neutral-50 px-2 py-1">
                   Enterprise
                 </span>
               </div>
-              <h3 className="text-xl font-medium text-neutral-900 mb-2">
+              <h3 className="text-xl  text-neutral-900 mb-2">
                 High-Performance Inference
               </h3>
               <p className="text-neutral-600 mb-4">
@@ -343,11 +343,11 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <span className="text-xs font-medium text-neutral-200 bg-neutral-500/20 px-2 py-1">
+                <span className="text-xs  text-neutral-200 bg-neutral-500/20 px-2 py-1">
                   Advanced
                 </span>
               </div>
-              <h3 className="text-xl font-medium text-white mb-2">
+              <h3 className="text-xl  text-white mb-2">
                 Multi-Model Deployment
               </h3>
               <p className="text-neutral-300 mb-4">
@@ -378,11 +378,11 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <span className="text-xs font-medium text-neutral-600 bg-neutral-50 px-2 py-1">
+                <span className="text-xs  text-neutral-600 bg-neutral-50 px-2 py-1">
                   Secure
                 </span>
               </div>
-              <h3 className="text-xl font-medium text-neutral-900 mb-2">
+              <h3 className="text-xl  text-neutral-900 mb-2">
                 Enterprise Security
               </h3>
               <p className="text-neutral-600 mb-4">
@@ -411,7 +411,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section id="Models" className="relative py-24 bg-white overflow-hidden">
+      <section
+        id="Deployment"
+        className="relative py-24 bg-white overflow-hidden"
+      >
         <div className="absolute inset-0">
           <div
             className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"
@@ -420,150 +423,98 @@ export default function HomePage() {
               WebkitMask:
                 "radial-gradient(circle at center, white 30%, transparent 70%)",
             }}
-          ></div>
+          />
         </div>
+
         <div className="relative max-w-5xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-light text-neutral-800 mb-4">
-              Open Source Model Hub
+              Deployment Guide
             </h2>
             <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-              Access and deploy state-of-the-art open source language models
-              with a single API call
+              Setup and configure your custom chatbot deployment
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
-            <div className="w-full max-w-sm bg-white p-6  transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-neutral-200">
-              <div className="flex items-center space-x-4 mb-8">
-                <div className="h-12 w-12 bg-neutral-50  border border-neutral-200 flex items-center justify-center">
-                  <img src="/mistral.svg" alt="Mistral" className="h-8 w-8" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium text-neutral-800">
-                    Mistral
-                  </h3>
-                  <p className="text-sm text-neutral-600">Chat Model</p>
-                </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="bg-neutral-900 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Terminal className="h-5 w-5 text-white" />
+                <h3 className="text-lg text-white font-mono">Initial Setup</h3>
               </div>
-              <div className="space-y-4">
-                <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600">Context Length</span>
-                  <span className="text-neutral-800 font-medium">32K</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600">Response Time</span>
-                  <span className="text-neutral-800 font-medium">~150ms</span>
-                </div>
-              </div>
-              <div className="mt-6 pt-4 border-t border-neutral-100 space-y-4">
-                <div className="flex items-center gap-2 text-sm text-neutral-600">
-                  <img
-                    src="/mistral.svg"
-                    alt="Mistral 7B"
-                    className="h-6 w-6"
-                  />
-                  <span>Mistral 7B</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-neutral-600">
-                  <img
-                    src="/mistral.svg"
-                    alt="Mixtral 8x7B"
-                    className="h-6 w-6"
-                  />
-                  <span>Mixtral 8x7B</span>
-                </div>
-                <button className="w-full px-4 py-2 bg-neutral-800 text-white text-sm font-medium hover:bg-neutral-700 transition-colors">
-                  Deploy Model
-                </button>
-              </div>
+              <pre className="font-mono text-sm text-neutral-300 overflow-x-auto">
+                {`# Create new deployment
+slm create deployment \\
+  --name "my-custom-bot" \\
+  --description "my-custom-description"
+
+# Set base system prompt
+slm config set-prompt \\
+  --deployment "my-custom-bot" \\
+  --file "system-prompt.txt"
+
+# Deploy the bot
+slm deploy`}
+              </pre>
             </div>
 
-            <div className="w-full max-w-sm bg-neutral-900 p-6  text-white">
-              <div className="flex items-center space-x-4 mb-8">
-                <div className="h-12 w-12 bg-white/10  flex items-center justify-center">
-                  <img src="/llama.svg" alt="Llama" className="h-8 w-8" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium">Llama</h3>
-                  <p className="text-sm text-neutral-300">Chat Model</p>
-                </div>
+            <div className="bg-white border border-neutral-200 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Terminal className="h-5 w-5 text-neutral-800" />
+                <h3 className="text-lg text-neutral-800 font-mono">
+                  Configure Webhooks
+                </h3>
               </div>
-              <div className="space-y-4">
-                <div className="flex justify-between text-sm">
-                  <span className="text-neutral-300">Context Length</span>
-                  <span className="text-white font-medium">100K</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-neutral-300">Response Time</span>
-                  <span className="text-white font-medium">~200ms</span>
-                </div>
-              </div>
-              <div className="mt-6 pt-4 border-t border-white/10 space-y-4">
-                <div className="flex items-center gap-2 text-sm text-neutral-300">
-                  <img
-                    src="/llama.svg"
-                    alt="Llama 3.1 8B"
-                    className="h-6 w-6"
-                  />
-                  <span>Llama 3.1 8B</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-neutral-300">
-                  <img
-                    src="/llama.svg"
-                    alt="Llama 3.1 70B"
-                    className="h-6 w-6"
-                  />
-                  <span>Llama 3.1 70B</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-neutral-300">
-                  <img
-                    src="/llama.svg"
-                    alt="Llama 3.1 405B"
-                    className="h-6 w-6"
-                  />
-                  <span>Llama 3.1 405B</span>
-                </div>
-                <button className="w-full px-4 py-2 bg-white text-neutral-800 text-sm font-medium hover:bg-neutral-100 transition-colors">
-                  Deploy Model
-                </button>
-              </div>
+              <pre className="font-mono text-sm text-neutral-600 overflow-x-auto">
+                {`# Set up webhook endpoints
+slm webhook create \\
+  --url "https://api.myapp.com/chat" \\
+  --events "message.new"
+
+# Configure API integration
+slm api create-key \\
+  --name "prod-bot" \\
+  --scopes "chat.write,files.read"`}
+              </pre>
             </div>
 
-            <div className="w-full max-w-sm bg-white p-6  transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-neutral-200">
-              <div className="flex items-center space-x-4 mb-8">
-                <div className="h-12 w-12 bg-neutral-50  border border-neutral-200 flex items-center justify-center">
-                  <img src="/gemma.svg" alt="Gemma" className="h-8 w-8" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium text-neutral-800">
-                    Gemma
-                  </h3>
-                  <p className="text-sm text-neutral-600">Chat Model</p>
-                </div>
+            <div className="bg-ne border border-neutral-200 p-6 lg:col-span-2">
+              <div className="flex items-center gap-3 mb-4">
+                <Terminal className="h-5 w-5 text-neutral-800" />
+                <h3 className="text-lg text-neutral-800 font-mono">
+                  Deployment Patterns
+                </h3>
               </div>
-              <div className="space-y-4">
-                <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600">Context Length</span>
-                  <span className="text-neutral-800 font-medium">8K</span>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-sm">
+                <div className="bg-neutral-50 p-4">
+                  <h4 className="text-neutral-800 mb-2">Basic Setup</h4>
+                  <pre className="text-neutral-600">
+                    {`└── Bot Instance
+    ├── System Prompt
+    ├── API Keys
+    └── Webhooks`}
+                  </pre>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600">Response Time</span>
-                  <span className="text-neutral-800 font-medium">~120ms</span>
+
+                <div className="bg-neutral-50 text-white p-4">
+                  <h4 className="text-neutral-800 mb-2">Multi-Bot</h4>
+                  <pre className="text-neutral-600">
+                    {`└── Gateway
+    ├── Support Bot
+    ├── Sales Bot
+    └── Custom Bot`}
+                  </pre>
                 </div>
-              </div>
-              <div className="mt-6 pt-4 border-t border-neutral-100 space-y-4">
-                <div className="flex items-center gap-2 text-sm text-neutral-600">
-                  <img src="/gemma.svg" alt="Gemma 2B" className="h-6 w-6" />
-                  <span>Gemma 2B</span>
+
+                <div className="bg-neutral-50 p-4">
+                  <h4 className="text-neutral-800 mb-2">Enterprise</h4>
+                  <pre className="text-neutral-600">
+                    {`└── Load Balancer
+    ├── Rate Limiting
+    ├── Monitoring
+    └── Logging`}
+                  </pre>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-neutral-600">
-                  <img src="/gemma.svg" alt="Gemma 7B" className="h-6 w-6" />
-                  <span>Gemma 7B</span>
-                </div>
-                <button className="w-full px-4 py-2 bg-neutral-800 text-white text-sm font-medium hover:bg-neutral-700 transition-colors">
-                  Deploy Model
-                </button>
               </div>
             </div>
           </div>
@@ -614,7 +565,7 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-neutral-900">
+                  <h3 className="text-lg  text-neutral-900">
                     Resource Optimization
                   </h3>
                   <p className="text-neutral-600">
@@ -630,7 +581,7 @@ export default function HomePage() {
               </div>
               <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className="font-medium text-neutral-900">99.9%</div>
+                  <div className=" text-neutral-900">99.9%</div>
                   <div className="text-sm text-neutral-600">Uptime</div>
                 </div>
               </div>
@@ -654,7 +605,7 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium">Zero-Downtime Updates</h3>
+                  <h3 className="text-lg ">Zero-Downtime Updates</h3>
                   <p className="text-neutral-300">
                     Seamless model updates and deployments
                   </p>
@@ -668,7 +619,7 @@ export default function HomePage() {
               </div>
               <div className="mt-4 bg-neutral-800 p-4">
                 <div className="text-center">
-                  <div className="font-medium text-white">150ms</div>
+                  <div className=" text-white">150ms</div>
                   <div className="text-sm text-neutral-400">Latency</div>
                 </div>
               </div>
@@ -692,9 +643,7 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-neutral-900">
-                    Request Routing
-                  </h3>
+                  <h3 className="text-lg  text-neutral-900">Request Routing</h3>
                   <p className="text-neutral-600">
                     Intelligent request distribution
                   </p>
@@ -708,7 +657,7 @@ export default function HomePage() {
               </div>
               <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className="font-medium text-neutral-900">4TB</div>
+                  <div className=" text-neutral-900">4TB</div>
                   <div className="text-sm text-neutral-600">
                     Daily Processing
                   </div>
@@ -763,9 +712,7 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-neutral-900">
-                    Model Security
-                  </h3>
+                  <h3 className="text-lg  text-neutral-900">Model Security</h3>
                   <p className="text-neutral-600">
                     Protected model weights and secure deployment
                   </p>
@@ -785,7 +732,7 @@ export default function HomePage() {
               </div>
               <div className="mt-3 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className="font-medium text-neutral-900">256-bit</div>
+                  <div className=" text-neutral-900">256-bit</div>
                   <div className="text-sm text-neutral-600">Encryption</div>
                 </div>
               </div>
@@ -809,7 +756,7 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium">API Security</h3>
+                  <h3 className="text-lg ">API Security</h3>
                   <p className="text-neutral-300">
                     Advanced API protection with intelligent rate limiting
                   </p>
@@ -833,7 +780,7 @@ export default function HomePage() {
               </div>
               <div className="mt-3 bg-neutral-800 p-4">
                 <div className="text-center">
-                  <div className="font-medium text-white">10K/s</div>
+                  <div className=" text-white">10K/s</div>
                   <div className="text-sm text-neutral-400">Request Rate</div>
                 </div>
               </div>
@@ -857,7 +804,7 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-neutral-900">
+                  <h3 className="text-lg  text-neutral-900">
                     Inference Protection
                   </h3>
                   <p className="text-neutral-600">
@@ -879,7 +826,7 @@ export default function HomePage() {
               </div>
               <div className="mt-3 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className="font-medium text-neutral-900">100%</div>
+                  <div className=" text-neutral-900">100%</div>
                   <div className="text-sm text-neutral-600">Isolation</div>
                 </div>
               </div>
@@ -911,7 +858,7 @@ export default function HomePage() {
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/register"
-                className="group inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 bg-black text-white"
+                className="group inline-flex items-center justify-center gap-2 px-6 py-3 text-sm  transition-all duration-300 bg-black text-white"
               >
                 Get Started
                 <MoveRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />

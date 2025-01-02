@@ -101,7 +101,7 @@ export default function RegisterPage() {
                 className="relative space-y-6 p-4"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <div className="text-lg font-medium">Create an Account</div>
+                  <div className="text-lg ">Create an Account</div>
                 </div>
 
                 {error && (
@@ -169,7 +169,7 @@ export default function RegisterPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="group w-full inline-flex items-center gap-2 justify-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base font-medium text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none"
+                  className="group w-full inline-flex items-center gap-2 justify-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base  text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none"
                 >
                   {submitting ? (
                     <Loader className="animate-spin h-4 w-4" />
