@@ -3,22 +3,13 @@ import { Loader2, X } from "lucide-react";
 
 const API_BASE_URL = "https://api.lmscale.tech/v1";
 
-function Modal({ isOpen, onClose, children, title }) {
+function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white -lg w-full max-w-md relative">
-        <div className="flex justify-between items-center p-4 border-b border-neutral-200">
-          <h2 className="text-lg font-semibold text-neutral-900">{title}</h2>
-          <button
-            onClick={onClose}
-            className="text-neutral-500 hover:text-neutral-700"
-          >
-            <X size={20} />
-          </button>
-        </div>
-        <div className="p-4">{children}</div>
+    <div className="fixed inset-0 bg-neutral-900/60 flex items-center justify-center p-4 z-50">
+      <div className="bg-white w-full max-w-md relative animate-in fade-in duration-200">
+        {children}
       </div>
     </div>
   );
@@ -61,47 +52,80 @@ function CreateAgentModal({ isOpen, onClose, onCreateSuccess }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Create New Agent">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && <div className="text-red-500 text-sm">{error}</div>}
-        <div className="space-y-2">
-          <label className="text-sm text-neutral-900">Name</label>
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, name: e.target.value }))
-            }
-            className="w-full border border-neutral-200 p-2 text-sm focus:outline-none focus:border-neutral-400 "
-            required
-          />
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div className="border-b border-neutral-200">
+        <div className="flex items-center justify-between px-6 py-4 bg-neutral-900">
+          <h2 className="text-lg font-light text-neutral-200">
+            Create New Agent
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-neutral-200 hover:text-white transition-colors"
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
-        <div className="space-y-2">
-          <label className="text-sm text-neutral-900">Description</label>
-          <input
-            type="text"
-            value={formData.description}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, description: e.target.value }))
-            }
-            className="w-full border border-neutral-200 p-2 text-sm focus:outline-none focus:border-neutral-400 "
-          />
+      </div>
+
+      <form onSubmit={handleSubmit} className="p-6">
+        <div className="space-y-4">
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 p-3 text-sm font-light">
+              {error}
+            </div>
+          )}
+
+          <div className="space-y-2">
+            <label className="block text-sm text-neutral-900 font-light">
+              Name
+              <span className="text-red-500 ml-1">*</span>
+            </label>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, name: e.target.value }))
+              }
+              placeholder="Enter agent name"
+              className="w-full h-10 border border-neutral-200 px-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 font-light"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-sm text-neutral-900 font-light">
+              Description
+            </label>
+            <textarea
+              value={formData.description}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
+              }
+              placeholder="Enter agent description"
+              rows={3}
+              className="w-full border border-neutral-200 px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 resize-none font-light"
+            />
+          </div>
         </div>
-        <div className="flex justify-end gap-2 pt-4">
+
+        <div className="mt-6 flex items-center justify-end gap-3">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900"
+            className="h-10 px-4 text-sm text-neutral-700 hover:text-neutral-900 font-light"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isLoading}
-            className="bg-neutral-900 text-white px-4 py-2 text-sm hover:bg-neutral-800 disabled:opacity-50 "
+            className="h-10 px-4 bg-neutral-900 text-sm text-white hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[100px] font-light"
           >
             {isLoading ? (
-              <Loader2 className="animate-spin h-4 w-4" />
+              <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               "Create Agent"
             )}
@@ -153,7 +177,7 @@ export function AgentsContainer() {
 
   if (error) {
     return (
-      <div className="h-full flex items-center justify-center text-red-500">
+      <div className="h-full flex items-center justify-center text-red-500 font-light">
         Error: {error}
       </div>
     );
@@ -166,17 +190,19 @@ export function AgentsContainer() {
           <div className="px-4 py-4">
             <div className="max-w-3xl mx-auto space-y-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
-                <h1 className="text-xl sm:text-2xl text-neutral-900">Agents</h1>
+                <h1 className="text-xl sm:text-2xl text-neutral-900 font-light">
+                  Agents
+                </h1>
                 <button
                   onClick={() => setIsCreateModalOpen(true)}
-                  className="w-full sm:w-auto bg-neutral-900 text-white px-4 py-2 text-sm hover:bg-neutral-800 "
+                  className="w-full sm:w-auto bg-neutral-900 text-white px-4 py-2 text-sm hover:bg-neutral-800 font-light"
                 >
                   New Agent
                 </button>
               </div>
 
-              <div className="border border-neutral-200 bg-white  overflow-x-auto">
-                <div className="hidden sm:grid grid-cols-5 gap-4 p-4 border-b border-neutral-200 text-sm text-neutral-500">
+              <div className="border border-neutral-200 bg-white overflow-x-auto">
+                <div className="hidden sm:grid grid-cols-5 gap-4 p-4 border-b border-neutral-200 text-sm text-neutral-500 font-light">
                   <div className="col-span-2">Name</div>
                   <div>Status</div>
                   <div>Created</div>
@@ -188,11 +214,11 @@ export function AgentsContainer() {
                     key={agent.id}
                     className="flex flex-col sm:grid sm:grid-cols-5 gap-2 sm:gap-4 p-4 border-b border-neutral-200 text-sm hover:bg-neutral-50"
                   >
-                    <div className="col-span-2 text-neutral-900 font-medium">
+                    <div className="col-span-2 text-neutral-900 font-light">
                       <span className="sm:hidden text-neutral-500">Name: </span>
                       {agent.name}
                     </div>
-                    <div>
+                    <div className="font-light">
                       <span className="sm:hidden text-neutral-500">
                         Status:{" "}
                       </span>
@@ -205,13 +231,13 @@ export function AgentsContainer() {
                         {agent.isActive ? "Active" : "Inactive"}
                       </span>
                     </div>
-                    <div className="text-neutral-600">
+                    <div className="text-neutral-600 font-light">
                       <span className="sm:hidden text-neutral-500">
                         Created:{" "}
                       </span>
                       {new Date(agent.createdAt).toLocaleDateString()}
                     </div>
-                    <div className="text-neutral-600">
+                    <div className="text-neutral-600 font-light">
                       <span className="sm:hidden text-neutral-500">
                         Updated:{" "}
                       </span>
@@ -221,7 +247,7 @@ export function AgentsContainer() {
                 ))}
 
                 {agents.length === 0 && (
-                  <div className="p-8 text-center text-neutral-500">
+                  <div className="p-8 text-center text-neutral-500 font-light">
                     No agents found
                   </div>
                 )}

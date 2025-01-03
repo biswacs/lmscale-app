@@ -36,7 +36,7 @@ export function Header() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`relative flex h-12 items-center gap-2 mx-1 px-3 text-sm transition-colors duration-200 
+                    className={`relative flex h-12 items-center gap-2 mx-1 px-3 text-sm transition-colors duration-200 font-light
                       ${
                         isActive
                           ? "text-neutral-900"
@@ -52,7 +52,7 @@ export function Header() {
 
             <Link
               href="/profile"
-              className="flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm uppercase text-neutral-600 hover:bg-neutral-100 transition-colors duration-200"
+              className="flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm uppercase text-neutral-600 hover:bg-neutral-100 transition-colors duration-200 font-light"
             >
               {userDisplayName[0]}
             </Link>
@@ -60,7 +60,7 @@ export function Header() {
 
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
-            className="md:hidden p-2 text-neutral-600 hover:bg-neutral-100 transition-colors duration-200"
+            className="md:hidden p-2 text-neutral-600 hover:bg-neutral-100 transition-colors duration-200 font-light"
             aria-label="Toggle mobile menu"
           >
             {showMobileMenu ? (
@@ -79,7 +79,7 @@ export function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 
+                  className={`flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 font-light
                     ${
                       isActive
                         ? "bg-neutral-50 text-neutral-900"
@@ -94,10 +94,10 @@ export function Header() {
             })}
             <Link
               href="/profile"
-              className="flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800"
+              className="flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 font-light"
               onClick={() => setShowMobileMenu(false)}
             >
-              <div className="uppercase flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm text-neutral-600">
+              <div className="uppercase flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm text-neutral-600 font-light">
                 {userDisplayName[0]}
               </div>
               Profile
