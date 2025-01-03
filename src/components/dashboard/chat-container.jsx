@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Send, Loader, RotateCcw } from "lucide-react";
-import { usePlayground } from "@/providers/playground-provider";
+import { useChat } from "@/providers/chat-provider";
 
-export function PlaygroundContainer() {
+export function ChatContainer() {
   const [message, setMessage] = useState("");
   const {
     messages,
@@ -10,7 +10,7 @@ export function PlaygroundContainer() {
     sendMessage,
     startNewConversation,
     conversationId,
-  } = usePlayground();
+  } = useChat();
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
 

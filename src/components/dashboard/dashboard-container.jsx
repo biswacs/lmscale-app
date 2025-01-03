@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Loader2, X } from "lucide-react";
-
-const API_BASE_URL = "https://api.lmscale.tech/v1";
+import { useAgents } from "@/providers/agent-provider";
 
 function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
@@ -15,7 +14,8 @@ function Modal({ isOpen, onClose, children }) {
   );
 }
 
-function CreateAgentModal({ isOpen, onClose, onCreateSuccess }) {
+function CreateAgentModal({ isOpen, onClose }) {
+  const { createAgent } = useAgents();
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -23,27 +23,27 @@ function CreateAgentModal({ isOpen, onClose, onCreateSuccess }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      description: "",
+    });
+    setError(null);
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/agent/create`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("lm_auth_token")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create agent");
-      }
-
-      onCreateSuccess();
-      onClose();
+      await createAgent(formData);
+      handleClose();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,7 +59,7 @@ function CreateAgentModal({ isOpen, onClose, onCreateSuccess }) {
             Create New Agent
           </h2>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="text-neutral-200 hover:text-white transition-colors"
           >
             <X className="h-5 w-5" />
@@ -78,7 +78,6 @@ function CreateAgentModal({ isOpen, onClose, onCreateSuccess }) {
           <div className="space-y-2">
             <label className="block text-sm text-neutral-900 font-light">
               Name
-              <span className="text-red-500 ml-1">*</span>
             </label>
             <input
               type="text"
@@ -114,7 +113,7 @@ function CreateAgentModal({ isOpen, onClose, onCreateSuccess }) {
         <div className="mt-6 flex items-center justify-end gap-3">
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleClose}
             className="h-10 px-4 text-sm text-neutral-700 hover:text-neutral-900 font-light"
           >
             Cancel
@@ -136,36 +135,9 @@ function CreateAgentModal({ isOpen, onClose, onCreateSuccess }) {
   );
 }
 
-export function AgentsContainer() {
-  const [agents, setAgents] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
-  useEffect(() => {
-    fetchAgents();
-  }, []);
-
-  const fetchAgents = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/user/agents`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("lm_auth_token")}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch agents");
-      }
-
-      const result = await response.json();
-      setAgents(result.data.agents);
-      setIsLoading(false);
-    } catch (err) {
-      setError(err.message);
-      setIsLoading(false);
-    }
-  };
+export function DashboardContainer() {
+  const { agents, isLoading, error, isCreateModalOpen, setIsCreateModalOpen } =
+    useAgents();
 
   if (isLoading) {
     return (
@@ -260,7 +232,6 @@ export function AgentsContainer() {
       <CreateAgentModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-        onCreateSuccess={fetchAgents}
       />
     </div>
   );

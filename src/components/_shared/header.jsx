@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Terminal, Menu, X, Bot } from "lucide-react";
+import { Menu, X, Bot, MessageCircle } from "lucide-react";
 import { useUser } from "@/providers/user-provider";
 
 const navigation = [
-  { name: "Agents", href: "/agents", icon: Bot },
-  { name: "Playground", href: "/playground", icon: Terminal },
+  { name: "Dashboard", href: "/dashboard", icon: Bot },
+  { name: "Chat", href: "/chat", icon: MessageCircle },
 ];
 
 export function Header() {
@@ -19,7 +19,7 @@ export function Header() {
     <nav className="w-full border-b border-neutral-200 bg-white">
       <div className="px-4">
         <div className="flex h-12 items-center justify-between">
-          <Link href="/agents" className="flex items-center gap-2">
+          <Link href="/dashboard" className="flex items-center gap-2">
             <img
               src="/icon.png"
               alt="LmScale Logo"
@@ -36,10 +36,10 @@ export function Header() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`relative flex h-12 items-center gap-2 mx-1 px-3 text-sm transition-colors duration-200 font-light
+                    className={`relative  flex h-12 items-center gap-2 mx-1 px-3 text-sm transition-colors duration-200 font-light
                       ${
                         isActive
-                          ? "text-neutral-900"
+                          ? "text-neutral-900 border-b-2 border-neutral-600"
                           : "text-neutral-500 hover:text-neutral-800"
                       }`}
                   >

@@ -1,7 +1,7 @@
 export const ROUTES_MAP = {
   DASHBOARD: {
-    __: "/agents",
-    PLAYGROUND: "/playground",
+    __: "/dashboard",
+    CHAT: "/chat",
     MONITORING: "/monitoring",
     PROFILE: "/profile",
   },

@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { lmScaleAPI } from "@/api/instance";
 
-const PlaygroundContext = createContext({});
+const ChatContext = createContext({});
 
-export const PlaygroundProvider = ({ children }) => {
+export const ChatProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [conversationId, setConversationId] = useState(null);
@@ -154,11 +154,9 @@ export const PlaygroundProvider = ({ children }) => {
   };
 
   return (
-    <PlaygroundContext.Provider value={contextValue}>
-      {children}
-    </PlaygroundContext.Provider>
+    <ChatContext.Provider value={contextValue}>{children}</ChatContext.Provider>
   );
 };
 
-export const usePlayground = () => useContext(PlaygroundContext);
-export default PlaygroundProvider;
+export const useChat = () => useContext(ChatContext);
+export default ChatProvider;
