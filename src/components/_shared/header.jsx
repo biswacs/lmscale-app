@@ -19,77 +19,72 @@ export function Header() {
     <nav className="w-full border-b border-neutral-200 bg-white">
       <div className="px-4">
         <div className="flex h-12 items-center justify-between">
-          <div className="flex items-center gap-4">
+          <Link href="/agents" className="flex items-center gap-2">
+            <img
+              src="/icon.png"
+              alt="LmScale Logo"
+              className="h-7 w-7 object-contain"
+            />
+            <span className="text-lg font-light text-neutral-800">LmScale</span>
+          </Link>
+
+          <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center">
-              <Link href="/agents" className="flex items-center gap-2">
-                <img
-                  src="/icon.png"
-                  alt="LmScale Logo"
-                  className="h-7 w-7 object-contain"
-                />
-                <span className="text-lg font-light text-neutral-800">
-                  LmScale
-                </span>
-              </Link>
-            </div>
-            <div className="hidden md:flex">
               {navigation.map((item) => {
                 const isActive = pathname === item.href;
                 return (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`relative flex h-12 items-center gap-2 mx-2 px-1 text-sm transition-colors duration-200 ${
-                      isActive
-                        ? "text-neutral-800 "
-                        : "text-neutral-500 hover:text-neutral-800"
-                    }`}
+                    className={`relative flex h-12 items-center gap-2 mx-1 px-3 text-sm transition-colors duration-200 
+                      ${
+                        isActive
+                          ? "text-neutral-900"
+                          : "text-neutral-500 hover:text-neutral-800"
+                      }`}
                   >
                     <item.icon className="h-4 w-4" />
                     <span>{item.name}</span>
-                    {isActive && (
-                      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-neutral-800" />
-                    )}
                   </Link>
                 );
               })}
             </div>
-          </div>
-          <div className="flex items-center">
+
             <Link
               href="/profile"
-              className="hidden uppercase md:flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm  text-neutral-600 hover:bg-neutral-100 transition-colors duration-200"
+              className="flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm uppercase text-neutral-600 hover:bg-neutral-100 transition-colors duration-200"
             >
               {userDisplayName[0]}
             </Link>
-
-            <button
-              onClick={() => setShowMobileMenu(!showMobileMenu)}
-              className="md:hidden p-2 text-neutral-600 hover:bg-neutral-100 transition-colors duration-200"
-              aria-label="Toggle mobile menu"
-            >
-              {showMobileMenu ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </button>
           </div>
+
+          <button
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            className="md:hidden p-2 text-neutral-600 hover:bg-neutral-100 transition-colors duration-200"
+            aria-label="Toggle mobile menu"
+          >
+            {showMobileMenu ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
+          </button>
         </div>
 
         {showMobileMenu && (
-          <div className="md:hidden py-2">
+          <div className="md:hidden py-2 border-t border-neutral-200">
             {navigation.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 ${
-                    isActive
-                      ? "bg-neutral-100 text-neutral-800 "
-                      : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800"
-                  }`}
+                  className={`flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 
+                    ${
+                      isActive
+                        ? "bg-neutral-50 text-neutral-900"
+                        : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800"
+                    }`}
                   onClick={() => setShowMobileMenu(false)}
                 >
                   <item.icon className="h-4 w-4" />

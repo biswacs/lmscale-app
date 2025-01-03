@@ -14,7 +14,7 @@ export function AppLayout({ children }) {
       />
       <div className="relative z-10 flex flex-col h-screen">
         <Header />
-        <main className="flex-1 overflow-hidden px-2">{children}</main>
+        <main className="flex-1 overflow-hidden p-2">{children}</main>
       </div>
     </div>
   );

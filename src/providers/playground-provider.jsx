@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { lmScaleAPI } from "@/api/instance";
 
 const PlaygroundContext = createContext({});
@@ -6,15 +6,45 @@ const PlaygroundContext = createContext({});
 export const PlaygroundProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [conversationId, setConversationId] = useState(null);
+
+  useEffect(() => {
+    initializeConversation();
+  }, []);
+
+  const initializeConversation = async () => {
+    try {
+      const response = await fetch(
+        `${lmScaleAPI.defaults.baseURL}/playground/conversation`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("lm_auth_token")}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.success && data.data.conversation.id) {
+        setConversationId(data.data.conversation.id);
+      }
+    } catch (error) {
+      console.error("Error initializing conversation:", error);
+    }
+  };
 
   const sendMessage = async (message) => {
-    if (!message.trim()) return;
+    if (!message.trim() || !conversationId) return;
 
     const userMessage = message.trim();
     setIsLoading(true);
 
-    setMessages([{ role: "user", content: userMessage }]);
-
+    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
     setMessages((prev) => [
       ...prev,
       { role: "assistant", content: "", loading: true },
@@ -22,14 +52,18 @@ export const PlaygroundProvider = ({ children }) => {
 
     try {
       const response = await fetch(
-        `${lmScaleAPI.defaults.baseURL}/chat/completion`,
+        `${lmScaleAPI.defaults.baseURL}/playground/chat/completion`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Accept: "text/event-stream",
             Authorization: `Bearer ${localStorage.getItem("lm_auth_token")}`,
           },
-          body: JSON.stringify({ message: userMessage }),
+          body: JSON.stringify({
+            conversationId,
+            query: userMessage,
+          }),
         }
       );
 
@@ -39,7 +73,6 @@ export const PlaygroundProvider = ({ children }) => {
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-
       let isFirstResponse = true;
       let accumulatedText = "";
 
@@ -89,8 +122,8 @@ export const PlaygroundProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error:", error);
-      setMessages([
-        { role: "user", content: userMessage },
+      setMessages((prev) => [
+        ...prev.slice(0, -1),
         {
           role: "assistant",
           content: `Error: ${
@@ -106,13 +139,18 @@ export const PlaygroundProvider = ({ children }) => {
     }
   };
 
-  const clearMessages = () => setMessages([]);
+  const startNewConversation = async () => {
+    setMessages([]);
+    setConversationId(null);
+    await initializeConversation();
+  };
 
   const contextValue = {
     messages,
     isLoading,
     sendMessage,
-    clearMessages,
+    startNewConversation,
+    conversationId,
   };
 
   return (
