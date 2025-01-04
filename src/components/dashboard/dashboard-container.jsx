@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Loader2, X } from "lucide-react";
 import { useAgents } from "@/providers/agent-provider";
+import Link from "next/link";
 
 function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
@@ -182,8 +183,9 @@ export function DashboardContainer() {
                 </div>
 
                 {agents.map((agent) => (
-                  <div
+                  <Link
                     key={agent.id}
+                    href={`/agent/${agent.id}`}
                     className="flex flex-col sm:grid sm:grid-cols-5 gap-2 sm:gap-4 p-4 border-b border-neutral-200 text-sm hover:bg-neutral-50"
                   >
                     <div className="col-span-2 text-neutral-900 font-light">
@@ -215,7 +217,7 @@ export function DashboardContainer() {
                       </span>
                       {new Date(agent.updatedAt).toLocaleDateString()}
                     </div>
-                  </div>
+                  </Link>
                 ))}
 
                 {agents.length === 0 && (
