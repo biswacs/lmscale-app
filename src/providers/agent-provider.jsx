@@ -13,7 +13,7 @@ export const AgentsProvider = ({ children }) => {
 
   const fetchAgents = async () => {
     try {
-      const response = await lmScaleAPI.get("/user/agents", {
+      const response = await lmScaleAPI.get("/agent/list", {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -34,7 +34,6 @@ export const AgentsProvider = ({ children }) => {
         },
       });
 
-      // Refresh the agents list after successful creation
       await fetchAgents();
       return true;
     } catch (err) {
