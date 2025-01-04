@@ -87,9 +87,8 @@ export function ChatContainer() {
             <select
               value={selectedAgent?.id || ""}
               onChange={(e) => switchAgent(e.target.value)}
-              className="w-full appearance-none px-3 py-2 pr-8 bg-white border border-neutral-200 text-sm focus:outline-none focus:border-neutral-400 focus:ring-1 focus:ring-neutral-400"
+              className="w-full appearance-none px-3 py-2 pr-8 bg-white border border-neutral-200 text-sm focus:outline-none"
             >
-              <option value="">playground</option>
               {agents.map((agent) => (
                 <option key={agent.id} value={agent.id}>
                   {agent.name}

@@ -185,7 +185,7 @@ export function DashboardContainer() {
                 {agents.map((agent) => (
                   <Link
                     key={agent.id}
-                    href={`/dashboard/${agent.id}`}
+                    href={`/agent/${agent.id}`}
                     className="flex flex-col sm:grid sm:grid-cols-5 gap-2 sm:gap-4 p-4 border-b border-neutral-200 text-sm hover:bg-neutral-50"
                   >
                     <div className="col-span-2 text-neutral-900 font-light">
