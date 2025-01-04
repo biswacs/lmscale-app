@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import {
   Loader2,
   PlusCircle,
@@ -10,9 +10,7 @@ import {
   FileCode2,
   SquareTerminal,
 } from "lucide-react";
-import axios from "axios";
-
-const API_BASE_URL = "http://localhost:8080/v1";
+import { useAgents } from "@/providers/agent-provider";
 
 const SidebarItem = ({ icon: Icon, label, active, onClick }) => (
   <button
@@ -32,49 +30,17 @@ const SidebarItem = ({ icon: Icon, label, active, onClick }) => (
 export default function AgentContainer() {
   const router = useRouter();
   const agentId = router.query.slug;
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [agentData, setAgentData] = useState(null);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("system");
 
-  const fetchAgentData = async (id) => {
-    setLoading(true);
-    try {
-      const lm_auth_token = localStorage.getItem("lm_auth_token");
-      const headers = lm_auth_token
-        ? { Authorization: `Bearer ${lm_auth_token}` }
-        : {};
-
-      const { data } = await axios({
-        method: "GET",
-        url: `${API_BASE_URL}/agent/data`,
-        params: { agentId: id },
-        headers: headers,
-        timeout: 60000,
-      });
-
-      if (!data.success) {
-        throw new Error(data.message || "Failed to fetch agent data");
-      }
-      setAgentData(data.data);
-    } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          err.message ||
-          "Failed to fetch agent data"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { selectedAgent, isLoading, error, fetchAgentDetails } = useAgents();
 
   useEffect(() => {
-    if (agentId) {
-      fetchAgentData(agentId);
+    if (agentId && (!selectedAgent || selectedAgent.agent.id !== agentId)) {
+      fetchAgentDetails(agentId);
     }
-  }, [agentId]);
+  }, [agentId, selectedAgent?.agent?.id]); // Only depend on the ID for comparison
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="h-full flex items-center justify-center">
         <Loader2 className="h-6 w-6 animate-spin text-neutral-500" />
@@ -90,9 +56,9 @@ export default function AgentContainer() {
     );
   }
 
-  if (!agentData) return null;
+  if (!selectedAgent) return null;
 
-  const { agent, functions = [], instructions = [] } = agentData;
+  const { agent, functions = [], instructions = [] } = selectedAgent;
 
   const renderContent = () => {
     switch (activeTab) {

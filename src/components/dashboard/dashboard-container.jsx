@@ -19,7 +19,6 @@ function CreateAgentModal({ isOpen, onClose }) {
   const { createAgent } = useAgents();
   const [formData, setFormData] = useState({
     name: "",
-    description: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -27,7 +26,6 @@ function CreateAgentModal({ isOpen, onClose }) {
   const resetForm = () => {
     setFormData({
       name: "",
-      description: "",
     });
     setError(null);
   };
@@ -91,26 +89,7 @@ function CreateAgentModal({ isOpen, onClose }) {
               required
             />
           </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm text-neutral-900 font-light">
-              Description
-            </label>
-            <textarea
-              value={formData.description}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  description: e.target.value,
-                }))
-              }
-              placeholder="Enter agent description"
-              rows={3}
-              className="w-full border border-neutral-200 px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 resize-none font-light"
-            />
-          </div>
         </div>
-
         <div className="mt-6 flex items-center justify-end gap-3">
           <button
             type="button"
