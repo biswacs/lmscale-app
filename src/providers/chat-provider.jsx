@@ -52,7 +52,13 @@ export const ChatProvider = ({ children }) => {
 
     const userMessage = message.trim();
     setIsLoading(true);
+
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "agent", content: "", loading: true },
+    ]);
 
     try {
       const response = await fetch(
@@ -72,17 +78,14 @@ export const ChatProvider = ({ children }) => {
         }
       );
 
-      if (!response.ok)
+      if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-      let agentMessage = "";
-
-      setMessages((prev) => [
-        ...prev,
-        { role: "agent", content: "", loading: true },
-      ]);
+      let isFirstResponse = true;
+      let accumulatedText = "";
 
       while (true) {
         const { done, value } = await reader.read();
@@ -93,33 +96,43 @@ export const ChatProvider = ({ children }) => {
 
         for (const line of lines) {
           if (line.startsWith("data: ")) {
-            const data = JSON.parse(line.slice(6));
+            try {
+              const data = JSON.parse(line.slice(6));
 
-            if (data.conversationId && data.isNewConversation) {
-              setCurrentConversationId(data.conversationId);
-              localStorage.setItem(
-                "currentConversationId",
-                data.conversationId
-              );
-            }
+              if (data.conversationId && data.isNewConversation) {
+                setCurrentConversationId(data.conversationId);
+                localStorage.setItem(
+                  "currentConversationId",
+                  data.conversationId
+                );
+              }
 
-            if (data.response) {
-              agentMessage += data.response;
-              setMessages((prev) => {
-                const newMessages = [...prev];
-                const lastMessage = newMessages[newMessages.length - 1];
-                if (lastMessage.role === "agent") {
-                  return [
-                    ...prev.slice(0, -1),
-                    {
-                      ...lastMessage,
-                      content: agentMessage,
-                      loading: false,
-                    },
-                  ];
+              if (data.response) {
+                accumulatedText += data.response;
+
+                setMessages((prev) => {
+                  const newMessages = [...prev];
+                  const lastMessage = newMessages[newMessages.length - 1];
+                  if (lastMessage.role === "agent") {
+                    return [
+                      ...prev.slice(0, -1),
+                      {
+                        ...lastMessage,
+                        content: accumulatedText,
+                        loading: false,
+                      },
+                    ];
+                  }
+                  return newMessages;
+                });
+
+                if (!isFirstResponse) {
+                  await new Promise((resolve) => setTimeout(resolve, 10));
                 }
-                return newMessages;
-              });
+                isFirstResponse = false;
+              }
+            } catch (error) {
+              console.error("Error parsing JSON:", error);
             }
           }
         }
