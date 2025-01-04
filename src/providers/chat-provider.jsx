@@ -5,8 +5,6 @@ const ChatContext = createContext({});
 
 export const ChatProvider = ({ children }) => {
   const [agents, setAgents] = useState([]);
-  const [conversations, setConversations] = useState([]);
-  const [currentConversationId, setCurrentConversationId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState(null);
@@ -16,30 +14,16 @@ export const ChatProvider = ({ children }) => {
       const response = await lmScaleAPI.get("/agent/list");
       const fetchedAgents = response.data.data.agents;
       setAgents(fetchedAgents);
-
       if (!selectedAgent && fetchedAgents?.length > 0) {
         const playgroundAgent = fetchedAgents.find(
           (agent) => agent.name.toLowerCase() === "playground"
         );
         if (playgroundAgent) {
           setSelectedAgent(playgroundAgent);
-          fetchConversations(playgroundAgent.id);
         }
       }
     } catch (error) {
       console.error("Error fetching agents:", error);
-    }
-  };
-
-  const fetchConversations = async (agentId) => {
-    try {
-      const response = await lmScaleAPI.get(
-        `/conversation/list?agentId=${agentId}`
-      );
-      const fetchedConversations = response.data.data.conversations;
-      setConversations(fetchedConversations);
-    } catch (error) {
-      console.error("Error fetching conversations:", error);
     }
   };
 
@@ -54,7 +38,6 @@ export const ChatProvider = ({ children }) => {
     setIsLoading(true);
 
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
-
     setMessages((prev) => [
       ...prev,
       { role: "agent", content: "", loading: true },
@@ -72,7 +55,6 @@ export const ChatProvider = ({ children }) => {
           },
           body: JSON.stringify({
             agentId: selectedAgent.id,
-            conversationId: currentConversationId,
             message: userMessage,
           }),
         }
@@ -98,14 +80,6 @@ export const ChatProvider = ({ children }) => {
           if (line.startsWith("data: ")) {
             try {
               const data = JSON.parse(line.slice(6));
-
-              if (data.conversationId && data.isNewConversation) {
-                setCurrentConversationId(data.conversationId);
-                localStorage.setItem(
-                  "currentConversationId",
-                  data.conversationId
-                );
-              }
 
               if (data.response) {
                 accumulatedText += data.response;
@@ -152,32 +126,26 @@ export const ChatProvider = ({ children }) => {
     }
   };
 
-  const startNewConversation = () => {
-    setCurrentConversationId(null);
+  const newChat = () => {
     setMessages([]);
-    localStorage.removeItem("currentConversationId");
   };
 
   const switchAgent = (agentId) => {
     const agent = agents.find((a) => a.id === agentId);
     if (agent) {
       setSelectedAgent(agent);
-      fetchConversations(agentId);
-      startNewConversation();
+      newChat();
     }
   };
 
   const contextValue = {
     agents,
-    conversations,
-    currentConversationId,
     messages,
     isLoading,
     selectedAgent,
     sendMessage,
-    startNewConversation,
+    newChat,
     switchAgent,
-    fetchConversations,
   };
 
   return (
