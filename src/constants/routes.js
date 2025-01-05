@@ -1,10 +1,12 @@
 export const ROUTES_MAP = {
   DASHBOARD: {
     __: "/dashboard",
-    AGENT: "/agent/[slug]",
-    CHAT: "/chat",
-    MONITORING: "/monitoring",
-    PROFILE: "/profile",
+    CHAT: "/dashboard/chat",
+    PROFILE: "/dashboard/profile",
+    PROMPT: "/dashboard/prompt",
+    FUNCTIONS: "/dashboard/functions",
+    INSTRUCTIONS: "/dashboard/instructions",
+    SETTINGS: "/dashboard/settings",
   },
   LOGIN: "/login",
   REGISTER: "/register",

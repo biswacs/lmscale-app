@@ -1,5 +1,6 @@
 import React from "react";
 import { Header } from "./header";
+import { Sidebar } from "./sidebar";
 
 export function AppLayout({ children }) {
   return (
@@ -14,7 +15,12 @@ export function AppLayout({ children }) {
       />
       <div className="relative z-10 flex flex-col h-screen">
         <Header />
-        <main className="flex-1 overflow-hidden">{children}</main>
+        <div className="flex-1 flex overflow-hidden">
+          <Sidebar />
+          <main className="flex-1 overflow-y-auto px-4 py-4">
+            <div className="max-w-3xl mx-auto pb-24">{children}</div>
+          </main>
+        </div>
       </div>
     </div>
   );

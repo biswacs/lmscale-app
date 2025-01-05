@@ -1,38 +1,28 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { lmScaleAPI } from "@/api/instance";
 
 const ChatContext = createContext({});
 
 export const ChatProvider = ({ children }) => {
-  const [agents, setAgents] = useState([]);
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedAgent, setSelectedAgent] = useState(null);
-
-  const fetchAgents = async () => {
-    try {
-      const response = await lmScaleAPI.get("/agent/list");
-      const fetchedAgents = response.data.data.agents;
-      setAgents(fetchedAgents);
-      if (!selectedAgent && fetchedAgents?.length > 0) {
-        const playgroundAgent = fetchedAgents.find(
-          (agent) => agent.name.toLowerCase() === "playground"
-        );
-        if (playgroundAgent) {
-          setSelectedAgent(playgroundAgent);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching agents:", error);
-    }
-  };
+  const [apiKey, setApiKey] = useState("");
+  const [agentId, setAgentId] = useState("");
 
   useEffect(() => {
-    fetchAgents();
+    if (typeof window !== "undefined") {
+      const storedAgentId = window.localStorage.getItem("agentId");
+      if (storedAgentId) {
+        setAgentId(storedAgentId);
+      }
+    }
   }, []);
 
+  const updateApiKey = (newKey) => {
+    setApiKey(newKey);
+  };
+
   const sendMessage = async (message) => {
-    if (!message.trim() || !selectedAgent) return;
+    if (!message.trim() || !apiKey || !agentId) return;
 
     const userMessage = message.trim();
     setIsLoading(true);
@@ -45,17 +35,17 @@ export const ChatProvider = ({ children }) => {
 
     try {
       const response = await fetch(
-        `${lmScaleAPI.defaults.baseURL}/chat/completion`,
+        `https://api.lmscale.tech/v1/chat/completion`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Accept: "text/event-stream",
-            Authorization: `Bearer ${localStorage.getItem("lm_auth_token")}`,
+            "x-api-key": apiKey,
           },
           body: JSON.stringify({
-            agentId: selectedAgent.id,
             message: userMessage,
+            agentId: agentId,
           }),
         }
       );
@@ -100,13 +90,14 @@ export const ChatProvider = ({ children }) => {
                   return newMessages;
                 });
 
+                // Add a small delay between updates for smoother streaming
                 if (!isFirstResponse) {
                   await new Promise((resolve) => setTimeout(resolve, 10));
                 }
                 isFirstResponse = false;
               }
             } catch (error) {
-              console.error("Error parsing JSON:", error);
+              console.error("Error parsing SSE data:", error);
             }
           }
         }
@@ -130,22 +121,14 @@ export const ChatProvider = ({ children }) => {
     setMessages([]);
   };
 
-  const switchAgent = (agentId) => {
-    const agent = agents.find((a) => a.id === agentId);
-    if (agent) {
-      setSelectedAgent(agent);
-      newChat();
-    }
-  };
-
   const contextValue = {
-    agents,
     messages,
     isLoading,
-    selectedAgent,
+    apiKey,
+    agentId,
     sendMessage,
     newChat,
-    switchAgent,
+    updateApiKey,
   };
 
   return (
