@@ -69,18 +69,33 @@ export function ChatContainer() {
   if (!selectedAgent) {
     return (
       <div className="h-full flex items-center justify-center">
-        <div className="w-64">
+        <div className="w-44 relative">
           <select
             onChange={handleAgentChange}
-            className="w-full px-3 py-2 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-300"
+            className="w-full px-3 py-2 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-300 appearance-none"
           >
-            <option value="">Select an agent</option>
+            <option value="">Select an Agent</option>
             {agents.map((agent) => (
               <option key={agent.id} value={agent.id}>
                 {agent.name}
               </option>
             ))}
           </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+            <svg
+              className="h-4 w-4 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 9l-7 7-7-7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+              />
+            </svg>
+          </div>
         </div>
       </div>
     );
@@ -90,21 +105,38 @@ export function ChatContainer() {
     <div className="h-full flex flex-col">
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <select
-            value={selectedAgent.id}
-            onChange={handleAgentChange}
-            className="w-48 px-3 py-2 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-300"
-          >
-            {agents.map((agent) => (
-              <option key={agent.id} value={agent.id}>
-                {agent.name}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              value={selectedAgent.id}
+              onChange={handleAgentChange}
+              className="w-40 px-3 py-2 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-300 appearance-none"
+            >
+              {agents.map((agent) => (
+                <option key={agent.id} value={agent.id}>
+                  {agent.name}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+              <svg
+                className="h-4 w-4 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M19 9l-7 7-7-7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                />
+              </svg>
+            </div>
+          </div>
         </div>
         <button
           onClick={newChat}
-          className="px-4 py-2 bg-black text-white text-sm flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors rounded-sm"
+          className="px-4 py-2.5 bg-black text-white text-sm flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors rounded-sm"
         >
           <PlusCircle className="w-4 h-4" />
           New Chat

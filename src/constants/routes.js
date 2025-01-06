@@ -2,7 +2,11 @@ export const ROUTES_MAP = {
   DASHBOARD: {
     __: "/dashboard",
     AGENT: "/agent/[slug]",
-    CHAT: "/chat",
+    PROMPT: "/agent/[slug]/prompt",
+    FUNCTIONS: "/agent/[slug]/functions",
+    INSTRUCTIONS: "/agent/[slug]/instructions",
+    CHAT: "/agent/[slug]/chat",
+    SETTINGS: "/agent/[slug]/settings",
     PROFILE: "/profile",
   },
   LOGIN: "/login",

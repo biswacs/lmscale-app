@@ -4,10 +4,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Bot, MessageCircle } from "lucide-react";
 import { useUser } from "@/providers/user-provider";
 
-const navigation = [
-  { name: "Dashboard", href: "/dashboard", icon: Bot },
-  { name: "Chat", href: "/chat", icon: MessageCircle },
-];
+const navigation = [{ name: "Dashboard", href: "/dashboard", icon: Bot }];
 
 export function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
