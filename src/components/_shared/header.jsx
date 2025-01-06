@@ -6,7 +6,7 @@ import { useUser } from "@/providers/user-provider";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Bot },
-  { name: "Chat", href: "/dashboard/chat", icon: MessageCircle },
+  { name: "Chat", href: "/chat", icon: MessageCircle },
 ];
 
 export function Header() {
@@ -51,7 +51,7 @@ export function Header() {
             </div>
 
             <Link
-              href="/dashboard/profile"
+              href="/profile"
               className="flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm uppercase text-neutral-600 hover:bg-neutral-100 transition-colors duration-200 font-light"
             >
               {userDisplayName[0]}
@@ -93,7 +93,7 @@ export function Header() {
               );
             })}
             <Link
-              href="/dashboard/profile"
+              href="/profile"
               className="flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 font-light"
               onClick={() => setShowMobileMenu(false)}
             >
