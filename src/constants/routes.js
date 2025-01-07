@@ -1,6 +1,6 @@
 export const ROUTES_MAP = {
   DASHBOARD: {
-    __: "/dashboard",
+    __: "/dashboard/agents",
     AGENT: "/agent/[slug]",
     PROMPT: "/agent/[slug]/prompt",
     FUNCTIONS: "/agent/[slug]/functions",

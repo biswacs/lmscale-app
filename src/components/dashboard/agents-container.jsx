@@ -133,7 +133,7 @@ function AgentCard({ agent }) {
   );
 }
 
-export function DashboardContainer() {
+export function AgentsContainer() {
   const { agents, isLoading, error, isCreateModalOpen, setIsCreateModalOpen } =
     useAgents();
 

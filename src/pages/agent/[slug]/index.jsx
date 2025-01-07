@@ -1,10 +1,8 @@
 import { AgentLayout } from "@/components/_shared/agent-layout";
-import AgentContainer from "@/components/dashboard/agent-container";
+import React from "react";
 
-export default function AgentPage() {
-  return (
-    <AgentLayout>
-      <AgentContainer />
-    </AgentLayout>
-  );
-}
+const index = () => {
+  return <AgentLayout>index</AgentLayout>;
+};
+
+export default index;

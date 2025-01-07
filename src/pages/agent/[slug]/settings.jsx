@@ -4,7 +4,7 @@ import React from "react";
 const settings = () => {
   return (
     <AgentLayout>
-      <div>settings</div>;
+      <div>settings</div>
     </AgentLayout>
   );
 };

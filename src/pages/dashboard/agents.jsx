@@ -1,10 +1,10 @@
 import { AppLayout } from "@/components/_shared/app-layout";
-import { DashboardContainer } from "@/components/dashboard/dashboard-container";
+import { AgentsContainer } from "@/components/dashboard/agents-container";
 
 export default function DashbaordPage() {
   return (
     <AppLayout>
-      <DashboardContainer />
+      <AgentsContainer />
     </AppLayout>
   );
 }

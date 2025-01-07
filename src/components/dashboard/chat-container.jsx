@@ -1,6 +1,31 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Send, Loader, PlusCircle } from "lucide-react";
 import { useChat } from "@/providers/chat-provider";
+import Link from "next/link";
+
+const Header = ({ agent, onNewChat }) => {
+  return (
+    <div className="border-b border-neutral-200 bg-white h-12 flex justify-between items-center px-4 z-10">
+      <Link href="/dashboard/agents" className="flex items-center gap-2">
+        <img
+          src="/icon.png"
+          alt="LmScale Logo"
+          className="h-7 w-7 object-contain"
+        />
+        <span className="text-sm font-light text-neutral-800">
+          {agent ? agent.name || "LmScale" : "LmScale"}
+        </span>
+      </Link>
+      <button
+        onClick={onNewChat}
+        className="px-4 py-2 bg-black text-white text-sm flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors"
+      >
+        <PlusCircle className="w-4 h-4" />
+        New Chat
+      </button>
+    </div>
+  );
+};
 
 export function ChatContainer() {
   const {
@@ -15,19 +40,27 @@ export function ChatContainer() {
   const [input, setInput] = useState("");
   const conversationEndRef = useRef(null);
   const textareaRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
   const scrollToBottom = () => {
-    conversationEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (conversationEndRef.current) {
+      conversationEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
+  // Scroll on new messages
   useEffect(() => {
     scrollToBottom();
   }, [conversation]);
 
+  // Handle textarea height
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "inherit";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      textareaRef.current.style.height = `${Math.min(
+        textareaRef.current.scrollHeight,
+        200
+      )}px`;
     }
   }, [input]);
 
@@ -57,40 +90,35 @@ export function ChatContainer() {
     return <div className="whitespace-pre-wrap">{msg.content}</div>;
   };
 
-  if (!agent) {
-    return (
-      <div className="h-full flex items-center justify-center">
-        {error ? (
-          <div className="text-red-500">{error}</div>
-        ) : (
-          <Loader className="h-6 w-6 animate-spin" />
-        )}
-      </div>
-    );
-  }
-
   return (
-    <div className="h-full flex flex-col">
-      <div className="p-4 flex items-center justify-between">
-        <div className="text-lg font-medium">{agent.name}</div>
-        <button
-          onClick={newChat}
-          className="px-4 py-2.5 bg-black text-white text-sm flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors rounded-sm"
-        >
-          <PlusCircle className="w-4 h-4" />
-          New Chat
-        </button>
+    <div className="flex flex-col h-screen">
+      {/* Header - Static position */}
+      <div className="flex-none">
+        <Header agent={agent} onNewChat={newChat} />
       </div>
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="min-h-full pb-24">
-          <div className="max-w-3xl mx-auto">
+      {/* Background pattern */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="h-full w-full bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:14px_14px] sm:bg-[size:24px_24px] md:bg-[size:32px_32px]"
+          style={{
+            mask: "radial-gradient(circle at center, white 30%, transparent 70%)",
+            WebkitMask:
+              "radial-gradient(circle at center, white 30%, transparent 70%)",
+          }}
+        />
+      </div>
+
+      {/* Chat messages - Scrollable area */}
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto">
+        <div className="min-h-full">
+          <div className="max-w-3xl mx-auto py-4">
             {conversation.map((msg, index) => (
               <div
                 key={`${msg.role}-${index}`}
                 className="px-4 py-3 flex items-start gap-4"
               >
-                <div className="size-8 flex-shrink-0 flex items-center justify-center font-medium bg-neutral-900 text-white rounded-sm">
+                <div className="size-8 flex-shrink-0 flex items-center justify-center font-light bg-neutral-900 text-white">
                   {msg.role === "user" ? "U" : "A"}
                 </div>
                 <div className="flex-1 text-sm text-neutral-700">
@@ -98,12 +126,13 @@ export function ChatContainer() {
                 </div>
               </div>
             ))}
+            <div ref={conversationEndRef} className="h-1" />
           </div>
-          <div ref={conversationEndRef} />
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 border-t border-neutral-200 bg-white">
+      {/* Input area - Static position at bottom */}
+      <div className="flex-none border-t border-neutral-200 bg-white">
         <div className="max-w-3xl mx-auto px-4 py-3">
           <div className="relative flex items-center">
             <textarea
@@ -111,16 +140,18 @@ export function ChatContainer() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={`Message ${agent.name}...`}
+              placeholder={
+                agent ? `Message ${agent.name}...` : "Agent not available..."
+              }
               disabled={!agent}
               rows="1"
-              className="w-full resize-none border border-neutral-200 py-3 pl-4 pr-12 text-sm focus:outline-none focus:border-neutral-300 rounded-sm disabled:bg-neutral-50 disabled:cursor-not-allowed"
+              className="w-full resize-none border border-neutral-200 py-3 pl-4 pr-12 text-sm focus:outline-none focus:border-neutral-300 disabled:bg-neutral-50 disabled:cursor-not-allowed"
               style={{ minHeight: "48px", maxHeight: "200px" }}
             />
             <button
               onClick={handleSendMessage}
               disabled={!input.trim() || isChatLoading || !agent}
-              className={`absolute right-3 flex items-center justify-center h-8 w-8 transition-colors rounded-sm ${
+              className={`absolute right-3 flex items-center justify-center h-8 w-8 transition-colors ${
                 !input.trim() || isChatLoading || !agent
                   ? "text-neutral-300"
                   : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"

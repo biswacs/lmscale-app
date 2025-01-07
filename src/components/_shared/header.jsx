@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Bot, MessageCircle } from "lucide-react";
+import { Menu, X, Bot } from "lucide-react";
 import { useUser } from "@/providers/user-provider";
 
-const navigation = [{ name: "Dashboard", href: "/dashboard", icon: Bot }];
+const navigation = [{ name: "Agents", href: "/dashboard/agents", icon: Bot }];
 
 export function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -16,7 +16,7 @@ export function Header() {
     <nav className="w-full border-b border-neutral-200 bg-white">
       <div className="px-4">
         <div className="flex h-12 items-center justify-between">
-          <Link href="/dashboard" className="flex items-center gap-2">
+          <Link href="/dashboard/agents" className="flex items-center gap-2">
             <img
               src="/icon.png"
               alt="LmScale Logo"

@@ -10,7 +10,7 @@ export function ProfileContainer() {
 
   return (
     <div className="px-4 py-4">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-6xl mx-auto flex justify-end">
         <div className="flex justify-between items-center">
           <button
             onClick={handleLogout}

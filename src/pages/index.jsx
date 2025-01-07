@@ -210,14 +210,22 @@ export default function HomePage() {
                 <pre className="text-left text-xs md:text-sm text-neutral-600 overflow-x-auto scrollbar-thin scrollbar-thumb-neutral-300 scrollbar-track-transparent">
                   <code>
                     {`curl -X POST "https://api.lmscale.tech/v1/chat/completion" \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer your-api-key" \\
-  -d '{
-    "prompt": "Explain quantum computing",
-    "max_tokens": 100,
-    "temperature": 0.7,
-    "model": "gpt-4"
-  }'`}
+-H "Content-Type: application/json" \\
+-H "Accept: text/event-stream" \\
+-H "x-api-key: \${agent.apiKey}" \\
+-d '{
+  "message": "Explain quantum computing",
+  "conversation": [
+    {
+      "role": "user",
+      "content": "hi"
+    },
+    {
+      "role": "agent", 
+      "content": "how can i help you?"
+    }
+  ]
+}'`}
                   </code>
                 </pre>
               </div>
