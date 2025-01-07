@@ -7,7 +7,7 @@ function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="bg-white w-full max-w-md shadow-xl relative animate-in fade-in duration-200">
         {children}
       </div>
@@ -65,8 +65,8 @@ function CreateAgentModal({ isOpen, onClose }) {
             onChange={(e) => setFormData({ name: e.target.value })}
             placeholder="Enter agent name"
             className="w-full h-10  border border-neutral-200 px-3 text-sm 
-                     placeholder:text-neutral-400 focus:outline-none focus:ring-2 
-                     focus:ring-neutral-900 focus:border-transparent"
+                     placeholder:text-neutral-400 focus:outline-none focus:ring-1 
+                     focus:ring-neutral-400 focus:border-transparent"
             required
           />
         </div>
@@ -100,30 +100,26 @@ function CreateAgentModal({ isOpen, onClose }) {
 
 function AgentCard({ agent }) {
   return (
-    <Link
-      href={`/agent/${agent.id}`}
-      className="block bg-white border border-neutral-200 hover:border-neutral-300 
-                transition-all duration-200 hover:shadow-sm"
-    >
+    <Link href={`/agent/${agent.id}`} className="bg-neutral-900">
       <div className="p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg text-neutral-900">{agent.name}</h3>
+          <h3 className="text-lg text-white">{agent.name}</h3>
           <span
             className={`flex items-center gap-1.5 text-sm ${
-              agent.isActive ? "text-green-600" : "text-yellow-600"
+              agent.isActive ? "text-green-400" : "text-yellow-400"
             }`}
           >
             <span
               className={`size-2 rounded-full ${
-                agent.isActive ? "bg-green-500" : "bg-yellow-500"
+                agent.isActive ? "bg-green-400" : "bg-yellow-400"
               }`}
             />
             {agent.isActive ? "Active" : "Inactive"}
           </span>
         </div>
 
-        <div className="pt-4 border-t border-neutral-100 grid grid-cols-2 gap-4">
-          <div className="flex items-center gap-2 text-sm text-neutral-500">
+        <div className="pt-4  grid grid-cols-2 gap-4">
+          <div className="flex items-center gap-2 text-sm text-white">
             <Calendar className="h-4 w-4" />
             {new Date(agent.createdAt).toLocaleDateString()}
           </div>

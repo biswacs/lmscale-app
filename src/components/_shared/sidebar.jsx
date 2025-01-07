@@ -12,11 +12,11 @@ import {
 
 const navigation = [
   { name: "Panel", href: "", icon: ChartNoAxesColumn },
-  { name: "System Prompt", href: "prompt", icon: Terminal },
-  { name: "Functions", href: "functions", icon: Code2 },
+  { name: "Prompt", href: "prompt", icon: Terminal },
   { name: "Instructions", href: "instructions", icon: BookOpen },
-  { name: "Chat", href: "chat", icon: MessageCircle, newTab: true },
+  { name: "Functions", href: "functions", icon: Code2 },
   { name: "Settings", href: "settings", icon: Settings },
+  { name: "Chat", href: "chat", icon: MessageCircle, newTab: true },
 ];
 
 export function Sidebar() {
@@ -52,7 +52,7 @@ export function Sidebar() {
   return (
     <div className="relative flex flex-col border-r border-neutral-200 bg-white transition-all duration-300 w-14 md:w-44">
       <div className="flex-1 overflow-y-auto">
-        <nav className="flex flex-col gap-2 py-2 px-2 md:px-4">
+        <nav className="flex flex-col gap-2 p-2">
           {navigation.map((item) => renderNavLink(item))}
         </nav>
       </div>
