@@ -1,25 +1,29 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { lmScaleAPI } from "@/api/instance";
-import { useAuthentication } from "./authentication-provider";
+import { API_BASE_URL } from "@/config";
 
 const UserContext = createContext({});
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const { isAuthenticated, authToken } = useAuthentication();
 
   const fetchUser = async () => {
+    const authToken = localStorage.getItem("lm_auth_token");
     try {
       setLoading(true);
-      const response = await lmScaleAPI.get("/user/profile", {
+      const response = await fetch(`${API_BASE_URL}/user/profile`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      setUser(response.data.user);
-      return response.data.user;
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user profile");
+      }
+
+      const data = await response.json();
+      setUser(data.user);
+      return data.user;
     } catch (error) {
       console.error("Error fetching user:", error);
       setUser(null);
@@ -29,18 +33,18 @@ const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (isAuthenticated && authToken) {
+    const authToken = localStorage.getItem("lm_auth_token");
+    if (authToken) {
       fetchUser();
     } else {
       setUser(null);
       setLoading(false);
     }
-  }, [isAuthenticated, authToken]);
+  }, []);
 
   const contextValue = {
     user,
     loading,
-    submitting,
     fetchUser,
   };
 

@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useAuthentication } from "./authentication-provider";
-import { lmScaleAPI } from "@/api/instance";
+import { API_BASE_URL } from "@/config";
 
 const AgentsContext = createContext({});
 
@@ -9,16 +8,22 @@ export const AgentsProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const { authToken } = useAuthentication();
 
   const fetchAgents = async () => {
+    const authToken = localStorage.getItem("lm_auth_token");
     try {
-      const response = await lmScaleAPI.get("/agent/list", {
+      const response = await fetch(`${API_BASE_URL}/agent/list`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      setAgents(response.data.data.agents);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch agents");
+      }
+
+      const data = await response.json();
+      setAgents(data.data.agents);
       setIsLoading(false);
     } catch (err) {
       setError(err.message || "Failed to fetch agents");
@@ -27,25 +32,35 @@ export const AgentsProvider = ({ children }) => {
   };
 
   const createAgent = async (formData) => {
+    const authToken = localStorage.getItem("lm_auth_token");
     try {
-      await lmScaleAPI.post("/agent/create", formData, {
+      const response = await fetch(`${API_BASE_URL}/agent/create`, {
+        method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${authToken}`,
         },
+        body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to create agent");
+      }
 
       await fetchAgents();
       return true;
     } catch (err) {
-      throw new Error(err.response?.data?.message || "Failed to create agent");
+      throw new Error(err.message || "Failed to create agent");
     }
   };
 
   useEffect(() => {
+    const authToken = localStorage.getItem("lm_auth_token");
     if (authToken) {
       fetchAgents();
     }
-  }, [authToken]);
+  }, []);
 
   const contextValue = {
     agents,
@@ -65,3 +80,5 @@ export const AgentsProvider = ({ children }) => {
 };
 
 export const useAgents = () => useContext(AgentsContext);
+
+export default AgentsProvider;

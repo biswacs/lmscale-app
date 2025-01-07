@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 const navigation = [
-  { name: "Panel", href: "/", icon: ChartNoAxesColumn },
+  { name: "Panel", href: "", icon: ChartNoAxesColumn },
   { name: "System Prompt", href: "prompt", icon: Terminal },
   { name: "Functions", href: "functions", icon: Code2 },
   { name: "Instructions", href: "instructions", icon: BookOpen },
@@ -40,7 +40,9 @@ export function Sidebar() {
           }`}
         >
           {navigation.map((item) => {
-            const fullPath = `/agent/${agentId}/${item.href}`;
+            const fullPath = `/agent/${agentId}${
+              item.href ? `/${item.href}` : ""
+            }`;
             const isActive = pathname === fullPath;
 
             return (

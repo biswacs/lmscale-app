@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Loader2, X } from "lucide-react";
+import { Loader2, X, Plus, Activity, Calendar } from "lucide-react";
 import { useAgents } from "@/providers/agents-provider";
 import Link from "next/link";
 
@@ -7,8 +7,8 @@ function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-neutral-900/60 flex items-center justify-center p-4 z-50">
-      <div className="bg-white w-full max-w-md relative animate-in fade-in duration-200">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white w-full max-w-md shadow-xl relative animate-in fade-in duration-200">
         {children}
       </div>
     </div>
@@ -17,25 +17,9 @@ function Modal({ isOpen, onClose, children }) {
 
 function CreateAgentModal({ isOpen, onClose }) {
   const { createAgent } = useAgents();
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-  });
+  const [formData, setFormData] = useState({ name: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      description: "",
-    });
-    setError(null);
-  };
-
-  const handleClose = () => {
-    resetForm();
-    onClose();
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +28,7 @@ function CreateAgentModal({ isOpen, onClose }) {
 
     try {
       await createAgent(formData);
-      handleClose();
+      onClose();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -54,13 +38,11 @@ function CreateAgentModal({ isOpen, onClose }) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="border-b border-neutral-200">
+      <div className="border-b border-neutral-100">
         <div className="flex items-center justify-between px-6 py-4 bg-neutral-900">
-          <h2 className="text-lg font-light text-neutral-200">
-            Create New Agent
-          </h2>
+          <h2 className="text-lg text-neutral-200">Create New Agent</h2>
           <button
-            onClick={handleClose}
+            onClick={onClose}
             className="text-neutral-200 hover:text-white transition-colors"
           >
             <X className="h-5 w-5" />
@@ -69,60 +51,40 @@ function CreateAgentModal({ isOpen, onClose }) {
       </div>
 
       <form onSubmit={handleSubmit} className="p-6">
-        <div className="space-y-4">
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 p-3 text-sm font-light">
-              {error}
-            </div>
-          )}
-
-          <div className="space-y-2">
-            <label className="block text-sm text-neutral-900 font-light">
-              Name
-            </label>
-            <input
-              type="text"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, name: e.target.value }))
-              }
-              placeholder="Enter agent name"
-              className="w-full h-10 border border-neutral-200 px-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 font-light"
-              required
-            />
+        {error && (
+          <div className="mb-4 bg-red-50 border border-red-100 text-red-600 p-3 text-sm ">
+            {error}
           </div>
+        )}
 
-          <div className="space-y-2">
-            <label className="block text-sm text-neutral-900 font-light">
-              Description
-            </label>
-            <textarea
-              value={formData.description}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  description: e.target.value,
-                }))
-              }
-              placeholder="Enter agent description"
-              rows={3}
-              className="w-full border border-neutral-200 px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 resize-none font-light"
-            />
-          </div>
+        <div className="space-y-2">
+          <label className="block text-sm text-neutral-700">Agent Name</label>
+          <input
+            type="text"
+            value={formData.name}
+            onChange={(e) => setFormData({ name: e.target.value })}
+            placeholder="Enter agent name"
+            className="w-full h-10  border border-neutral-200 px-3 text-sm 
+                     placeholder:text-neutral-400 focus:outline-none focus:ring-2 
+                     focus:ring-neutral-900 focus:border-transparent"
+            required
+          />
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-3">
           <button
             type="button"
-            onClick={handleClose}
-            className="h-10 px-4 text-sm text-neutral-700 hover:text-neutral-900 font-light"
+            onClick={onClose}
+            className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isLoading}
-            className="h-10 px-4 bg-neutral-900 text-sm text-white hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[100px] font-light"
+            className="px-4 py-2 bg-neutral-900  text-sm text-white 
+                     hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed 
+                     flex items-center justify-center min-w-[100px]"
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -136,6 +98,41 @@ function CreateAgentModal({ isOpen, onClose }) {
   );
 }
 
+function AgentCard({ agent }) {
+  return (
+    <Link
+      href={`/agent/${agent.id}`}
+      className="block bg-white border border-neutral-200 hover:border-neutral-300 
+                transition-all duration-200 hover:shadow-sm"
+    >
+      <div className="p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg text-neutral-900">{agent.name}</h3>
+          <span
+            className={`flex items-center gap-1.5 text-sm ${
+              agent.isActive ? "text-green-600" : "text-yellow-600"
+            }`}
+          >
+            <span
+              className={`size-2 rounded-full ${
+                agent.isActive ? "bg-green-500" : "bg-yellow-500"
+              }`}
+            />
+            {agent.isActive ? "Active" : "Inactive"}
+          </span>
+        </div>
+
+        <div className="pt-4 border-t border-neutral-100 grid grid-cols-2 gap-4">
+          <div className="flex items-center gap-2 text-sm text-neutral-500">
+            <Calendar className="h-4 w-4" />
+            {new Date(agent.createdAt).toLocaleDateString()}
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 export function DashboardContainer() {
   const { agents, isLoading, error, isCreateModalOpen, setIsCreateModalOpen } =
     useAgents();
@@ -143,92 +140,51 @@ export function DashboardContainer() {
   if (isLoading) {
     return (
       <div className="h-full flex items-center justify-center">
-        <Loader2 className="animate-spin" />
+        <Loader2 className="h-6 w-6 animate-spin text-neutral-900" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="h-full flex items-center justify-center text-red-500 font-light">
+      <div className="h-full flex items-center justify-center text-red-600">
         Error: {error}
       </div>
     );
   }
 
   return (
-    <div className="h-full flex flex-col relative">
-      <div className="absolute inset-0 overflow-y-auto">
-        <div className="min-h-full pb-24">
-          <div className="px-4 py-4">
-            <div className="max-w-3xl mx-auto space-y-6">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
-                <h1 className="text-xl sm:text-2xl text-neutral-900 font-light">
-                  Agents
-                </h1>
-                <button
-                  onClick={() => setIsCreateModalOpen(true)}
-                  className="w-full sm:w-auto bg-neutral-900 text-white px-4 py-2 text-sm hover:bg-neutral-800 font-light"
-                >
-                  New Agent
-                </button>
-              </div>
-
-              <div className="border border-neutral-200 bg-white overflow-x-auto">
-                <div className="hidden sm:grid grid-cols-5 gap-4 p-4 border-b border-neutral-200 text-sm text-neutral-500 font-light">
-                  <div className="col-span-2">Name</div>
-                  <div>Status</div>
-                  <div>Created</div>
-                  <div>Last Updated</div>
-                </div>
-
-                {agents.map((agent) => (
-                  <Link
-                    key={agent.id}
-                    href={`/agent/${agent.id}`}
-                    className="flex flex-col sm:grid sm:grid-cols-5 gap-2 sm:gap-4 p-4 border-b border-neutral-200 text-sm hover:bg-neutral-50"
-                  >
-                    <div className="col-span-2 text-neutral-900 font-light">
-                      <span className="sm:hidden text-neutral-500">Name: </span>
-                      {agent.name}
-                    </div>
-                    <div className="font-light">
-                      <span className="sm:hidden text-neutral-500">
-                        Status:{" "}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5">
-                        <span
-                          className={`size-2 rounded-full ${
-                            agent.isActive ? "bg-green-500" : "bg-yellow-500"
-                          }`}
-                        />
-                        {agent.isActive ? "Active" : "Inactive"}
-                      </span>
-                    </div>
-                    <div className="text-neutral-600 font-light">
-                      <span className="sm:hidden text-neutral-500">
-                        Created:{" "}
-                      </span>
-                      {new Date(agent.createdAt).toLocaleDateString()}
-                    </div>
-                    <div className="text-neutral-600 font-light">
-                      <span className="sm:hidden text-neutral-500">
-                        Updated:{" "}
-                      </span>
-                      {new Date(agent.updatedAt).toLocaleDateString()}
-                    </div>
-                  </Link>
-                ))}
-
-                {agents.length === 0 && (
-                  <div className="p-8 text-center text-neutral-500 font-light">
-                    No agents found
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+    <div className="h-full font-light">
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-2xl text-neutral-900">Agents</h1>
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="flex items-center gap-2 bg-neutral-900 text-white px-4 py-2 
+                      hover:bg-neutral-800 transition-colors"
+          >
+            <Plus className="h-4 w-4" />
+            New Agent
+          </button>
         </div>
+
+        {agents.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-neutral-400 mb-4">No agents found</div>
+            <button
+              onClick={() => setIsCreateModalOpen(true)}
+              className="text-sm text-neutral-900 hover:text-neutral-700"
+            >
+              Create your first agent
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {agents.map((agent) => (
+              <AgentCard key={agent.id} agent={agent} />
+            ))}
+          </div>
+        )}
       </div>
 
       <CreateAgentModal

@@ -1,81 +1,84 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useAuthentication } from "./authentication-provider";
-import { lmScaleAPI } from "@/api/instance";
+import { useRouter } from "next/router";
+import { API_BASE_URL } from "@/config";
 
 const ChatContext = createContext({});
 
 export const ChatProvider = ({ children }) => {
-  const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [conversation, setConversation] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedAgent, setSelectedAgent] = useState(null);
-  const [agents, setAgents] = useState([]);
-  const [isAgentModalOpen, setIsAgentModalOpen] = useState(true);
-  const { authToken } = useAuthentication();
+  const [agent, setAgent] = useState(null);
+  const router = useRouter();
+  const agentId = router.query.slug;
 
   useEffect(() => {
-    if (authToken) {
-      fetchAgents();
-    }
-  }, [authToken]);
+    setConversation([]);
+    setError(null);
+    setAgent(null);
+  }, [agentId]);
 
-  const fetchAgents = async () => {
+  useEffect(() => {
+    const authToken = localStorage.getItem("lm_auth_token");
+    if (authToken && agentId) {
+      fetchAgentApiKey();
+    }
+  }, [agentId]);
+
+  const fetchAgentApiKey = async () => {
+    const authToken = localStorage.getItem("lm_auth_token");
     try {
-      const response = await lmScaleAPI.get("/agent/list", {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-      setAgents(response.data.data.agents);
-      setIsLoading(false);
+      const response = await fetch(
+        `${API_BASE_URL}/api/get?agentId=${agentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch agent API key");
+      }
+
+      const data = await response.json();
+      setAgent(data.data.agent);
     } catch (err) {
-      setError(err.message || "Failed to fetch agents");
-      setIsLoading(false);
+      setError(err.message || "Failed to fetch agent API key");
     }
   };
 
-  const selectAgent = (agent) => {
-    setSelectedAgent(agent);
-    setIsAgentModalOpen(false);
-  };
-
-  const changeAgent = () => {
-    setIsAgentModalOpen(true);
-  };
-
-  const sendMessage = async (message, history = []) => {
-    if (!message.trim() || !selectedAgent) return;
+  const sendMessage = async (message, previousMessages = []) => {
+    if (!message.trim() || !agent) return;
 
     const userMessage = message.trim();
     setIsLoading(true);
 
-    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
-
-    setMessages((prev) => [
+    setConversation((prev) => [
+      ...prev,
+      { role: "user", content: userMessage },
+    ]);
+    setConversation((prev) => [
       ...prev,
       { role: "agent", content: "", loading: true },
     ]);
 
     try {
-      const response = await fetch(
-        `https://api.lmscale.tech/v1/chat/completion`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "text/event-stream",
-            "x-api-key": selectedAgent.apiKey,
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({
-            message: userMessage,
-            messageHistory: history.map((msg) => ({
-              role: msg.role,
-              content: msg.content,
-            })),
-          }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/chat/completion`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "text/event-stream",
+          "x-api-key": agent.apiKey,
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          conversation: previousMessages.map((msg) => ({
+            role: msg.role,
+            content: msg.content,
+          })),
+        }),
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -105,9 +108,10 @@ export const ChatProvider = ({ children }) => {
               if (data.response) {
                 accumulatedText += data.response;
 
-                setMessages((prev) => {
-                  const newMessages = [...prev];
-                  const lastMessage = newMessages[newMessages.length - 1];
+                setConversation((prev) => {
+                  const newConversation = [...prev];
+                  const lastMessage =
+                    newConversation[newConversation.length - 1];
                   if (lastMessage.role === "agent") {
                     return [
                       ...prev.slice(0, -1),
@@ -118,7 +122,7 @@ export const ChatProvider = ({ children }) => {
                       },
                     ];
                   }
-                  return newMessages;
+                  return newConversation;
                 });
 
                 if (!isFirstResponse) {
@@ -140,7 +144,7 @@ export const ChatProvider = ({ children }) => {
     } catch (error) {
       console.error("Error sending message:", error);
 
-      setMessages((prev) => [
+      setConversation((prev) => [
         ...prev.slice(0, -1),
         {
           role: "agent",
@@ -154,27 +158,16 @@ export const ChatProvider = ({ children }) => {
   };
 
   const newChat = () => {
-    setMessages([]);
-  };
-
-  const clearAgent = () => {
-    setSelectedAgent(null);
-    setIsAgentModalOpen(true);
+    setConversation([]);
   };
 
   const contextValue = {
-    messages,
+    conversation,
     isLoading,
     error,
-    selectedAgent,
-    agents,
-    isAgentModalOpen,
+    agent,
     sendMessage,
     newChat,
-    selectAgent,
-    changeAgent,
-    clearAgent,
-    setIsAgentModalOpen,
   };
 
   return (

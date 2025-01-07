@@ -1,4 +1,4 @@
-import { lmScaleAPI } from "@/api/instance";
+import { API_BASE_URL } from "@/config";
 import { AUTHENTICATED_ROUTES, ROUTES_MAP } from "@/constants/routes";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -19,14 +19,27 @@ const AuthenticationProvider = ({ children }) => {
 
     setSubmitting(true);
     try {
-      const res = await lmScaleAPI.post("/user/login", { email, password });
-      localStorage.setItem("lm_auth_token", res.data.lm_auth_token);
-      setAuthToken(res.data.lm_auth_token);
+      const response = await fetch(`${API_BASE_URL}/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login failed");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("lm_auth_token", data.lm_auth_token);
+      setAuthToken(data.lm_auth_token);
       window.location.href = ROUTES_MAP.DASHBOARD.__;
-      return res.data;
+      return data;
     } catch (err) {
       console.error(err);
-      throw new Error(err?.response?.data?.message || "Login failed");
+      throw new Error(err.message || "Login failed");
     } finally {
       setSubmitting(false);
     }
@@ -39,18 +52,27 @@ const AuthenticationProvider = ({ children }) => {
 
     setSubmitting(true);
     try {
-      const res = await lmScaleAPI.post("/user/register", {
-        name,
-        email,
-        password,
+      const response = await fetch(`${API_BASE_URL}/user/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
       });
-      localStorage.setItem("lm_auth_token", res.data.lm_auth_token);
-      setAuthToken(res.data.lm_auth_token);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Registration failed");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("lm_auth_token", data.lm_auth_token);
+      setAuthToken(data.lm_auth_token);
       window.location.href = ROUTES_MAP.DASHBOARD.__;
-      return res.data;
+      return data;
     } catch (err) {
       console.error(err);
-      throw new Error(err?.response?.data?.message || "Registration failed");
+      throw new Error(err.message || "Registration failed");
     } finally {
       setSubmitting(false);
     }
@@ -61,35 +83,6 @@ const AuthenticationProvider = ({ children }) => {
     setAuthToken(null);
     window.location.href = ROUTES_MAP.LOGIN;
   };
-
-  useEffect(() => {
-    const tokenFromQuery = router?.query?.lm_auth_token;
-
-    if (tokenFromQuery) {
-      lmScaleAPI
-        .get("/api/auth/account", {
-          headers: {
-            Authorization: `Bearer ${tokenFromQuery}`,
-          },
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            localStorage.setItem("lm_auth_token", tokenFromQuery);
-            setAuthToken(tokenFromQuery);
-          }
-        })
-        .catch((error) => {
-          console.error("Error validating lm_auth_token:", error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-
-    const lm_auth_tokenFromLocalStorage = localStorage.getItem("lm_auth_token");
-    setAuthToken(lm_auth_tokenFromLocalStorage);
-    setLoading(false);
-  }, [router]);
 
   useEffect(() => {
     if (loading) return;

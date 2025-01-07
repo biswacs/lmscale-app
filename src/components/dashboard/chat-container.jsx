@@ -4,39 +4,38 @@ import { useChat } from "@/providers/chat-provider";
 
 export function ChatContainer() {
   const {
-    messages = [],
+    conversation = [],
     isLoading: isChatLoading,
     sendMessage,
     newChat,
-    selectedAgent,
-    agents,
-    selectAgent,
+    agent,
+    error,
   } = useChat();
 
-  const [message, setMessage] = useState("");
-  const messagesEndRef = useRef(null);
+  const [input, setInput] = useState("");
+  const conversationEndRef = useRef(null);
   const textareaRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    conversationEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [conversation]);
 
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "inherit";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  }, [message]);
+  }, [input]);
 
   const handleSendMessage = async () => {
-    if (!message.trim() || !selectedAgent) return;
-    const messageToSend = message.trim();
-    setMessage("");
-    await sendMessage(messageToSend, messages);
+    if (!input.trim() || !agent) return;
+    const messageToSend = input.trim();
+    setInput("");
+    await sendMessage(messageToSend, conversation);
   };
 
   const handleKeyPress = (event) => {
@@ -58,45 +57,14 @@ export function ChatContainer() {
     return <div className="whitespace-pre-wrap">{msg.content}</div>;
   };
 
-  const handleAgentChange = (event) => {
-    const agentId = event.target.value;
-    const agent = agents.find((a) => a.id === agentId);
-    if (agent) {
-      selectAgent(agent);
-    }
-  };
-
-  if (!selectedAgent) {
+  if (!agent) {
     return (
       <div className="h-full flex items-center justify-center">
-        <div className="w-44 relative">
-          <select
-            onChange={handleAgentChange}
-            className="w-full px-3 py-2 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-300 appearance-none"
-          >
-            <option value="">Select an Agent</option>
-            {agents.map((agent) => (
-              <option key={agent.id} value={agent.id}>
-                {agent.name}
-              </option>
-            ))}
-          </select>
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
-            <svg
-              className="h-4 w-4 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M19 9l-7 7-7-7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-              />
-            </svg>
-          </div>
-        </div>
+        {error ? (
+          <div className="text-red-500">{error}</div>
+        ) : (
+          <Loader className="h-6 w-6 animate-spin" />
+        )}
       </div>
     );
   }
@@ -104,36 +72,7 @@ export function ChatContainer() {
   return (
     <div className="h-full flex flex-col">
       <div className="p-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <select
-              value={selectedAgent.id}
-              onChange={handleAgentChange}
-              className="w-40 px-3 py-2 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-300 appearance-none"
-            >
-              {agents.map((agent) => (
-                <option key={agent.id} value={agent.id}>
-                  {agent.name}
-                </option>
-              ))}
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
-              <svg
-                className="h-4 w-4 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M19 9l-7 7-7-7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
+        <div className="text-lg font-medium">{agent.name}</div>
         <button
           onClick={newChat}
           className="px-4 py-2.5 bg-black text-white text-sm flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors rounded-sm"
@@ -146,7 +85,7 @@ export function ChatContainer() {
       <div className="flex-1 overflow-y-auto">
         <div className="min-h-full pb-24">
           <div className="max-w-3xl mx-auto">
-            {messages.map((msg, index) => (
+            {conversation.map((msg, index) => (
               <div
                 key={`${msg.role}-${index}`}
                 className="px-4 py-3 flex items-start gap-4"
@@ -160,7 +99,7 @@ export function ChatContainer() {
               </div>
             ))}
           </div>
-          <div ref={messagesEndRef} />
+          <div ref={conversationEndRef} />
         </div>
       </div>
 
@@ -169,19 +108,20 @@ export function ChatContainer() {
           <div className="relative flex items-center">
             <textarea
               ref={textareaRef}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={`Message ${selectedAgent.name}...`}
+              placeholder={`Message ${agent.name}...`}
+              disabled={!agent}
               rows="1"
-              className="w-full resize-none border border-neutral-200 py-3 pl-4 pr-12 text-sm focus:outline-none focus:border-neutral-300 rounded-sm"
+              className="w-full resize-none border border-neutral-200 py-3 pl-4 pr-12 text-sm focus:outline-none focus:border-neutral-300 rounded-sm disabled:bg-neutral-50 disabled:cursor-not-allowed"
               style={{ minHeight: "48px", maxHeight: "200px" }}
             />
             <button
               onClick={handleSendMessage}
-              disabled={!message.trim() || isChatLoading}
+              disabled={!input.trim() || isChatLoading || !agent}
               className={`absolute right-3 flex items-center justify-center h-8 w-8 transition-colors rounded-sm ${
-                !message.trim() || isChatLoading
+                !input.trim() || isChatLoading || !agent
                   ? "text-neutral-300"
                   : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"
               }`}
