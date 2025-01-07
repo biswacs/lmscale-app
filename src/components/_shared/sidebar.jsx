@@ -36,7 +36,7 @@ export function Sidebar() {
         key={item.name}
         href={fullPath}
         {...linkProps}
-        className={`flex items-center justify-center md:justify-start gap-3 rounded px-3 py-2 w-full text-sm transition-colors duration-200
+        className={`flex items-center justify-center md:justify-start gap-3 px-3 py-2 w-full text-sm transition-colors duration-200
           ${
             isActive
               ? "bg-neutral-900 text-white"
