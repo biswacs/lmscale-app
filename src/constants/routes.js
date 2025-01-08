@@ -11,7 +11,26 @@ export const ROUTES_MAP = {
   },
   LOGIN: "/login",
   REGISTER: "/register",
+  HOME: "/",
 };
 
-export const AUTHENTICATED_ROUTES = [...Object.values(ROUTES_MAP.DASHBOARD)];
-export const UNAUTHENTICATED_ROUTES = [ROUTES_MAP.LOGIN, ROUTES_MAP.REGISTER];
+const getDashboardRoutes = () => {
+  const routes = Object.values(ROUTES_MAP.DASHBOARD);
+  const dynamicRoutes = [
+    "/agent/:slug",
+    "/agent/:slug/prompt",
+    "/agent/:slug/functions",
+    "/agent/:slug/instructions",
+    "/agent/:slug/chat",
+    "/agent/:slug/settings",
+  ];
+  return [...routes, ...dynamicRoutes];
+};
+
+export const AUTHENTICATED_ROUTES = getDashboardRoutes();
+
+export const UNAUTHENTICATED_ROUTES = [
+  ROUTES_MAP.LOGIN,
+  ROUTES_MAP.REGISTER,
+  ROUTES_MAP.HOME,
+];

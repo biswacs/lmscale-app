@@ -1,5 +1,9 @@
 import { API_BASE_URL } from "@/config";
-import { AUTHENTICATED_ROUTES, ROUTES_MAP } from "@/constants/routes";
+import {
+  AUTHENTICATED_ROUTES,
+  ROUTES_MAP,
+  UNAUTHENTICATED_ROUTES,
+} from "@/constants/routes";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -7,10 +11,15 @@ const AuthenticationContext = createContext({});
 
 const AuthenticationProvider = ({ children }) => {
   const router = useRouter();
-
   const [authToken, setAuthToken] = useState(undefined);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("lm_auth_token");
+    setAuthToken(token);
+    setLoading(false);
+  }, []);
 
   const logInUser = async (email, password) => {
     if (!email || !password) {
@@ -89,12 +98,15 @@ const AuthenticationProvider = ({ children }) => {
 
     const isLoggedIn = !!authToken;
     const currentPathname = router.pathname;
-    const isAuthenticatedRoute = AUTHENTICATED_ROUTES.includes(currentPathname);
 
-    if (isAuthenticatedRoute && !isLoggedIn) {
-      router.push(ROUTES_MAP.LOGIN);
-    } else if (!isAuthenticatedRoute && isLoggedIn) {
-      router.push(ROUTES_MAP.DASHBOARD.__);
+    if (!isLoggedIn) {
+      if (!UNAUTHENTICATED_ROUTES.includes(currentPathname)) {
+        router.push(ROUTES_MAP.LOGIN);
+      }
+    } else {
+      if (!AUTHENTICATED_ROUTES.includes(currentPathname)) {
+        router.push(ROUTES_MAP.DASHBOARD.__);
+      }
     }
   }, [authToken, loading, router]);
 
@@ -109,7 +121,7 @@ const AuthenticationProvider = ({ children }) => {
 
   return (
     <AuthenticationContext.Provider value={contextValue}>
-      {children}
+      {!loading && children}
     </AuthenticationContext.Provider>
   );
 };
