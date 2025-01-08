@@ -48,7 +48,7 @@ export function Header() {
             </div>
 
             <Link
-              href="/profile"
+              href="/dashboard/profile"
               className="flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm uppercase text-neutral-600 hover:bg-neutral-100 transition-colors duration-200 font-light"
             >
               {userDisplayName[0]}
@@ -90,7 +90,7 @@ export function Header() {
               );
             })}
             <Link
-              href="/profile"
+              href="/dashboard/profile"
               className="flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 font-light"
               onClick={() => setShowMobileMenu(false)}
             >

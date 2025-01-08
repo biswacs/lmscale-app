@@ -1,3 +1,4 @@
+import Seo from "@/components/_shared/seo";
 import { ROUTES_MAP } from "@/constants/routes";
 import { useAuthentication } from "@/providers/authentication-provider";
 import { Loader, MoveRight } from "lucide-react";
@@ -58,6 +59,11 @@ export default function LoginPage() {
 
   return (
     <div className="relative min-h-screen bg-white">
+      <Seo
+        title="Login"
+        description="Login to your LmScale account"
+        path="/login"
+      />
       <div className="absolute inset-0">
         <div
           className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"

@@ -1,4 +1,5 @@
 import { Menu, MoveRight, Terminal, X } from "lucide-react";
+import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -32,8 +33,73 @@ export default function HomePage() {
     };
   }, [isMenuOpen]);
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "LmScale",
+    description:
+      "Deploy and scale language models with zero infrastructure headaches. Simple, fast, and secure cloud deployment.",
+    applicationCategory: "AI Software",
+    operatingSystem: "Cloud",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.8",
+      ratingCount: "1000",
+    },
+  };
+
   return (
     <>
+      <Head>
+        <title>LmScale - Deploy and Scale Language Models in the Cloud</title>
+        <meta
+          name="description"
+          content="Deploy and scale language models with zero infrastructure headaches. Simple, fast, and secure cloud deployment platform for enterprise AI applications."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <meta
+          property="og:title"
+          content="LmScale - Deploy and Scale Language Models in the Cloud"
+        />
+        <meta
+          property="og:description"
+          content="Deploy and scale language models with zero infrastructure headaches. Simple, fast, and secure cloud deployment."
+        />
+        <meta property="og:image" content="https://lmscale.com/og-image.jpg" />
+        <meta property="og:url" content="https://lmscale.com" />
+        <meta property="og:type" content="website" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="LmScale - Deploy and Scale Language Models in the Cloud"
+        />
+        <meta
+          name="twitter:description"
+          content="Deploy and scale language models with zero infrastructure headaches. Simple, fast, and secure cloud deployment."
+        />
+        <meta
+          name="twitter:image"
+          content="https://lmscale.com/twitter-image.jpg"
+        />
+
+        <meta
+          name="keywords"
+          content="LLM, language models, AI deployment, cloud computing, machine learning, GPU infrastructure, model serving"
+        />
+        <link rel="canonical" href="https://lmscale.com" />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </Head>
       <header>
         <div
           className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-in-out ${
@@ -142,6 +208,7 @@ export default function HomePage() {
       <section
         id="Hero"
         className="relative min-h-screen bg-white overflow-hidden"
+        aria-label="Hero Section"
       >
         <div className="absolute inset-0">
           <div
@@ -256,6 +323,7 @@ export default function HomePage() {
       <section
         id="Features"
         className="relative py-24 bg-white overflow-hidden"
+        aria-label="Features Section"
       >
         <div className="absolute inset-0">
           <div
@@ -875,7 +943,7 @@ slm api create-key \\
           </div>
         </div>
       </section>
-      <footer className="relative bg-white">
+      <footer className="relative bg-white" role="contentinfo">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
