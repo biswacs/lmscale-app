@@ -3,17 +3,17 @@ import { Send, Loader, PlusCircle } from "lucide-react";
 import { useChat } from "@/providers/chat-provider";
 import Link from "next/link";
 
-const Header = ({ agent, onNewChat }) => {
+const Header = ({ qubit, onNewChat }) => {
   return (
     <div className="border-b border-neutral-200 bg-white h-12 flex justify-between items-center px-4 z-10">
-      <Link href="/dashboard/agents" className="flex items-center gap-2">
+      <Link href="/dashboard/qubits" className="flex items-center gap-2">
         <img
           src="/icon.png"
           alt="LmScale Logo"
           className="h-7 w-7 object-contain"
         />
         <span className="text-sm font-light text-neutral-800">
-          {agent ? agent.name || "LmScale" : "LmScale"}
+          {qubit ? qubit.name || "LmScale" : "LmScale"}
         </span>
       </Link>
       <button
@@ -33,7 +33,7 @@ export function ChatContainer() {
     isLoading: isChatLoading,
     sendMessage,
     newChat,
-    agent,
+    qubit,
     error,
   } = useChat();
 
@@ -65,7 +65,7 @@ export function ChatContainer() {
   }, [input]);
 
   const handleSendMessage = async () => {
-    if (!input.trim() || !agent) return;
+    if (!input.trim() || !qubit) return;
     const messageToSend = input.trim();
     setInput("");
     await sendMessage(messageToSend, conversation);
@@ -94,7 +94,7 @@ export function ChatContainer() {
     <div className="flex flex-col h-screen">
       {/* Header - Static position */}
       <div className="flex-none">
-        <Header agent={agent} onNewChat={newChat} />
+        <Header qubit={qubit} onNewChat={newChat} />
       </div>
 
       {/* Background pattern */}
@@ -141,18 +141,18 @@ export function ChatContainer() {
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder={
-                agent ? `Message ${agent.name}...` : "Agent not available..."
+                qubit ? `Message ${qubit.name}...` : "Qubit not available..."
               }
-              disabled={!agent}
+              disabled={!qubit}
               rows="1"
               className="w-full resize-none border border-neutral-200 py-3 pl-4 pr-12 text-sm focus:outline-none focus:border-neutral-300 disabled:bg-neutral-50 disabled:cursor-not-allowed"
               style={{ minHeight: "48px", maxHeight: "200px" }}
             />
             <button
               onClick={handleSendMessage}
-              disabled={!input.trim() || isChatLoading || !agent}
+              disabled={!input.trim() || isChatLoading || !qubit}
               className={`absolute right-3 flex items-center justify-center h-8 w-8 transition-colors ${
-                !input.trim() || isChatLoading || !agent
+                !input.trim() || isChatLoading || !qubit
                   ? "text-neutral-300"
                   : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"
               }`}

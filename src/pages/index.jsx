@@ -279,7 +279,7 @@ export default function HomePage() {
                     {`curl -X POST "https://api.lmscale.tech/v1/chat/completion" \\
 -H "Content-Type: application/json" \\
 -H "Accept: text/event-stream" \\
--H "x-api-key: \${agent.apiKey}" \\
+-H "x-api-key: \${qubit.apiKey}" \\
 -d '{
   "message": "Explain quantum computing",
   "conversation": [
@@ -288,7 +288,7 @@ export default function HomePage() {
       "content": "hi"
     },
     {
-      "role": "agent", 
+      "role": "qubit", 
       "content": "how can i help you?"
     }
   ]

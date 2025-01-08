@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Loader2, X, Plus, Activity, Calendar } from "lucide-react";
-import { useAgents } from "@/providers/agents-provider";
+import { Loader2, X, Calendar } from "lucide-react";
+import { useQubits } from "@/providers/qubits-provider";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 function Modal({ isOpen, onClose, children }) {
@@ -15,11 +16,18 @@ function Modal({ isOpen, onClose, children }) {
   );
 }
 
-function CreateAgentModal({ isOpen, onClose }) {
-  const { createAgent } = useAgents();
+function CreateQubitModal({ isOpen, onClose }) {
+  const { createQubit } = useQubits();
+  const router = useRouter();
   const [formData, setFormData] = useState({ name: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const handleClose = () => {
+    setFormData({ name: "" });
+    setError(null);
+    onClose();
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,8 +35,11 @@ function CreateAgentModal({ isOpen, onClose }) {
     setError(null);
 
     try {
-      await createAgent(formData);
-      onClose();
+      const result = await createQubit(formData);
+      if (result?.data?.qubit?.id) {
+        handleClose();
+        router.push(`/qubit/${result.data.qubit.id}`);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -37,12 +48,12 @@ function CreateAgentModal({ isOpen, onClose }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={handleClose}>
       <div className="border-b border-neutral-100">
-        <div className="flex items-center justify-between px-6 py-4 bg-neutral-900">
-          <h2 className="text-lg text-neutral-200">Create New Agent</h2>
+        <div className="flex items-center justify-between px-6 py-3 bg-neutral-900">
+          <h2 className="text-lg text-neutral-200">Create New Qubit</h2>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="text-neutral-200 hover:text-white transition-colors"
           >
             <X className="h-5 w-5" />
@@ -52,19 +63,20 @@ function CreateAgentModal({ isOpen, onClose }) {
 
       <form onSubmit={handleSubmit} className="p-6">
         {error && (
-          <div className="mb-4 bg-red-50 border border-red-100 text-red-600 p-3 text-sm ">
+          <div className="mb-4 bg-red-50 border border-neutral-100 text-red-600 p-3 text-sm">
             {error}
           </div>
         )}
 
         <div className="space-y-2">
-          <label className="block text-sm text-neutral-700">Agent Name</label>
+          <label className="block text-sm text-neutral-700">Qubit Name</label>
           <input
             type="text"
             value={formData.name}
             onChange={(e) => setFormData({ name: e.target.value })}
-            placeholder="Enter agent name"
-            className="w-full h-10  border border-neutral-200 px-3 text-sm 
+            maxLength={24}
+            placeholder="Enter qubit name"
+            className="w-full h-10 border border-neutral-200 px-3 text-sm 
                      placeholder:text-neutral-400 focus:outline-none focus:ring-1 
                      focus:ring-neutral-400 focus:border-transparent"
             required
@@ -74,7 +86,7 @@ function CreateAgentModal({ isOpen, onClose }) {
         <div className="mt-6 flex items-center justify-end gap-3">
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleClose}
             className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900"
           >
             Cancel
@@ -82,14 +94,14 @@ function CreateAgentModal({ isOpen, onClose }) {
           <button
             type="submit"
             disabled={isLoading}
-            className="px-4 py-2 bg-neutral-900  text-sm text-white 
+            className="px-4 py-2 bg-neutral-900 text-sm text-white 
                      hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed 
                      flex items-center justify-center min-w-[100px]"
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-              "Create Agent"
+              "Create Qubit"
             )}
           </button>
         </div>
@@ -98,30 +110,30 @@ function CreateAgentModal({ isOpen, onClose }) {
   );
 }
 
-function AgentCard({ agent }) {
+function QubitCard({ qubit }) {
   return (
-    <Link href={`/agent/${agent.id}`} className="bg-white">
-      <div className="p-6 space-y-4 border border-neutral-200">
+    <Link href={`/qubit/${qubit.id}`} className="block">
+      <div className="p-4 space-y-4 border border-neutral-200 bg-white hover:border-neutral-200 transition-colors duration-200">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg text-neutral-800">{agent.name}</h3>
+          <h3 className="text-lg text-neutral-900">{qubit.name}</h3>
           <span
             className={`flex items-center gap-1.5 text-sm ${
-              agent.isActive ? "text-green-500" : "text-yellow-500"
+              qubit.isActive ? "text-green-500" : "text-yellow-500"
             }`}
           >
             <span
               className={`size-2 rounded-full ${
-                agent.isActive ? "bg-green-500" : "bg-yellow-500"
+                qubit.isActive ? "bg-green-500" : "bg-yellow-500"
               }`}
             />
-            {agent.isActive ? "Active" : "Inactive"}
+            {qubit.isActive ? "Active" : "Inactive"}
           </span>
         </div>
 
-        <div className="pt-4  grid grid-cols-2 gap-4">
-          <div className="flex items-center gap-2 text-sm text-neutral-800">
+        <div className="pt-4 grid grid-cols-2 gap-4">
+          <div className="flex items-center gap-2 text-sm text-neutral-900">
             <Calendar className="h-4 w-4" />
-            {new Date(agent.createdAt).toLocaleDateString()}
+            {new Date(qubit.createdAt).toLocaleDateString()}
           </div>
         </div>
       </div>
@@ -129,9 +141,9 @@ function AgentCard({ agent }) {
   );
 }
 
-export function AgentsContainer() {
-  const { agents, isLoading, error, isCreateModalOpen, setIsCreateModalOpen } =
-    useAgents();
+export function QubitsContainer() {
+  const { qubits, isLoading, error, isCreateModalOpen, setIsCreateModalOpen } =
+    useQubits();
 
   if (isLoading) {
     return (
@@ -150,40 +162,30 @@ export function AgentsContainer() {
   }
 
   return (
-    <div className="h-full font-light">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl text-neutral-900">Agents</h1>
-          <button
-            onClick={() => setIsCreateModalOpen(true)}
-            className="flex items-center gap-2 bg-neutral-900 text-white px-4 py-2 
-                      hover:bg-neutral-800 transition-colors"
-          >
-            <Plus className="h-4 w-4" />
-            New Agent
-          </button>
+    <div className="flex flex-col h-full font-light">
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-6xl mx-auto px-6 py-6">
+          {qubits.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="text-neutral-400 mb-4">No qubits found</div>
+              <button
+                onClick={() => setIsCreateModalOpen(true)}
+                className="text-sm text-neutral-900 hover:text-neutral-700 transition-colors duration-200"
+              >
+                Create your first qubit
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {qubits.map((qubit) => (
+                <QubitCard key={qubit.id} qubit={qubit} />
+              ))}
+            </div>
+          )}
         </div>
-
-        {agents.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-neutral-400 mb-4">No agents found</div>
-            <button
-              onClick={() => setIsCreateModalOpen(true)}
-              className="text-sm text-neutral-900 hover:text-neutral-700"
-            >
-              Create your first agent
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {agents.map((agent) => (
-              <AgentCard key={agent.id} agent={agent} />
-            ))}
-          </div>
-        )}
       </div>
 
-      <CreateAgentModal
+      <CreateQubitModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
       />

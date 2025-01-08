@@ -1,40 +1,40 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { API_BASE_URL } from "@/config";
 
-const AgentsContext = createContext({});
+const QubitsContext = createContext({});
 
-export const AgentsProvider = ({ children }) => {
-  const [agents, setAgents] = useState([]);
+export const QubitsProvider = ({ children }) => {
+  const [qubits, setQubits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const fetchAgents = async () => {
+  const fetchQubits = async () => {
     const authToken = localStorage.getItem("lm_auth_token");
     try {
-      const response = await fetch(`${API_BASE_URL}/agent/list`, {
+      const response = await fetch(`${API_BASE_URL}/qubit/list`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       });
 
       if (!response.ok) {
-        throw new Error("Failed to fetch agents");
+        throw new Error("Failed to fetch qubits");
       }
 
       const data = await response.json();
-      setAgents(data.data.agents);
+      setQubits(data.data.qubits);
       setIsLoading(false);
     } catch (err) {
-      setError(err.message || "Failed to fetch agents");
+      setError(err.message || "Failed to fetch qubits");
       setIsLoading(false);
     }
   };
 
-  const createAgent = async (formData) => {
+  const createQubit = async (formData) => {
     const authToken = localStorage.getItem("lm_auth_token");
     try {
-      const response = await fetch(`${API_BASE_URL}/agent/create`, {
+      const response = await fetch(`${API_BASE_URL}/qubit/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,40 +45,41 @@ export const AgentsProvider = ({ children }) => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to create agent");
+        throw new Error(errorData.message || "Failed to create qubit");
       }
 
-      await fetchAgents();
-      return true;
+      const data = await response.json();
+      await fetchQubits(); // Refresh the qubits list
+      return data; // Return the full response including the qubit ID
     } catch (err) {
-      throw new Error(err.message || "Failed to create agent");
+      throw new Error(err.message || "Failed to create qubit");
     }
   };
 
   useEffect(() => {
     const authToken = localStorage.getItem("lm_auth_token");
     if (authToken) {
-      fetchAgents();
+      fetchQubits();
     }
   }, []);
 
   const contextValue = {
-    agents,
+    qubits,
     isLoading,
     error,
     isCreateModalOpen,
     setIsCreateModalOpen,
-    fetchAgents,
-    createAgent,
+    fetchQubits,
+    createQubit,
   };
 
   return (
-    <AgentsContext.Provider value={contextValue}>
+    <QubitsContext.Provider value={contextValue}>
       {children}
-    </AgentsContext.Provider>
+    </QubitsContext.Provider>
   );
 };
 
-export const useAgents = () => useContext(AgentsContext);
+export const useQubits = () => useContext(QubitsContext);
 
-export default AgentsProvider;
+export default QubitsProvider;

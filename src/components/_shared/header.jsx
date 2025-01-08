@@ -1,22 +1,27 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Bot } from "lucide-react";
+import { Menu, X, Bot, Plus } from "lucide-react";
 import { useUser } from "@/providers/user-provider";
-
-const navigation = [{ name: "Agents", href: "/dashboard/agents", icon: Bot }];
+import { useQubits } from "@/providers/qubits-provider";
 
 export function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { user, loading } = useUser();
   const pathname = usePathname();
-  const userDisplayName = loading ? "Loading..." : user?.name || "Guest";
+  const { setIsCreateModalOpen } = useQubits();
+  const userDisplayName = loading ? "Loading..." : user?.name || "User";
+  const isQubitsPage = pathname === "/dashboard/qubits";
+
+  const handleCreateQubit = () => {
+    setIsCreateModalOpen(true);
+  };
 
   return (
-    <nav className="w-full border-b border-neutral-200 bg-white">
+    <nav className="w-full border-b border-neutral-100 bg-white">
       <div className="px-4">
-        <div className="flex h-12 items-center justify-between">
-          <Link href="/dashboard/agents" className="flex items-center gap-2">
+        <div className="flex h-14 items-center justify-between">
+          <Link href="/dashboard/qubits" className="flex items-center gap-2">
             <img
               src="/icon.png"
               alt="LmScale Logo"
@@ -26,30 +31,28 @@ export function Header() {
           </Link>
 
           <div className="hidden md:flex items-center gap-4">
+            {isQubitsPage && (
+              <button
+                onClick={handleCreateQubit}
+                className="flex items-center gap-2 bg-neutral-900 text-white px-4 py-2 
+                          hover:bg-neutral-800 transition-colors text-sm"
+              >
+                <Plus className="h-4 w-4" />
+                New Qubit
+              </button>
+            )}
             <div className="flex items-center">
-              {navigation.map((item) => {
-                const isActive = pathname === item.href;
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`relative  flex h-12 items-center gap-2 mx-1 px-3 text-sm transition-colors duration-200 font-light
-                      ${
-                        isActive
-                          ? "text-neutral-900 border-b-2 border-neutral-600"
-                          : "text-neutral-500 hover:text-neutral-800"
-                      }`}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    <span>{item.name}</span>
-                  </Link>
-                );
-              })}
+              <Link
+                href="/dashboard/qubits"
+                className="relative flex h-14 items-center gap-2 mx-1 px-3 text-sm font-light"
+              >
+                <Bot className="h-4 w-4" />
+                <span>Qubits</span>
+              </Link>
             </div>
-
             <Link
               href="/dashboard/profile"
-              className="flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm uppercase text-neutral-600 hover:bg-neutral-100 transition-colors duration-200 font-light"
+              className="flex h-7 w-7 items-center justify-center border border-neutral-100 bg-neutral-50 text-sm uppercase text-neutral-600 hover:bg-neutral-100 transition-colors duration-200 font-light"
             >
               {userDisplayName[0]}
             </Link>
@@ -69,7 +72,7 @@ export function Header() {
         </div>
 
         {showMobileMenu && (
-          <div className="md:hidden py-2 border-t border-neutral-200">
+          <div className="md:hidden py-2 border-t border-neutral-100">
             {navigation.map((item) => {
               const isActive = pathname === item.href;
               return (
@@ -89,12 +92,24 @@ export function Header() {
                 </Link>
               );
             })}
+            {isQubitsPage && (
+              <button
+                onClick={() => {
+                  handleCreateQubit();
+                  setShowMobileMenu(false);
+                }}
+                className="w-full flex items-center gap-2 px-4 py-3 text-sm text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 font-light"
+              >
+                <Plus className="h-4 w-4" />
+                New Qubit
+              </button>
+            )}
             <Link
               href="/dashboard/profile"
               className="flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 font-light"
               onClick={() => setShowMobileMenu(false)}
             >
-              <div className="uppercase flex h-7 w-7 items-center justify-center border border-neutral-200 bg-neutral-50 text-sm text-neutral-600 font-light">
+              <div className="uppercase flex h-7 w-7 items-center justify-center border border-neutral-100 bg-neutral-50 text-sm text-neutral-600 font-light">
                 {userDisplayName[0]}
               </div>
               Profile

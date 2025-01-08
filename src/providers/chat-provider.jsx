@@ -8,28 +8,28 @@ export const ChatProvider = ({ children }) => {
   const [conversation, setConversation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [agent, setAgent] = useState(null);
+  const [qubit, setQubit] = useState(null);
   const router = useRouter();
-  const agentId = router.query.slug;
+  const qubitId = router.query.slug;
 
   useEffect(() => {
     setConversation([]);
     setError(null);
-    setAgent(null);
-  }, [agentId]);
+    setQubit(null);
+  }, [qubitId]);
 
   useEffect(() => {
     const authToken = localStorage.getItem("lm_auth_token");
-    if (authToken && agentId) {
-      fetchAgentApiKey();
+    if (authToken && qubitId) {
+      fetchQubitApiKey();
     }
-  }, [agentId]);
+  }, [qubitId]);
 
-  const fetchAgentApiKey = async () => {
+  const fetchQubitApiKey = async () => {
     const authToken = localStorage.getItem("lm_auth_token");
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/get?agentId=${agentId}`,
+        `${API_BASE_URL}/api/get?qubitId=${qubitId}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -38,18 +38,18 @@ export const ChatProvider = ({ children }) => {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch agent API key");
+        throw new Error("Failed to fetch qubit API key");
       }
 
       const data = await response.json();
-      setAgent(data.data.agent);
+      setQubit(data.data.qubit);
     } catch (err) {
-      setError(err.message || "Failed to fetch agent API key");
+      setError(err.message || "Failed to fetch qubit API key");
     }
   };
 
   const sendMessage = async (message, previousMessages = []) => {
-    if (!message.trim() || !agent) return;
+    if (!message.trim() || !qubit) return;
 
     const userMessage = message.trim();
     setIsLoading(true);
@@ -60,7 +60,7 @@ export const ChatProvider = ({ children }) => {
     ]);
     setConversation((prev) => [
       ...prev,
-      { role: "agent", content: "", loading: true },
+      { role: "qubit", content: "", loading: true },
     ]);
 
     try {
@@ -69,7 +69,7 @@ export const ChatProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "text/event-stream",
-          "x-api-key": agent.apiKey,
+          "x-api-key": qubit.apiKey,
         },
         body: JSON.stringify({
           message: userMessage,
@@ -112,7 +112,7 @@ export const ChatProvider = ({ children }) => {
                   const newConversation = [...prev];
                   const lastMessage =
                     newConversation[newConversation.length - 1];
-                  if (lastMessage.role === "agent") {
+                  if (lastMessage.role === "qubit") {
                     return [
                       ...prev.slice(0, -1),
                       {
@@ -147,7 +147,7 @@ export const ChatProvider = ({ children }) => {
       setConversation((prev) => [
         ...prev.slice(0, -1),
         {
-          role: "agent",
+          role: "qubit",
           content: `Error: ${error.message || "Something went wrong"}`,
           loading: false,
         },
@@ -165,7 +165,7 @@ export const ChatProvider = ({ children }) => {
     conversation,
     isLoading,
     error,
-    agent,
+    qubit,
     sendMessage,
     newChat,
   };

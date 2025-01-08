@@ -2,7 +2,7 @@ import React from "react";
 import { Header } from "./header";
 import { Sidebar } from "./sidebar";
 
-export function AgentLayout({ children }) {
+export function QubitLayout({ children }) {
   return (
     <div className="min-h-screen bg-white relative">
       <div

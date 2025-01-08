@@ -1,11 +1,11 @@
-import { AgentLayout } from "@/components/_shared/agent-layout";
+import { QubitLayout } from "@/components/_shared/qubit-layout";
 import React from "react";
 
 const settings = () => {
   return (
-    <AgentLayout>
+    <QubitLayout>
       <div>settings</div>
-    </AgentLayout>
+    </QubitLayout>
   );
 };
 
