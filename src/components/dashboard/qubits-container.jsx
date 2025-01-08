@@ -22,20 +22,50 @@ function CreateQubitModal({ isOpen, onClose }) {
   const [formData, setFormData] = useState({ name: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [inputError, setInputError] = useState("");
 
   const handleClose = () => {
     setFormData({ name: "" });
     setError(null);
+    setInputError("");
     onClose();
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value.replace(/\s/g, ""); // Remove all spaces
+
+    if (value.length > 24) {
+      setInputError("Name cannot exceed 24 characters");
+    } else {
+      setInputError("");
+    }
+
+    setFormData({ name: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Trim all whitespace before submission
+    // Only trim trailing spaces, leading spaces are prevented during input
+    const trimmedName = formData.name.trimEnd();
+
+    if (trimmedName.length === 0) {
+      setInputError("Name cannot be empty");
+      return;
+    }
+
+    if (trimmedName.length > 24) {
+      setInputError("Name cannot exceed 24 characters");
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
+    setInputError("");
 
     try {
-      const result = await createQubit(formData);
+      const result = await createQubit({ name: trimmedName });
       if (result?.data?.qubit?.id) {
         handleClose();
         router.push(`/qubit/${result.data.qubit.id}`);
@@ -70,17 +100,28 @@ function CreateQubitModal({ isOpen, onClose }) {
 
         <div className="space-y-2">
           <label className="block text-sm text-neutral-700">Qubit Name</label>
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) => setFormData({ name: e.target.value })}
-            maxLength={24}
-            placeholder="Enter qubit name"
-            className="w-full h-10 border border-neutral-200 px-3 text-sm 
-                     placeholder:text-neutral-400 focus:outline-none focus:ring-1 
-                     focus:ring-neutral-400 focus:border-transparent"
-            required
-          />
+          <div className="space-y-1">
+            <input
+              type="text"
+              value={formData.name}
+              onChange={handleInputChange}
+              maxLength={24}
+              placeholder="Enter qubit name"
+              className={`w-full h-10 border px-3 text-sm 
+                       placeholder:text-neutral-400 focus:outline-none focus:ring-1 
+                       ${
+                         inputError
+                           ? "border-red-500 focus:ring-red-500"
+                           : "border-neutral-200 focus:ring-neutral-400"
+                       }
+                       focus:border-transparent`}
+              required
+            />
+            {inputError && <p className="text-sm text-red-500">{inputError}</p>}
+            <p className="text-xs text-neutral-500">
+              {formData.name.length}/24 characters
+            </p>
+          </div>
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-3">
@@ -93,7 +134,7 @@ function CreateQubitModal({ isOpen, onClose }) {
           </button>
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || inputError}
             className="px-4 py-2 bg-neutral-900 text-sm text-white 
                      hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed 
                      flex items-center justify-center min-w-[100px]"
