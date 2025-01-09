@@ -48,12 +48,10 @@ export function ChatContainer() {
     }
   };
 
-  // Scroll on new messages
   useEffect(() => {
     scrollToBottom();
   }, [conversation]);
 
-  // Handle textarea height
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "inherit";
@@ -92,12 +90,10 @@ export function ChatContainer() {
 
   return (
     <div className="flex flex-col h-screen">
-      {/* Header - Static position */}
       <div className="flex-none">
         <Header qubit={qubit} onNewChat={newChat} />
       </div>
 
-      {/* Background pattern */}
       <div className="absolute inset-0 pointer-events-none">
         <div
           className="h-full w-full bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:14px_14px] sm:bg-[size:24px_24px] md:bg-[size:32px_32px]"
@@ -109,7 +105,6 @@ export function ChatContainer() {
         />
       </div>
 
-      {/* Chat messages - Scrollable area */}
       <div ref={chatContainerRef} className="flex-1 overflow-y-auto">
         <div className="min-h-full">
           <div className="max-w-3xl mx-auto py-4">
@@ -131,7 +126,6 @@ export function ChatContainer() {
         </div>
       </div>
 
-      {/* Input area - Static position at bottom */}
       <div className="flex-none border-t border-neutral-200 bg-white">
         <div className="max-w-3xl mx-auto px-4 py-3">
           <div className="relative flex items-center">
