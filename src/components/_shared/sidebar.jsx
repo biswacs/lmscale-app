@@ -3,17 +3,17 @@ import Link from "next/link";
 import { usePathname, useParams } from "next/navigation";
 import {
   Settings,
-  Terminal,
-  BookOpen,
   Code2,
   ChartNoAxesColumn,
   MessageCircle,
+  Waypoints,
+  SquareTerminal,
 } from "lucide-react";
 
 const navigation = [
   { name: "Panel", href: "", icon: ChartNoAxesColumn },
-  { name: "Prompt", href: "prompt", icon: Terminal },
-  { name: "Instructions", href: "instructions", icon: BookOpen },
+  { name: "Prompt", href: "prompt", icon: SquareTerminal },
+  { name: "Instructions", href: "instructions", icon: Waypoints },
   { name: "Functions", href: "functions", icon: Code2 },
   { name: "Settings", href: "settings", icon: Settings },
   { name: "Chat", href: "chat", icon: MessageCircle, newTab: true },
