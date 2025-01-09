@@ -229,11 +229,12 @@ export default function HomePage() {
               </div>
             </div>
             <h1 className="mx-auto max-w-4xl font-display text-4xl font-light tracking-tight text-neutral-800 sm:text-6xl">
-              Run LLMs In The Cloud
+              Deploy Custom AI with SLMs
             </h1>
             <p className="mx-auto font-light mt-6 max-w-2xl text-lg sm:text-xl leading-8 text-neutral-600">
-              Deploy and scale language models with zero infrastructure
-              headaches. Simple, fast, and secure cloud deployment.
+              Build and deploy production ready AI systems without the
+              complexity. Simple setup, powerful features and enterprise grade
+              infrastructure, all in one platform.
             </p>
 
             <div className="my-10 flex items-center justify-center gap-4 md:gap-6">
@@ -279,16 +280,16 @@ export default function HomePage() {
                     {`curl -X POST "https://api.lmscale.tech/v1/chat/completion" \\
 -H "Content-Type: application/json" \\
 -H "Accept: text/event-stream" \\
--H "x-api-key: \${qubit.apiKey}" \\
+-H "x-api-key: api_key" \\
 -d '{
-  "message": "Explain quantum computing",
+  "message": "Can you help me choose the right product for my needs?",
   "conversation": [
     {
       "role": "user",
       "content": "hi"
     },
     {
-      "role": "qubit", 
+      "role": "ai", 
       "content": "how can i help you?"
     }
   ]
@@ -297,7 +298,7 @@ export default function HomePage() {
                 </pre>
               </div>
             </div>
-            <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4 items-center justify-center text-neutral-800">
+            <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 items-center justify-center text-neutral-800">
               <div className="flex flex-col items-center gap-2 px-4 py-6">
                 <span className="text-3xl font-light">40%</span>
                 <span className="text-sm text-center">
@@ -310,11 +311,7 @@ export default function HomePage() {
               </div>
               <div className="flex flex-col items-center gap-2 px-4 py-6">
                 <span className="text-3xl font-light">99.9%</span>
-                <span className="text-sm text-center">Uptime SLA</span>
-              </div>
-              <div className="flex flex-col items-center gap-2 px-4 py-6">
-                <span className="text-3xl font-light">4TB</span>
-                <span className="text-sm text-center">Daily Processing</span>
+                <span className="text-sm text-center">Server Uptime</span>
               </div>
             </div>
           </div>
@@ -339,14 +336,13 @@ export default function HomePage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl lg:text-5xl font-light text-neutral-900 mb-4">
-              Enterprise-Grade LLM Infrastructure
+              Simplified AI Deployment
             </h2>
             <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-              Deploy, manage and scale AI models with industry-leading
-              performance and reliability
+              Launch your AI applications faster with our streamlined
+              infrastructure and deployment solutions
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="group bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-neutral-200">
               <div className="flex items-start justify-between mb-6">
@@ -365,37 +361,37 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <span className="text-xs  text-neutral-600 bg-neutral-50 px-2 py-1">
-                  Enterprise
+                <span className="text-xs text-neutral-600 bg-neutral-50 px-2 py-1">
+                  Fast Setup
                 </span>
               </div>
-              <h3 className="text-xl  text-neutral-900 mb-2">
-                High-Performance Inference
+              <h3 className="text-xl text-neutral-900 mb-2">
+                Rapid Deployment
               </h3>
               <p className="text-neutral-600 mb-4">
-                150ms average response time with optimized model serving and
-                dynamic batching
+                Deploy your AI solutions in minutes with our simplified setup
+                process and ready-to-use infrastructure
               </p>
               <div className="bg-neutral-50 p-4 border border-neutral-200">
                 <div className="space-y-3 font-mono text-sm">
                   <div className="flex justify-between items-center">
-                    <span className="text-neutral-600">Throughput</span>
-                    <span className="text-neutral-900">1000 req/s</span>
+                    <span className="text-neutral-600">Setup Time</span>
+                    <span className="text-neutral-900">&lt; 15 mins</span>
                   </div>
                   <div className="w-full bg-neutral-200 h-1.5">
                     <div
                       className="bg-neutral-600 h-1.5"
-                      style={{ width: "85%" }}
+                      style={{ width: "90%" }}
                     />
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-neutral-600">Latency</span>
-                    <span className="text-neutral-900">150ms</span>
+                    <span className="text-neutral-600">Integration</span>
+                    <span className="text-neutral-900">Simple API</span>
                   </div>
                   <div className="w-full bg-neutral-200 h-1.5">
                     <div
                       className="bg-neutral-600 h-1.5"
-                      style={{ width: "92%" }}
+                      style={{ width: "95%" }}
                     />
                   </div>
                 </div>
@@ -419,20 +415,22 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <span className="text-xs  text-neutral-200 bg-neutral-500/20 px-2 py-1">
-                  Advanced
+                <span className="text-xs text-neutral-200 bg-neutral-500/20 px-2 py-1">
+                  Scalable
                 </span>
               </div>
-              <h3 className="text-xl  text-white mb-2">
-                Multi-Model Deployment
-              </h3>
+              <h3 className="text-xl text-white mb-2">Smart Infrastructure</h3>
               <p className="text-neutral-300 mb-4">
-                Deploy multiple models on shared infrastructure with intelligent
-                resource allocation
+                Automatically scales based on your needs with built-in load
+                balancing and resource optimization
               </p>
               <div className="bg-neutral-800 p-4">
                 <pre className="text-sm font-mono text-neutral-200">
-                  {`├─ Base LLM\n│  ├─ Chat Model\n│  ├─ Code Model\n│  └─ Custom Model\n└─ API Endpoint`}
+                  {`├─ Auto Scaling
+│  ├─ Load Balancing
+│  ├─ Resource Optimization
+│  └─ Performance Monitoring
+└─ 24/7 Availability`}
                 </pre>
               </div>
             </div>
@@ -454,32 +452,32 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <span className="text-xs  text-neutral-600 bg-neutral-50 px-2 py-1">
-                  Secure
+                <span className="text-xs text-neutral-600 bg-neutral-50 px-2 py-1">
+                  Enterprise
                 </span>
               </div>
-              <h3 className="text-xl  text-neutral-900 mb-2">
-                Enterprise Security
+              <h3 className="text-xl text-neutral-900 mb-2">
+                Production Ready
               </h3>
               <p className="text-neutral-600 mb-4">
-                SOC2 compliant infrastructure with end-to-end encryption and
-                access controls
+                Enterprise-grade features for reliable production deployment
+                with monitoring and security
               </p>
               <div className="bg-neutral-50 p-4 border border-neutral-200">
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center space-x-2">
                     <span className="flex h-2 w-2 bg-neutral-600" />
                     <span className="text-neutral-900">
-                      End-to-end Encryption
+                      Real-time Monitoring
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className="flex h-2 w-2 bg-neutral-600" />
-                    <span className="text-neutral-900">Role-based Access</span>
+                    <span className="text-neutral-900">API Management</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className="flex h-2 w-2 bg-neutral-600" />
-                    <span className="text-neutral-900">Audit Logging</span>
+                    <span className="text-neutral-900">Usage Analytics</span>
                   </div>
                 </div>
               </div>
@@ -488,7 +486,7 @@ export default function HomePage() {
         </div>
       </section>
       <section
-        id="Deployment"
+        id="SetupGuide"
         className="relative py-24 bg-white overflow-hidden"
       >
         <div className="absolute inset-0">
@@ -505,90 +503,93 @@ export default function HomePage() {
         <div className="relative max-w-5xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-light text-neutral-800 mb-4">
-              Deployment Guide
+              Quick Setup Guide
             </h2>
             <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-              Setup and configure your custom chatbot deployment
+              Configure your AI deployment in three simple steps
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="bg-neutral-900 p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Terminal className="h-5 w-5 text-white" />
-                <h3 className="text-lg text-white font-mono">Initial Setup</h3>
-              </div>
-              <pre className="font-mono text-sm text-neutral-300 overflow-x-auto">
-                {`# Create new deployment
-slm create deployment \\
-  --name "my-custom-bot" \\
-  --description "my-custom-description"
-
-# Set base system prompt
-slm config set-prompt \\
-  --deployment "my-custom-bot" \\
-  --file "system-prompt.txt"
-
-# Deploy the bot
-slm deploy`}
-              </pre>
-            </div>
-
-            <div className="bg-white border border-neutral-200 p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="bg-white border border-neutral-200 p-6 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
               <div className="flex items-center gap-3 mb-4">
                 <Terminal className="h-5 w-5 text-neutral-800" />
                 <h3 className="text-lg text-neutral-800 font-mono">
-                  Configure Webhooks
+                  1. Create & Set Prompt
                 </h3>
               </div>
               <pre className="font-mono text-sm text-neutral-600 overflow-x-auto">
-                {`# Set up webhook endpoints
-slm webhook create \\
-  --url "https://api.myapp.com/chat" \\
-  --events "message.new"
-
-# Configure API integration
-slm api create-key \\
-  --name "prod-bot" \\
-  --scopes "chat.write,files.read"`}
+                {`# Create deployment
+create deployment
+ name: "support-assistant"
+ 
+# Set base prompt
+set base-prompt
+ "You are a helpful
+  support assistant..."`}
               </pre>
             </div>
 
-            <div className="bg-ne border border-neutral-200 p-6 lg:col-span-2">
+            <div className="bg-white border border-neutral-200 p-6 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
               <div className="flex items-center gap-3 mb-4">
                 <Terminal className="h-5 w-5 text-neutral-800" />
                 <h3 className="text-lg text-neutral-800 font-mono">
-                  Deployment Patterns
+                  2. Set Instructions
                 </h3>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-sm">
+              <pre className="font-mono text-sm text-neutral-600 overflow-x-auto">
+                {`# Configure behavior
+set instructions
+ - "Follow security protocols"
+ - "Maintain context"
+ - "Handle edge cases"
+ - "Verify user identity"`}
+              </pre>
+            </div>
+
+            <div className="bg-white border border-neutral-200 p-6 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center gap-3 mb-4">
+                <Terminal className="h-5 w-5 text-neutral-800" />
+                <h3 className="text-lg text-neutral-800 font-mono">
+                  3. Add Functions
+                </h3>
+              </div>
+              <pre className="font-mono text-sm text-neutral-600 overflow-x-auto">
+                {`# Configure functions
+add functions
+ - search_knowledge_base
+ - create_ticket
+ - update_status
+ - get_user_data`}
+              </pre>
+            </div>
+
+            <div className="bg-white border border-neutral-200 p-6 lg:col-span-3">
+              <div className="flex items-center gap-3 mb-4">
+                <Terminal className="h-5 w-5 text-neutral-800" />
+                <h3 className="text-lg text-neutral-800 font-mono">
+                  Setup Options
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-sm">
                 <div className="bg-neutral-50 p-4">
                   <h4 className="text-neutral-800 mb-2">Basic Setup</h4>
                   <pre className="text-neutral-600">
-                    {`└── Bot Instance
-    ├── System Prompt
-    ├── API Keys
-    └── Webhooks`}
-                  </pre>
-                </div>
-
-                <div className="bg-neutral-50 text-white p-4">
-                  <h4 className="text-neutral-800 mb-2">Multi-Bot</h4>
-                  <pre className="text-neutral-600">
-                    {`└── Gateway
-    ├── Support Bot
-    ├── Sales Bot
-    └── Custom Bot`}
+                    {`└── Configuration
+   ├── Base Prompt
+   ├── Functions
+   └── Instructions`}
                   </pre>
                 </div>
 
                 <div className="bg-neutral-50 p-4">
-                  <h4 className="text-neutral-800 mb-2">Enterprise</h4>
+                  <h4 className="text-neutral-800 mb-2">Advanced</h4>
                   <pre className="text-neutral-600">
-                    {`└── Load Balancer
-    ├── Rate Limiting
-    ├── Monitoring
-    └── Logging`}
+                    {`└── Enhanced Setup
+   ├── Tool Integration
+   ├── API Webhooks
+   ├── RAG Pipeline
+   └── Analytics`}
                   </pre>
                 </div>
               </div>
@@ -597,7 +598,7 @@ slm api create-key \\
         </div>
       </section>
       <section
-        id="Architecture"
+        id="Infrastructure"
         className="relative py-24 bg-white overflow-hidden"
       >
         <div className="absolute inset-0">
@@ -614,11 +615,10 @@ slm api create-key \\
         <div className="relative max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-light text-neutral-900 mb-4">
-              Multi-Model Architecture
+              Reliable Infrastructure
             </h2>
             <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
-              Deploy multiple domain-specific models with intelligent resource
-              allocation
+              Enterprise-grade infrastructure for seamless AI deployment
             </p>
           </div>
 
@@ -641,31 +641,31 @@ slm api create-key \\
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg  text-neutral-900">
-                    Resource Optimization
+                  <h3 className="text-lg text-neutral-900">
+                    Resource Management
                   </h3>
                   <p className="text-neutral-600">
-                    Intelligent allocation of GPU resources
+                    Optimized resource allocation
                   </p>
                 </div>
               </div>
               <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200 font-mono text-sm">
                 <pre className="text-neutral-800">
-                  GPU Cluster 1{"\n"}├─ Model A: 40% utilization{"\n"}├─ Model
-                  B: 35% utilization{"\n"}└─ Model C: 25% utilization
+                  System Resources{"\n"}├─ Auto Scaling{"\n"}├─ Load Balancing
+                  {"\n"}└─ Resource Optimization
                 </pre>
               </div>
               <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className=" text-neutral-900">99.9%</div>
-                  <div className="text-sm text-neutral-600">Uptime</div>
+                  <div className="text-neutral-900">99.9%</div>
+                  <div className="text-sm text-neutral-600">Server Uptime</div>
                 </div>
               </div>
             </div>
 
-            <div className="flex-1 bg-neutral-900 p-6 text-white">
+            <div className="flex-1 bg-white p-6 border border-neutral-200 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-white/10">
+                <div className="p-3 bg-neutral-900 text-white">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -681,22 +681,24 @@ slm api create-key \\
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg ">Zero-Downtime Updates</h3>
-                  <p className="text-neutral-300">
-                    Seamless model updates and deployments
+                  <h3 className="text-lg text-neutral-900">High Performance</h3>
+                  <p className="text-neutral-600">
+                    Fast and reliable processing
                   </p>
                 </div>
               </div>
-              <div className="mt-4 bg-neutral-800 p-4 font-mono text-sm text-neutral-300">
-                <pre>
-                  Hot Swap Status:{"\n"}├─ Previous: Model v1 ✓{"\n"}├─ Current:
-                  Model v2 ⟳{"\n"}└─ Transition: 0ms downtime
+              <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200 font-mono text-sm">
+                <pre className="text-neutral-800">
+                  Performance Metrics{"\n"}├─ Response Time{"\n"}├─ Processing
+                  Speed{"\n"}└─ Request Handling
                 </pre>
               </div>
-              <div className="mt-4 bg-neutral-800 p-4">
+              <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className=" text-white">150ms</div>
-                  <div className="text-sm text-neutral-400">Latency</div>
+                  <div className="text-neutral-900">150ms</div>
+                  <div className="text-sm text-neutral-600">
+                    Average Response
+                  </div>
                 </div>
               </div>
             </div>
@@ -719,24 +721,22 @@ slm api create-key \\
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg  text-neutral-900">Request Routing</h3>
-                  <p className="text-neutral-600">
-                    Intelligent request distribution
-                  </p>
+                  <h3 className="text-lg text-neutral-900">
+                    Request Management
+                  </h3>
+                  <p className="text-neutral-600">Smart request handling</p>
                 </div>
               </div>
               <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200 font-mono text-sm">
                 <pre className="text-neutral-800">
-                  Request Flow:{"\n"}├─ Load Balancer → {"\n"}├─ Model Router →{" "}
-                  {"\n"}└─ Optimal Instance
+                  Request Flow{"\n"}├─ Load Distribution{"\n"}├─ Queue
+                  Management{"\n"}└─ Error Handling
                 </pre>
               </div>
               <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className=" text-neutral-900">4TB</div>
-                  <div className="text-sm text-neutral-600">
-                    Daily Processing
-                  </div>
+                  <div className="text-neutral-900">10K/s</div>
+                  <div className="text-sm text-neutral-600">Request Rate</div>
                 </div>
               </div>
             </div>
@@ -764,8 +764,8 @@ slm api create-key \\
               Enterprise-Grade Security
             </h2>
             <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-              Advanced security measures to protect your models, data, and
-              inference pipeline
+              Comprehensive security features to protect your data and API
+              endpoints
             </p>
           </div>
 
@@ -788,27 +788,25 @@ slm api create-key \\
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg  text-neutral-900">Model Security</h3>
-                  <p className="text-neutral-600">
-                    Protected model weights and secure deployment
-                  </p>
+                  <h3 className="text-lg text-neutral-900">Data Security</h3>
+                  <p className="text-neutral-600">End-to-end data protection</p>
                 </div>
               </div>
               <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center space-x-2">
                     <span className="flex h-2 w-2 bg-neutral-900" />
-                    <span className="text-neutral-600">Encrypted Weights</span>
+                    <span className="text-neutral-600">Data Encryption</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className="flex h-2 w-2 bg-neutral-900" />
-                    <span className="text-neutral-600">Secure Loading</span>
+                    <span className="text-neutral-600">Secure Storage</span>
                   </div>
                 </div>
               </div>
               <div className="mt-3 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className=" text-neutral-900">256-bit</div>
+                  <div className="text-neutral-900">AES-256</div>
                   <div className="text-sm text-neutral-600">Encryption</div>
                 </div>
               </div>
@@ -832,32 +830,32 @@ slm api create-key \\
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg ">API Security</h3>
+                  <h3 className="text-lg">API Security</h3>
                   <p className="text-neutral-300">
-                    Advanced API protection with intelligent rate limiting
+                    Advanced API access control and monitoring
                   </p>
                 </div>
               </div>
               <div className="mt-4 bg-neutral-800 p-4">
                 <div className="space-y-3 font-mono text-sm text-neutral-300">
                   <div className="flex justify-between">
-                    <span>Rate Limit</span>
-                    <span>10K req/s</span>
+                    <span>Access Control</span>
+                    <span>API Keys</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Auth Method</span>
-                    <span>JWT</span>
+                    <span>Rate Limiting</span>
+                    <span>Enabled</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>SSL/TLS</span>
-                    <span>v1.3</span>
+                    <span>HTTPS</span>
+                    <span>Required</span>
                   </div>
                 </div>
               </div>
               <div className="mt-3 bg-neutral-800 p-4">
                 <div className="text-center">
-                  <div className=" text-white">10K/s</div>
-                  <div className="text-sm text-neutral-400">Request Rate</div>
+                  <div className="text-white">Real-time</div>
+                  <div className="text-sm text-neutral-400">Monitoring</div>
                 </div>
               </div>
             </div>
@@ -880,30 +878,26 @@ slm api create-key \\
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg  text-neutral-900">
-                    Inference Protection
-                  </h3>
-                  <p className="text-neutral-600">
-                    Secure inference with request isolation
-                  </p>
+                  <h3 className="text-lg text-neutral-900">Access Control</h3>
+                  <p className="text-neutral-600">Granular access management</p>
                 </div>
               </div>
               <div className="mt-4 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center space-x-2">
                     <span className="flex h-2 w-2 bg-neutral-900" />
-                    <span className="text-neutral-600">Request Isolation</span>
+                    <span className="text-neutral-600">Secure Access</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className="flex h-2 w-2 bg-neutral-900" />
-                    <span className="text-neutral-600">Memory Protection</span>
+                    <span className="text-neutral-600">Usage Tracking</span>
                   </div>
                 </div>
               </div>
               <div className="mt-3 bg-neutral-50 p-4 border border-neutral-200">
                 <div className="text-center">
-                  <div className=" text-neutral-900">100%</div>
-                  <div className="text-sm text-neutral-600">Isolation</div>
+                  <div className="text-neutral-900">Detailed</div>
+                  <div className="text-sm text-neutral-600">Audit Logs</div>
                 </div>
               </div>
             </div>
@@ -925,10 +919,11 @@ slm api create-key \\
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
             <div className="space-y-4">
               <h2 className="text-3xl font-light text-neutral-800">
-                Get Started with LMScale Playground
+                Deploy AI Solutions Faster
               </h2>
               <p className="text-lg font-light text-neutral-800">
-                Experience the power of efficient LLM deployment firsthand
+                Build and launch production ready AI applications with
+                simplicity
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
