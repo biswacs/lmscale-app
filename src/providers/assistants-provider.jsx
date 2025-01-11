@@ -9,7 +9,7 @@ export const AssistantsProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const fetchAssistants = async () => {
+  const fetchAllAssistants = async () => {
     const authToken = localStorage.getItem("lm_auth_token");
     try {
       const response = await fetch(`${API_BASE_URL}/assistant/list`, {
@@ -49,8 +49,8 @@ export const AssistantsProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      await fetchAssistants(); // Refresh the assistants list
-      return data; // Return the full response including the assistant ID
+      await fetchAllAssistants();
+      return data;
     } catch (err) {
       throw new Error(err.message || "Failed to create assistant");
     }
@@ -59,7 +59,7 @@ export const AssistantsProvider = ({ children }) => {
   useEffect(() => {
     const authToken = localStorage.getItem("lm_auth_token");
     if (authToken) {
-      fetchAssistants();
+      fetchAllAssistants();
     }
   }, []);
 
@@ -69,7 +69,7 @@ export const AssistantsProvider = ({ children }) => {
     error,
     isCreateModalOpen,
     setIsCreateModalOpen,
-    fetchAssistants,
+    fetchAllAssistants,
     createAssistant,
   };
 
