@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Loader2, X, Calendar } from "lucide-react";
-import { useQubits } from "@/providers/qubits-provider";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { X, Plus, Calendar, Loader2 } from "lucide-react";
+import { useQubits } from "@/providers/qubits-provider";
 
 function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
@@ -32,22 +32,18 @@ function CreateQubitModal({ isOpen, onClose }) {
   };
 
   const handleInputChange = (e) => {
-    const value = e.target.value.replace(/\s/g, ""); // Remove all spaces
-
+    const value = e.target.value.replace(/\s/g, "");
     if (value.length > 24) {
       setInputError("Name cannot exceed 24 characters");
     } else {
       setInputError("");
     }
-
     setFormData({ name: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Trim all whitespace before submission
-    // Only trim trailing spaces, leading spaces are prevented during input
     const trimmedName = formData.name.trimEnd();
 
     if (trimmedName.length === 0) {
@@ -151,12 +147,31 @@ function CreateQubitModal({ isOpen, onClose }) {
   );
 }
 
+function CreateQubitCard({ onClick }) {
+  return (
+    <button onClick={onClick} className="block w-full h-full">
+      <div className="h-full p-6 border border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-sm transition-all duration-200  flex flex-col justify-between">
+        <div className="flex items-center justify-between">
+          <h3 className="text-xl text-neutral-900">Create New Qubit</h3>
+          <div className="size-10 border border-neutral-300 bg-neutral-50 flex items-center justify-center">
+            <Plus className="h-5 w-5 text-neutral-600" />
+          </div>
+        </div>
+
+        <div className="mt-4 text-start">
+          <p className="text-neutral-600">Start building with a new qubit</p>
+        </div>
+      </div>
+    </button>
+  );
+}
+
 function QubitCard({ qubit }) {
   return (
-    <Link href={`/qubit/${qubit.id}`} className="block">
-      <div className="p-4 space-y-4 border border-neutral-200 bg-white hover:border-neutral-200 transition-colors duration-200">
+    <Link href={`/qubit/${qubit.id}`} className="block h-full">
+      <div className="h-full p-6 border border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-sm transition-all duration-200 ">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg text-neutral-900">{qubit.name}</h3>
+          <h3 className="text-xl text-neutral-900">{qubit.name}</h3>
           <span
             className={`flex items-center gap-1.5 text-sm ${
               qubit.isActive ? "text-green-500" : "text-yellow-500"
@@ -171,8 +186,8 @@ function QubitCard({ qubit }) {
           </span>
         </div>
 
-        <div className="pt-4 grid grid-cols-2 gap-4">
-          <div className="flex items-center gap-2 text-sm text-neutral-900">
+        <div className="mt-4">
+          <div className="flex items-center gap-2 text-sm text-neutral-600">
             <Calendar className="h-4 w-4" />
             {new Date(qubit.createdAt).toLocaleDateString()}
           </div>
@@ -206,23 +221,12 @@ export function QubitsContainer() {
     <div className="flex flex-col h-full font-light">
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-6xl mx-auto px-6 py-6">
-          {qubits.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-neutral-400 mb-4">No qubits found</div>
-              <button
-                onClick={() => setIsCreateModalOpen(true)}
-                className="text-sm text-neutral-900 hover:text-neutral-700 transition-colors duration-200"
-              >
-                Create your first qubit
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {qubits.map((qubit) => (
-                <QubitCard key={qubit.id} qubit={qubit} />
-              ))}
-            </div>
-          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <CreateQubitCard onClick={() => setIsCreateModalOpen(true)} />
+            {qubits.map((qubit) => (
+              <QubitCard key={qubit.id} qubit={qubit} />
+            ))}
+          </div>
         </div>
       </div>
 

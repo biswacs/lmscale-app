@@ -1,50 +1,39 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Bot, Plus } from "lucide-react";
+import { Menu, X, Bot } from "lucide-react";
 import { useUser } from "@/providers/user-provider";
-import { useQubits } from "@/providers/qubits-provider";
+
+const navigation = [{ name: "Qubits", href: "/dashboard/qubits", icon: Bot }];
 
 export function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { user, loading } = useUser();
   const pathname = usePathname();
-  const { setIsCreateModalOpen } = useQubits();
-  const userDisplayName = loading ? "Loading..." : user?.name || "User";
+  const userDisplayName = (
+    loading ? "Loading..." : user?.name || "User"
+  ).toUpperCase();
   const isQubitsPage = pathname === "/dashboard/qubits";
-
-  const handleCreateQubit = () => {
-    setIsCreateModalOpen(true);
-  };
 
   return (
     <nav className="w-full border-b border-neutral-100 bg-white">
       <div className="px-4">
-        <div className="flex h-14 items-center justify-between">
+        <div className="flex h-12 items-center justify-between text-neutral-800">
           <Link href="/dashboard/qubits" className="flex items-center gap-2">
             <img
               src="/icon.png"
               alt="LmScale Logo"
-              className="h-7 w-7 object-contain"
+              className="size-7 object-contain"
             />
-            <span className="text-lg font-light text-neutral-800">LmScale</span>
+            <span className="text-md font-light">LmScale</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-4">
-            {isQubitsPage && (
-              <button
-                onClick={handleCreateQubit}
-                className="flex items-center gap-2 bg-neutral-900 text-white px-4 py-2 
-                          hover:bg-neutral-800 transition-colors text-sm"
-              >
-                <Plus className="h-4 w-4" />
-                New Qubit
-              </button>
-            )}
             <div className="flex items-center">
               <Link
                 href="/dashboard/qubits"
-                className="relative flex h-14 items-center gap-2 mx-1 px-3 text-sm font-light"
+                className={`relative flex h-12 items-center gap-2 mx-1 px-3 text-sm font-light
+                  ${isQubitsPage ? "border-b-2 border-neutral-900" : ""}`}
               >
                 <Bot className="h-4 w-4" />
                 <span>Qubits</span>
@@ -52,7 +41,7 @@ export function Header() {
             </div>
             <Link
               href="/dashboard/profile"
-              className="flex h-7 w-7 items-center justify-center border border-neutral-100 bg-neutral-50 text-sm uppercase text-neutral-600 hover:bg-neutral-100 transition-colors duration-200 font-light"
+              className="flex size-7 items-center justify-center border border-neutral-100 bg-neutral-50 text-sm uppercase text-neutral-600 hover:bg-neutral-100 transition-colors duration-200 font-light"
             >
               {userDisplayName[0]}
             </Link>
@@ -60,30 +49,30 @@ export function Header() {
 
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
-            className="md:hidden p-2 text-neutral-600 hover:bg-neutral-100 transition-colors duration-200 font-light"
+            className="md:hidden p-1.5 text-neutral-600 hover:bg-neutral-100 transition-colors duration-200 font-light rounded"
             aria-label="Toggle mobile menu"
           >
             {showMobileMenu ? (
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4" />
             ) : (
-              <Menu className="h-5 w-5" />
+              <Menu className="h-4 w-4" />
             )}
           </button>
         </div>
 
         {showMobileMenu && (
-          <div className="md:hidden py-2 border-t border-neutral-100">
+          <div className="md:hidden py-1.5 border-t border-neutral-100">
             {navigation.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 font-light
+                  className={`flex items-center gap-2 px-4 py-2.5 text-sm transition-colors duration-200 font-light
                     ${
                       isActive
                         ? "bg-neutral-50 text-neutral-900"
-                        : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800"
+                        : "text-neutral-500 hover:bg-neutral-50 hover"
                     }`}
                   onClick={() => setShowMobileMenu(false)}
                 >
@@ -92,24 +81,12 @@ export function Header() {
                 </Link>
               );
             })}
-            {isQubitsPage && (
-              <button
-                onClick={() => {
-                  handleCreateQubit();
-                  setShowMobileMenu(false);
-                }}
-                className="w-full flex items-center gap-2 px-4 py-3 text-sm text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 font-light"
-              >
-                <Plus className="h-4 w-4" />
-                New Qubit
-              </button>
-            )}
             <Link
               href="/dashboard/profile"
-              className="flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 font-light"
+              className="flex items-center gap-2 px-4 py-2.5 text-sm transition-colors duration-200 text-neutral-500 hover:bg-neutral-50 hover font-light"
               onClick={() => setShowMobileMenu(false)}
             >
-              <div className="uppercase flex h-7 w-7 items-center justify-center border border-neutral-100 bg-neutral-50 text-sm text-neutral-600 font-light">
+              <div className="uppercase flex h-6 w-6 items-center justify-center border border-neutral-100 bg-neutral-50 text-sm text-neutral-600 font-light">
                 {userDisplayName[0]}
               </div>
               Profile
