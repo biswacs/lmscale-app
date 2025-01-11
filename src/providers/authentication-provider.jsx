@@ -21,39 +21,6 @@ const AuthenticationProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const logInUser = async (email, password) => {
-    if (!email || !password) {
-      throw new Error("Please fill in all fields");
-    }
-
-    setSubmitting(true);
-    try {
-      const response = await fetch(`${API_BASE_URL}/user/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Login failed");
-      }
-
-      const data = await response.json();
-      localStorage.setItem("lm_auth_token", data.lm_auth_token);
-      setAuthToken(data.lm_auth_token);
-      window.location.href = ROUTES_MAP.DASHBOARD.__;
-      return data;
-    } catch (err) {
-      console.error(err);
-      throw new Error(err.message || "Login failed");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   const registerUser = async (name, email, password) => {
     if (!name || !email || !password) {
       throw new Error("Please fill in all fields");
@@ -76,12 +43,47 @@ const AuthenticationProvider = ({ children }) => {
 
       const data = await response.json();
       localStorage.setItem("lm_auth_token", data.lm_auth_token);
+      localStorage.setItem("lm_assistant_id", data.assistantId);
       setAuthToken(data.lm_auth_token);
       window.location.href = ROUTES_MAP.DASHBOARD.__;
       return data;
     } catch (err) {
       console.error(err);
       throw new Error(err.message || "Registration failed");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const logInUser = async (email, password) => {
+    if (!email || !password) {
+      throw new Error("Please fill in all fields");
+    }
+
+    setSubmitting(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login failed");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("lm_auth_token", data.lm_auth_token);
+      localStorage.setItem("lm_assistant_id", data.assistantId);
+      setAuthToken(data.lm_auth_token);
+      window.location.href = ROUTES_MAP.DASHBOARD.__;
+      return data;
+    } catch (err) {
+      console.error(err);
+      throw new Error(err.message || "Login failed");
     } finally {
       setSubmitting(false);
     }
