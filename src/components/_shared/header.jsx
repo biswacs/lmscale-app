@@ -4,7 +4,9 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Bot } from "lucide-react";
 import { useUser } from "@/providers/user-provider";
 
-const navigation = [{ name: "Qubits", href: "/dashboard/qubits", icon: Bot }];
+const navigation = [
+  { name: "Assistants", href: "/dashboard/assistants", icon: Bot },
+];
 
 export function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -13,13 +15,16 @@ export function Header() {
   const userDisplayName = (
     loading ? "Loading..." : user?.name || "User"
   ).toUpperCase();
-  const isQubitsPage = pathname === "/dashboard/qubits";
+  const isAssistantsPage = pathname === "/dashboard/assistants";
 
   return (
     <nav className="w-full border-b border-neutral-100 bg-white">
       <div className="px-4">
         <div className="flex h-12 items-center justify-between text-neutral-800">
-          <Link href="/dashboard/qubits" className="flex items-center gap-2">
+          <Link
+            href="/dashboard/assistants"
+            className="flex items-center gap-2"
+          >
             <img
               src="/icon.png"
               alt="LmScale Logo"
@@ -31,12 +36,12 @@ export function Header() {
           <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center">
               <Link
-                href="/dashboard/qubits"
+                href="/dashboard/assistants"
                 className={`relative flex h-12 items-center gap-2 mx-1 px-3 text-sm font-light
-                  ${isQubitsPage ? "border-b-2 border-neutral-900" : ""}`}
+                  ${isAssistantsPage ? "border-b-2 border-neutral-900" : ""}`}
               >
                 <Bot className="h-4 w-4" />
-                <span>Qubits</span>
+                <span>Assistants</span>
               </Link>
             </div>
             <Link

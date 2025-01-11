@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { X, Plus, Calendar, Loader2 } from "lucide-react";
-import { useQubits } from "@/providers/qubits-provider";
+import { useAssistants } from "@/providers/assistants-provider";
 
 function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
@@ -16,8 +16,8 @@ function Modal({ isOpen, onClose, children }) {
   );
 }
 
-function CreateQubitModal({ isOpen, onClose }) {
-  const { createQubit } = useQubits();
+function CreateAssistantModal({ isOpen, onClose }) {
+  const { createAssistant } = useAssistants();
   const router = useRouter();
   const [formData, setFormData] = useState({ name: "" });
   const [isLoading, setIsLoading] = useState(false);
@@ -61,10 +61,10 @@ function CreateQubitModal({ isOpen, onClose }) {
     setInputError("");
 
     try {
-      const result = await createQubit({ name: trimmedName });
-      if (result?.data?.qubit?.id) {
+      const result = await createAssistant({ name: trimmedName });
+      if (result?.data?.assistant?.id) {
         handleClose();
-        router.push(`/qubit/${result.data.qubit.id}`);
+        router.push(`/assistant/${result.data.assistant.id}`);
       }
     } catch (err) {
       setError(err.message);
@@ -77,7 +77,7 @@ function CreateQubitModal({ isOpen, onClose }) {
     <Modal isOpen={isOpen} onClose={handleClose}>
       <div className="border-b border-neutral-100">
         <div className="flex items-center justify-between px-6 py-3 bg-neutral-900">
-          <h2 className="text-lg text-neutral-200">Create New Qubit</h2>
+          <h2 className="text-lg text-neutral-200">Create New Assistant</h2>
           <button
             onClick={handleClose}
             className="text-neutral-200 hover:text-white transition-colors"
@@ -95,14 +95,16 @@ function CreateQubitModal({ isOpen, onClose }) {
         )}
 
         <div className="space-y-2">
-          <label className="block text-sm text-neutral-700">Qubit Name</label>
+          <label className="block text-sm text-neutral-700">
+            Assistant Name
+          </label>
           <div className="space-y-1">
             <input
               type="text"
               value={formData.name}
               onChange={handleInputChange}
               maxLength={24}
-              placeholder="Enter qubit name"
+              placeholder="Enter assistant name"
               className={`w-full h-10 border px-3 text-sm 
                        placeholder:text-neutral-400 focus:outline-none focus:ring-1 
                        ${
@@ -138,7 +140,7 @@ function CreateQubitModal({ isOpen, onClose }) {
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-              "Create Qubit"
+              "Create Assistant"
             )}
           </button>
         </div>
@@ -147,49 +149,45 @@ function CreateQubitModal({ isOpen, onClose }) {
   );
 }
 
-function CreateQubitCard({ onClick }) {
+function CreateAssistantCard({ onClick }) {
   return (
     <button onClick={onClick} className="block w-full h-full">
-      <div className="h-full p-6 border border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-sm transition-all duration-200  flex flex-col justify-between">
+      <div className="h-full p-6 border border-dashed border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-sm transition-all duration-200  flex flex-col justify-between">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl text-neutral-900">Create New Qubit</h3>
-          <div className="size-10 border border-neutral-300 bg-neutral-50 flex items-center justify-center">
-            <Plus className="h-5 w-5 text-neutral-600" />
+          <h3 className="text-xl text-neutral-900">Create New Assistant</h3>
+          <div className="size-10 border border-dashed border-neutral-200 flex items-center justify-center">
+            <Plus className="size-5 text-neutral-700" />
           </div>
-        </div>
-
-        <div className="mt-4 text-start">
-          <p className="text-neutral-600">Start building with a new qubit</p>
         </div>
       </div>
     </button>
   );
 }
 
-function QubitCard({ qubit }) {
+function AssistantCard({ assistant }) {
   return (
-    <Link href={`/qubit/${qubit.id}`} className="block h-full">
-      <div className="h-full p-6 border border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-sm transition-all duration-200 ">
+    <Link href={`/assistant/${assistant.id}`} className="block h-full">
+      <div className="h-full p-6 border border-dashed border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-sm transition-all duration-200 ">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl text-neutral-900">{qubit.name}</h3>
+          <h3 className="text-xl text-neutral-900">{assistant.name}</h3>
           <span
             className={`flex items-center gap-1.5 text-sm ${
-              qubit.isActive ? "text-green-500" : "text-yellow-500"
+              assistant.isActive ? "text-green-500" : "text-yellow-500"
             }`}
           >
             <span
               className={`size-2 rounded-full ${
-                qubit.isActive ? "bg-green-500" : "bg-yellow-500"
+                assistant.isActive ? "bg-green-500" : "bg-yellow-500"
               }`}
             />
-            {qubit.isActive ? "Active" : "Inactive"}
+            {assistant.isActive ? "Active" : "Inactive"}
           </span>
         </div>
 
         <div className="mt-4">
           <div className="flex items-center gap-2 text-sm text-neutral-600">
             <Calendar className="h-4 w-4" />
-            {new Date(qubit.createdAt).toLocaleDateString()}
+            {new Date(assistant.createdAt).toLocaleDateString()}
           </div>
         </div>
       </div>
@@ -197,9 +195,14 @@ function QubitCard({ qubit }) {
   );
 }
 
-export function QubitsContainer() {
-  const { qubits, isLoading, error, isCreateModalOpen, setIsCreateModalOpen } =
-    useQubits();
+export function AssistantsContainer() {
+  const {
+    assistants,
+    isLoading,
+    error,
+    isCreateModalOpen,
+    setIsCreateModalOpen,
+  } = useAssistants();
 
   if (isLoading) {
     return (
@@ -222,15 +225,15 @@ export function QubitsContainer() {
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-6xl mx-auto px-6 py-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <CreateQubitCard onClick={() => setIsCreateModalOpen(true)} />
-            {qubits.map((qubit) => (
-              <QubitCard key={qubit.id} qubit={qubit} />
+            <CreateAssistantCard onClick={() => setIsCreateModalOpen(true)} />
+            {assistants.map((assistant) => (
+              <AssistantCard key={assistant.id} assistant={assistant} />
             ))}
           </div>
         </div>
       </div>
 
-      <CreateQubitModal
+      <CreateAssistantModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
       />

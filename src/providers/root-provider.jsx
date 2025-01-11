@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import AuthenticationProvider from "./authentication-provider";
 import UserProvider from "./user-provider";
 import ChatProvider from "./chat-provider";
-import { QubitsProvider } from "./qubits-provider";
+import { AssistantsProvider } from "./assistants-provider";
 import { API_BASE_URL } from "@/config";
 import { ROUTES_MAP } from "@/constants/routes";
 
@@ -87,9 +87,9 @@ export default function RootProvider({ children }) {
     <AuthenticationProvider>
       <GlobalFetchInterceptor>
         <UserProvider>
-          <QubitsProvider>
+          <AssistantsProvider>
             <ChatProvider>{children}</ChatProvider>
-          </QubitsProvider>
+          </AssistantsProvider>
         </UserProvider>
       </GlobalFetchInterceptor>
     </AuthenticationProvider>

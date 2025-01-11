@@ -22,10 +22,12 @@ const navigation = [
 export function Sidebar() {
   const pathname = usePathname();
   const params = useParams();
-  const qubitId = params?.slug;
+  const assistantId = params?.slug;
 
   const renderNavLink = (item) => {
-    const fullPath = `/qubit/${qubitId}${item.href ? `/${item.href}` : ""}`;
+    const fullPath = `/assistant/${assistantId}${
+      item.href ? `/${item.href}` : ""
+    }`;
     const isActive = pathname === fullPath;
     const linkProps = item.newTab
       ? { target: "_blank", rel: "noopener noreferrer" }

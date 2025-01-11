@@ -2,7 +2,7 @@ import React from "react";
 import { Header } from "./header";
 import { Sidebar } from "./sidebar";
 
-export function QubitLayout({ children }) {
+export function AssistantLayout({ children }) {
   return (
     <div className="min-h-screen bg-white relative">
       <div
@@ -18,7 +18,7 @@ export function QubitLayout({ children }) {
         <div className="flex-1 flex overflow-hidden">
           <Sidebar />
           <main className="flex-1 overflow-y-auto px-4 py-4">
-            <div className="max-w-3xl mx-auto pb-24">{children}</div>
+            <div className="max-w-5xl mx-auto pb-24">{children}</div>
           </main>
         </div>
       </div>

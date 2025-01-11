@@ -3,17 +3,17 @@ import { Send, Loader, PlusCircle } from "lucide-react";
 import { useChat } from "@/providers/chat-provider";
 import Link from "next/link";
 
-const Header = ({ qubit, onNewChat }) => {
+const Header = ({ assistant, onNewChat }) => {
   return (
     <div className="border-b border-neutral-200 bg-white h-12 flex justify-between items-center px-4 z-10">
-      <Link href="/dashboard/qubits" className="flex items-center gap-2">
+      <Link href="/dashboard/assistants" className="flex items-center gap-2">
         <img
           src="/icon.png"
           alt="LmScale Logo"
           className="h-7 w-7 object-contain"
         />
         <span className="text-sm font-light text-neutral-800">
-          {qubit ? qubit.name || "LmScale" : "LmScale"}
+          {assistant ? assistant.name || "LmScale" : "LmScale"}
         </span>
       </Link>
       <button
@@ -33,7 +33,7 @@ export function ChatContainer() {
     isLoading: isChatLoading,
     sendMessage,
     newChat,
-    qubit,
+    assistant,
     error,
   } = useChat();
 
@@ -63,7 +63,7 @@ export function ChatContainer() {
   }, [input]);
 
   const handleSendMessage = async () => {
-    if (!input.trim() || !qubit) return;
+    if (!input.trim() || !assistant) return;
     const messageToSend = input.trim();
     setInput("");
     await sendMessage(messageToSend, conversation);
@@ -91,7 +91,7 @@ export function ChatContainer() {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-none">
-        <Header qubit={qubit} onNewChat={newChat} />
+        <Header assistant={assistant} onNewChat={newChat} />
       </div>
 
       <div className="absolute inset-0 pointer-events-none">
@@ -135,18 +135,20 @@ export function ChatContainer() {
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder={
-                qubit ? `Message ${qubit.name}...` : "Qubit not available..."
+                assistant
+                  ? `Message ${assistant.name}...`
+                  : "Assistant not available..."
               }
-              disabled={!qubit}
+              disabled={!assistant}
               rows="1"
               className="w-full resize-none border border-neutral-200 py-3 pl-4 pr-12 text-sm focus:outline-none focus:border-neutral-300 disabled:bg-neutral-50 disabled:cursor-not-allowed"
               style={{ minHeight: "48px", maxHeight: "200px" }}
             />
             <button
               onClick={handleSendMessage}
-              disabled={!input.trim() || isChatLoading || !qubit}
+              disabled={!input.trim() || isChatLoading || !assistant}
               className={`absolute right-3 flex items-center justify-center h-8 w-8 transition-colors ${
-                !input.trim() || isChatLoading || !qubit
+                !input.trim() || isChatLoading || !assistant
                   ? "text-neutral-300"
                   : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"
               }`}

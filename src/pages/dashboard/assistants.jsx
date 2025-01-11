@@ -1,10 +1,10 @@
 import { AppLayout } from "@/components/_shared/app-layout";
-import { QubitsContainer } from "@/components/dashboard/qubits-container";
+import { AssistantsContainer } from "@/components/dashboard/assistants-container";
 
 export default function DashbaordPage() {
   return (
     <AppLayout>
-      <QubitsContainer />
+      <AssistantsContainer />
     </AppLayout>
   );
 }

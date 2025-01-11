@@ -1,11 +1,11 @@
-import { QubitLayout } from "@/components/_shared/qubit-layout";
+import { AssistantLayout } from "@/components/_shared/assistants-layout";
 import React from "react";
 
 const functions = () => {
   return (
-    <QubitLayout>
+    <AssistantLayout>
       <div>functions</div>
-    </QubitLayout>
+    </AssistantLayout>
   );
 };
 

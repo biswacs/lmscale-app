@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { QubitLayout } from "@/components/_shared/qubit-layout";
+import { AssistantLayout } from "@/components/_shared/assistants-layout";
 import { API_BASE_URL } from "@/config";
 
 const PromptDisplay = () => {
@@ -11,14 +11,14 @@ const PromptDisplay = () => {
   const [updateStatus, setUpdateStatus] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
-  const qubitId = router.query.slug;
+  const assistantId = router.query.slug;
 
   useEffect(() => {
     fetchPrompt();
-  }, [qubitId]);
+  }, [assistantId]);
 
   const fetchPrompt = async () => {
-    if (!qubitId) return;
+    if (!assistantId) return;
 
     const lm_auth_token = localStorage.getItem("lm_auth_token");
 
@@ -30,7 +30,7 @@ const PromptDisplay = () => {
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}/prompt/get?qubitId=${qubitId}`,
+        `${API_BASE_URL}/prompt/get?assistantId=${assistantId}`,
         {
           method: "GET",
           headers: {
@@ -83,7 +83,7 @@ const PromptDisplay = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          qubitId: qubitId,
+          assistantId: assistantId,
           prompt: prompt,
         }),
       });
@@ -107,7 +107,7 @@ const PromptDisplay = () => {
   };
 
   return (
-    <QubitLayout>
+    <AssistantLayout>
       <div className="h-[75vh] font-light">
         <div className="px-6 py-4">
           <div className="flex justify-between items-start mb-6">
@@ -148,7 +148,7 @@ const PromptDisplay = () => {
                 </div>
               )}
               <textarea
-                className="w-full h-[60vh] p-6 text-sm
+                className="w-full h-[60vh] p-2 text-sm
                           focus:outline-none focus:ring-0
                           text-neutral-800 resize-none bg-white border border-neutral-200"
                 value={prompt}
@@ -159,7 +159,7 @@ const PromptDisplay = () => {
           )}
         </div>
       </div>
-    </QubitLayout>
+    </AssistantLayout>
   );
 };
 
