@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { MoreVertical, Plus, X } from 'lucide-react';
-import { useRouter } from 'next/router';
+import React, { useState, useEffect, useCallback } from "react";
+import { MoreVertical, Plus, X } from "lucide-react";
+import { useRouter } from "next/router";
 import { QubitLayout } from "@/components/_shared/qubit-layout";
 
 const InstructionManagement = () => {
@@ -8,31 +8,34 @@ const InstructionManagement = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newInstruction, setNewInstruction] = useState({ name: '', content: '' });
+  const [newInstruction, setNewInstruction] = useState({
+    name: "",
+    content: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const qubitId = router.query.slug;
 
   const fetchInstructions = useCallback(async () => {
     try {
-      const lm_auth_token = localStorage.getItem('lm_auth_token');
-      
+      const lm_auth_token = localStorage.getItem("lm_auth_token");
+
       if (!lm_auth_token) {
-        throw new Error('Authentication token not found. Please login again.');
+        throw new Error("Authentication token not found. Please login again.");
       }
 
       if (!qubitId) {
-        throw new Error('No qubitId provided');
+        throw new Error("No qubitId provided");
       }
 
       const response = await fetch(
         `https://api.lmscale.tech/v1/instruction/list?qubitId=${qubitId}`,
         {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Authorization': `Bearer ${lm_auth_token}`,
-            'Content-Type': 'application/json',
-          }
+            Authorization: `Bearer ${lm_auth_token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -52,28 +55,31 @@ const InstructionManagement = () => {
   const createInstruction = async () => {
     try {
       setIsSubmitting(true);
-      const lm_auth_token = localStorage.getItem('lm_auth_token');
-      
-      const response = await fetch('https://api.lmscale.tech/v1/instruction/create', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${lm_auth_token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          qubitId,
-          name: newInstruction.name,
-          content: newInstruction.content
-        })
-      });
+      const lm_auth_token = localStorage.getItem("lm_auth_token");
+
+      const response = await fetch(
+        "https://api.lmscale.tech/v1/instruction/create",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${lm_auth_token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            qubitId,
+            name: newInstruction.name,
+            content: newInstruction.content,
+          }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to create instruction');
+        throw new Error("Failed to create instruction");
       }
 
       await fetchInstructions();
       setIsModalOpen(false);
-      setNewInstruction({ name: '', content: '' });
+      setNewInstruction({ name: "", content: "" });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -133,7 +139,10 @@ const InstructionManagement = () => {
         <div className="space-y-4">
           {instructions && instructions.length > 0 ? (
             instructions.map((instruction) => (
-              <div key={instruction.id} className="bg-white rounded-lg border border-gray-200">
+              <div
+                key={instruction.id}
+                className="bg-white rounded-lg border border-gray-200"
+              >
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <div className="font-medium text-sm text-gray-900">
@@ -155,7 +164,7 @@ const InstructionManagement = () => {
             </div>
           )}
 
-          <button 
+          <button
             onClick={() => setIsModalOpen(true)}
             className="w-full p-4 border border-gray-200 rounded-lg bg-white
                        flex items-center justify-center gap-2 text-gray-600 
@@ -169,17 +178,17 @@ const InstructionManagement = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg max-w-lg w-full p-6">
+          <div className="bg-white rounded-lg max-w-4xl w-full p-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-medium">Add New Instruction</h2>
-              <button 
+              <button
                 onClick={() => setIsModalOpen(false)}
                 className="p-1 hover:bg-gray-100 rounded-full"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -188,19 +197,29 @@ const InstructionManagement = () => {
                 <input
                   type="text"
                   value={newInstruction.name}
-                  onChange={(e) => setNewInstruction(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) =>
+                    setNewInstruction((prev) => ({
+                      ...prev,
+                      name: e.target.value,
+                    }))
+                  }
                   className="w-full border rounded-md px-3 py-2"
                   placeholder="Instruction name"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Content
                 </label>
                 <textarea
                   value={newInstruction.content}
-                  onChange={(e) => setNewInstruction(prev => ({ ...prev, content: e.target.value }))}
+                  onChange={(e) =>
+                    setNewInstruction((prev) => ({
+                      ...prev,
+                      content: e.target.value,
+                    }))
+                  }
                   className="w-full border rounded-md px-3 py-2 h-32"
                   placeholder="Enter instruction content"
                 />
@@ -215,11 +234,15 @@ const InstructionManagement = () => {
                 </button>
                 <button
                   onClick={createInstruction}
-                  disabled={isSubmitting || !newInstruction.name || !newInstruction.content}
+                  disabled={
+                    isSubmitting ||
+                    !newInstruction.name ||
+                    !newInstruction.content
+                  }
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 
                            disabled:bg-blue-300 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Creating...' : 'Create'}
+                  {isSubmitting ? "Creating..." : "Create"}
                 </button>
               </div>
             </div>

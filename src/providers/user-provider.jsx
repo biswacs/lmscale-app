@@ -22,8 +22,8 @@ const UserProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      setUser(data.user);
-      return data.user;
+      setUser(data.data.user);
+      return data.data.user;
     } catch (error) {
       console.error("Error fetching user:", error);
       setUser(null);
