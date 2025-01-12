@@ -5,28 +5,16 @@ import { API_BASE_URL } from "@/config";
 
 const PromptDisplay = () => {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
   const [updateStatus, setUpdateStatus] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [prompt, setPrompt] = useState("");
-  const { currentAssistant, getAssistant } = useAssistants();
+  const { currentAssistant } = useAssistants();
 
   useEffect(() => {
-    fetchAssistantData();
-  }, []);
-
-  const fetchAssistantData = async () => {
-    try {
-      const assistant = await getAssistant();
-      if (assistant?.prompt) {
-        setPrompt(assistant.prompt);
-      }
-    } catch (err) {
-      setError(err.message || "Error fetching assistant data");
-    } finally {
-      setLoading(false);
+    if (currentAssistant?.prompt) {
+      setPrompt(currentAssistant.prompt);
     }
-  };
+  }, [currentAssistant]);
 
   const handlePromptChange = (e) => {
     setPrompt(e.target.value);
@@ -46,10 +34,6 @@ const PromptDisplay = () => {
     try {
       setIsUpdating(true);
       setUpdateStatus("Updating...");
-      console.log("Making update request with:", {
-        assistantId,
-        prompt,
-      });
 
       const response = await fetch(`${API_BASE_URL}/prompt/update`, {
         method: "POST",
@@ -64,14 +48,12 @@ const PromptDisplay = () => {
       });
 
       const data = await response.json();
-      console.log("Update response:", data);
 
       if (!response.ok) {
         throw new Error(data.message || "Failed to update prompt");
       }
 
       if (data.success) {
-        await fetchAssistantData();
         setUpdateStatus("Updated successfully!");
         setTimeout(() => setUpdateStatus(""), 3000);
       } else {
@@ -98,7 +80,7 @@ const PromptDisplay = () => {
             </div>
             <button
               onClick={handleUpdate}
-              disabled={loading || isUpdating}
+              disabled={isUpdating}
               className="px-4 py-1.5 bg-neutral-800 text-white hover:bg-neutral-900 flex items-center justify-center gap-2 min-w-[120px]"
             >
               {updateStatus === "Updating..." ? (
@@ -112,11 +94,7 @@ const PromptDisplay = () => {
             </button>
           </div>
 
-          {loading ? (
-            <div className="h-96 flex justify-center items-center">
-              <div className="animate-spin h-8 w-8 border-b-2 border-neutral-800"></div>
-            </div>
-          ) : error ? (
+          {error ? (
             <div className="h-96 flex items-center justify-center">
               <div className="bg-red-50 text-red-500 p-4 text-center max-w-lg">
                 {error}

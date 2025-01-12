@@ -1,8 +1,33 @@
 import React from "react";
 import { Header } from "./header";
 import { Sidebar } from "./sidebar";
+import { useAssistants } from "@/providers/assistants-provider";
 
 export function AppLayout({ children }) {
+  const { isLoading, error } = useAssistants();
+
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div className="flex-1 flex justify-center items-center">
+          <div className="animate-spin h-8 w-8 border-b-2 border-neutral-800" />
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="flex-1 flex justify-center items-center">
+          <div className="bg-red-50 text-red-500 p-4 text-center max-w-lg">
+            {error}
+          </div>
+        </div>
+      );
+    }
+
+    return <div className="max-w-5xl mx-auto pb-24">{children}</div>;
+  };
+
   return (
     <div className="min-h-screen bg-white relative">
       <div
@@ -18,7 +43,7 @@ export function AppLayout({ children }) {
         <div className="flex-1 flex overflow-hidden">
           <Sidebar />
           <main className="flex-1 overflow-y-auto px-4 py-4">
-            <div className="max-w-5xl mx-auto pb-24">{children}</div>
+            {renderContent()}
           </main>
         </div>
       </div>

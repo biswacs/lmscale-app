@@ -139,7 +139,7 @@ export function SelectAssistantModal({ isOpen, onClose }) {
                     <button
                       key={assistant.id}
                       onClick={() => handleAssistantSelect(assistant)}
-                      className="w-full px-3 py-2 border border-neutral-100 hover:border-neutral-200 
+                      className="w-full px-3 py-2 border border-neutral-100 
                               hover:shadow-sm transition-all duration-200 flex items-center 
                               justify-between text-left group"
                     >

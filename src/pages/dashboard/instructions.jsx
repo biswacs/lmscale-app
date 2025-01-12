@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Plus, X, Loader2 } from "lucide-react";
 import { AppLayout } from "@/components/_shared/app-layout";
 import { useAssistants } from "@/providers/assistants-provider";
@@ -14,18 +14,6 @@ const InstructionManagement = () => {
   const [error, setError] = useState(null);
 
   const { currentAssistant, getAssistant } = useAssistants();
-
-  useEffect(() => {
-    fetchAssistantData();
-  }, []);
-
-  const fetchAssistantData = async () => {
-    try {
-      await getAssistant();
-    } catch (err) {
-      setError(err.message);
-    }
-  };
 
   const createInstruction = async () => {
     try {
@@ -60,26 +48,6 @@ const InstructionManagement = () => {
     }
   };
 
-  if (!currentAssistant) {
-    return (
-      <AppLayout>
-        <div className="flex justify-center items-center h-64">
-          <div className="text-neutral-600">Loading instructions...</div>
-        </div>
-      </AppLayout>
-    );
-  }
-
-  if (error) {
-    return (
-      <AppLayout>
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded m-4">
-          {error}
-        </div>
-      </AppLayout>
-    );
-  }
-
   return (
     <AppLayout>
       <div className="p-6">
@@ -96,7 +64,7 @@ const InstructionManagement = () => {
             </span>
           </button>
 
-          {currentAssistant.instructions?.map((instruction) => (
+          {currentAssistant?.instructions?.map((instruction) => (
             <div
               key={instruction.id}
               className="bg-white border border-neutral-100 h-48"

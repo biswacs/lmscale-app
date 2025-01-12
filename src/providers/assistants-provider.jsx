@@ -9,6 +9,7 @@ export const AssistantsProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [currentAssistant, setCurrentAssistant] = useState(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const fetchAllAssistants = async () => {
     const authToken = localStorage.getItem("lm_auth_token");
@@ -25,10 +26,9 @@ export const AssistantsProvider = ({ children }) => {
 
       const data = await response.json();
       setAssistants(data.data.assistants);
-      setIsLoading(false);
+      return data.data.assistants;
     } catch (err) {
-      setError(err.message || "Failed to fetch assistants");
-      setIsLoading(false);
+      throw new Error(err.message || "Failed to fetch assistants");
     }
   };
 
@@ -92,10 +92,27 @@ export const AssistantsProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const authToken = localStorage.getItem("lm_auth_token");
-    if (authToken) {
-      fetchAllAssistants();
-    }
+    const initializeData = async () => {
+      const authToken = localStorage.getItem("lm_auth_token");
+      const assistantId = localStorage.getItem("lm_assistant_id");
+
+      if (!authToken || !assistantId) {
+        setError("Authentication required");
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        await Promise.all([fetchAllAssistants(), getAssistant()]);
+      } catch (err) {
+        setError(err.message || "Failed to initialize");
+      } finally {
+        setIsLoading(false);
+        setIsInitialized(true);
+      }
+    };
+
+    initializeData();
   }, []);
 
   const contextValue = {
@@ -108,6 +125,7 @@ export const AssistantsProvider = ({ children }) => {
     createAssistant,
     currentAssistant,
     getAssistant,
+    isInitialized,
   };
 
   return (
