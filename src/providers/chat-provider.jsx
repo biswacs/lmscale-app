@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import { API_BASE_URL } from "@/config";
 
 const ChatContext = createContext({});
@@ -9,8 +8,7 @@ export const ChatProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [assistant, setAssistant] = useState(null);
-  const router = useRouter();
-  const assistantId = router.query.slug;
+  const assistantId = localStorage.getItem("lm_assistant_id");
 
   useEffect(() => {
     setConversation([]);

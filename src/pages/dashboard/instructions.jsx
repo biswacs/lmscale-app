@@ -1,83 +1,56 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { MoreVertical, Plus, X, Loader2 } from "lucide-react";
-import { useRouter } from "next/router";
+import React, { useState, useEffect } from "react";
+import { Plus, X, Loader2 } from "lucide-react";
 import { AssistantLayout } from "@/components/_shared/assistants-layout";
+import { useAssistants } from "@/providers/assistants-provider";
+import { API_BASE_URL } from "@/config";
 
 const InstructionManagement = () => {
-  const [instructions, setInstructions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newInstruction, setNewInstruction] = useState({
     name: "",
     content: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
-  const assistantId = router.query.slug;
+  const [error, setError] = useState(null);
 
-  const fetchInstructions = useCallback(async () => {
+  const { currentAssistant, getAssistant } = useAssistants();
+
+  useEffect(() => {
+    fetchAssistantData();
+  }, []);
+
+  const fetchAssistantData = async () => {
     try {
-      const lm_auth_token = localStorage.getItem("lm_auth_token");
-
-      if (!lm_auth_token) {
-        throw new Error("Authentication token not found. Please login again.");
-      }
-
-      if (!assistantId) {
-        throw new Error("No assistantId provided");
-      }
-
-      const response = await fetch(
-        `https://api.lmscale.tech/v1/instruction/list?assistantId=${assistantId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${lm_auth_token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch instructions: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      setInstructions(data.data.instructions);
-      setLoading(false);
+      await getAssistant();
     } catch (err) {
       setError(err.message);
-      setLoading(false);
     }
-  }, [assistantId]);
+  };
 
   const createInstruction = async () => {
     try {
       setIsSubmitting(true);
       const lm_auth_token = localStorage.getItem("lm_auth_token");
+      const assistantId = localStorage.getItem("lm_assistant_id");
 
-      const response = await fetch(
-        "https://api.lmscale.tech/v1/instruction/create",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${lm_auth_token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            assistantId,
-            name: newInstruction.name,
-            content: newInstruction.content,
-          }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/instruction/create`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${lm_auth_token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          assistantId,
+          name: newInstruction.name,
+          content: newInstruction.content,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to create instruction");
       }
 
-      await fetchInstructions();
+      await getAssistant(); // Refresh the assistant data after creating instruction
       setIsModalOpen(false);
       setNewInstruction({ name: "", content: "" });
     } catch (err) {
@@ -87,33 +60,7 @@ const InstructionManagement = () => {
     }
   };
 
-  useEffect(() => {
-    if (router.isReady && assistantId) {
-      fetchInstructions();
-    }
-  }, [router.isReady, assistantId, fetchInstructions]);
-
-  if (!router.isReady) {
-    return (
-      <AssistantLayout>
-        <div className="flex justify-center items-center h-64">
-          <div className="text-neutral-600">Initializing...</div>
-        </div>
-      </AssistantLayout>
-    );
-  }
-
-  if (router.isReady && !assistantId) {
-    return (
-      <AssistantLayout>
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded m-4">
-          No assistant ID provided. Please check the URL.
-        </div>
-      </AssistantLayout>
-    );
-  }
-
-  if (loading) {
+  if (!currentAssistant) {
     return (
       <AssistantLayout>
         <div className="flex justify-center items-center h-64">
@@ -149,7 +96,7 @@ const InstructionManagement = () => {
             </span>
           </button>
 
-          {instructions.map((instruction) => (
+          {currentAssistant.instructions?.map((instruction) => (
             <div
               key={instruction.id}
               className="bg-white border border-neutral-100 h-48"

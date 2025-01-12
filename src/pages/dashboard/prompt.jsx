@@ -1,61 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { AssistantLayout } from "@/components/_shared/assistants-layout";
+import { useAssistants } from "@/providers/assistants-provider";
 import { API_BASE_URL } from "@/config";
 
 const PromptDisplay = () => {
-  const [prompt, setPrompt] = useState("");
-  const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [updateStatus, setUpdateStatus] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
+  const [prompt, setPrompt] = useState("");
   const router = useRouter();
-  const assistantId = router.query.slug;
+  const { currentAssistant, getAssistant } = useAssistants();
 
   useEffect(() => {
-    fetchPrompt();
-  }, [assistantId]);
+    fetchAssistantData();
+  }, []);
 
-  const fetchPrompt = async () => {
-    if (!assistantId) return;
-
-    const lm_auth_token = localStorage.getItem("lm_auth_token");
-
-    if (!lm_auth_token) {
-      setError("Authentication token not found. Please login again.");
-      setLoading(false);
-      return;
-    }
-
+  const fetchAssistantData = async () => {
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/prompt/get?assistantId=${assistantId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${lm_auth_token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch prompt");
-      }
-
-      const responseData = await response.json();
-
-      if (responseData.success && responseData.data?.data?.prompt) {
-        setPrompt(responseData.data.data.prompt);
-        setName(responseData.data.data.name || "");
-      } else {
-        setPrompt("");
-        setError("No prompt available");
+      const assistant = await getAssistant();
+      if (assistant?.prompt) {
+        setPrompt(assistant.prompt);
       }
     } catch (err) {
-      setError("Error fetching prompt. Please try again.");
-      console.error("Error:", err);
+      setError(err.message || "Error fetching assistant data");
     } finally {
       setLoading(false);
     }
@@ -67,15 +36,23 @@ const PromptDisplay = () => {
 
   const handleUpdate = async () => {
     const lm_auth_token = localStorage.getItem("lm_auth_token");
+    const assistantId = localStorage.getItem("lm_assistant_id");
 
-    if (!lm_auth_token) {
-      setError("Authentication token not found. Please login again.");
+    if (!lm_auth_token || !assistantId) {
+      setError(
+        "Authentication token or Assistant ID not found. Please login again."
+      );
       return;
     }
 
     try {
       setIsUpdating(true);
       setUpdateStatus("Updating...");
+      console.log("Making update request with:", {
+        assistantId,
+        prompt,
+      });
+
       const response = await fetch(`${API_BASE_URL}/prompt/update`, {
         method: "POST",
         headers: {
@@ -89,18 +66,23 @@ const PromptDisplay = () => {
       });
 
       const data = await response.json();
+      console.log("Update response:", data);
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update prompt");
+      }
 
       if (data.success) {
-        await fetchPrompt(); // Fetch the updated prompt
+        await fetchAssistantData();
         setUpdateStatus("Updated successfully!");
         setTimeout(() => setUpdateStatus(""), 3000);
       } else {
         throw new Error(data.message || "Failed to update prompt");
       }
     } catch (err) {
-      setError("Error updating prompt. Please try again.");
+      console.error("Update error details:", err);
+      setError(err.message || "Error updating prompt. Please try again.");
       setUpdateStatus("");
-      console.error("Error:", err);
     } finally {
       setIsUpdating(false);
     }
@@ -112,7 +94,9 @@ const PromptDisplay = () => {
         <div className="px-6 py-4">
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="text-2xl font-light text-neutral-800">{name}</h2>
+              <h2 className="text-2xl font-light text-neutral-800">
+                {currentAssistant?.name || ""}
+              </h2>
             </div>
             <button
               onClick={handleUpdate}
@@ -148,9 +132,7 @@ const PromptDisplay = () => {
                 </div>
               )}
               <textarea
-                className="w-full h-[60vh] p-2 text-sm
-                          focus:outline-none focus:ring-0
-                          text-neutral-800 resize-none bg-white border border-neutral-200"
+                className="w-full h-[60vh] p-2 text-sm focus:outline-none focus:ring-0 text-neutral-800 resize-none bg-white border border-neutral-200"
                 value={prompt}
                 onChange={handlePromptChange}
                 placeholder="Enter your prompt here..."

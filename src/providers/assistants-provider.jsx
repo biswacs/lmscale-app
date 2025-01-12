@@ -8,6 +8,7 @@ export const AssistantsProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [currentAssistant, setCurrentAssistant] = useState(null);
 
   const fetchAllAssistants = async () => {
     const authToken = localStorage.getItem("lm_auth_token");
@@ -56,6 +57,40 @@ export const AssistantsProvider = ({ children }) => {
     }
   };
 
+  const getAssistant = async () => {
+    const authToken = localStorage.getItem("lm_auth_token");
+    const assistantId = localStorage.getItem("lm_assistant_id");
+
+    if (!authToken || !assistantId) {
+      throw new Error("Authentication token or Assistant ID not found");
+    }
+
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/assistant/get?assistantId=${assistantId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch assistant");
+      }
+
+      const responseData = await response.json();
+      if (responseData.success) {
+        setCurrentAssistant(responseData.data.assistant);
+        return responseData.data.assistant;
+      } else {
+        throw new Error(responseData.message || "Failed to fetch assistant");
+      }
+    } catch (err) {
+      throw new Error(err.message || "Failed to fetch assistant");
+    }
+  };
+
   useEffect(() => {
     const authToken = localStorage.getItem("lm_auth_token");
     if (authToken) {
@@ -71,6 +106,8 @@ export const AssistantsProvider = ({ children }) => {
     setIsCreateModalOpen,
     fetchAllAssistants,
     createAssistant,
+    currentAssistant,
+    getAssistant,
   };
 
   return (

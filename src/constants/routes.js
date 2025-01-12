@@ -1,12 +1,11 @@
 export const ROUTES_MAP = {
   DASHBOARD: {
-    __: "/dashboard/assistants",
-    QUBIT: "/assistant/[slug]",
-    PROMPT: "/assistant/[slug]/prompt",
-    FUNCTIONS: "/assistant/[slug]/functions",
-    INSTRUCTIONS: "/assistant/[slug]/instructions",
-    CHAT: "/assistant/[slug]/chat",
-    SETTINGS: "/assistant/[slug]/settings",
+    __: "/dashboard",
+    PROMPT: "/dashboard/prompt",
+    FUNCTIONS: "/dashboard/functions",
+    INSTRUCTIONS: "/dashboard/instructions",
+    CHAT: "/dashboard/chat",
+    SETTINGS: "/dashboard/settings",
     PROFILE: "/dashboard/profile",
   },
   LOGIN: "/login",
@@ -16,12 +15,11 @@ export const ROUTES_MAP = {
 
 export const AUTHENTICATED_ROUTES = [
   ...Object.values(ROUTES_MAP.DASHBOARD),
-  "/assistant/:slug",
-  "/assistant/:slug/prompt",
-  "/assistant/:slug/functions",
-  "/assistant/:slug/instructions",
-  "/assistant/:slug/chat",
-  "/assistant/:slug/settings",
+  "/dashboard/prompt",
+  "/dashboard/functions",
+  "/dashboard/instructions",
+  "/dashboard/chat",
+  "/dashboard/settings",
 ];
 
 export const UNAUTHENTICATED_ROUTES = [

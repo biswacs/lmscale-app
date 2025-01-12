@@ -12,12 +12,15 @@ const AuthenticationContext = createContext({});
 const AuthenticationProvider = ({ children }) => {
   const router = useRouter();
   const [authToken, setAuthToken] = useState(undefined);
+  const [assistantId, setAssistantId] = useState(undefined);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("lm_auth_token");
+    const assistant = localStorage.getItem("lm_assistant_id");
     setAuthToken(token);
+    setAssistantId(assistant);
     setLoading(false);
   }, []);
 
@@ -45,6 +48,7 @@ const AuthenticationProvider = ({ children }) => {
       localStorage.setItem("lm_auth_token", data.lm_auth_token);
       localStorage.setItem("lm_assistant_id", data.assistantId);
       setAuthToken(data.lm_auth_token);
+      setAssistantId(data.assistantId);
       window.location.href = ROUTES_MAP.DASHBOARD.__;
       return data;
     } catch (err) {
@@ -79,6 +83,7 @@ const AuthenticationProvider = ({ children }) => {
       localStorage.setItem("lm_auth_token", data.lm_auth_token);
       localStorage.setItem("lm_assistant_id", data.assistantId);
       setAuthToken(data.lm_auth_token);
+      setAssistantId(data.assistantId);
       window.location.href = ROUTES_MAP.DASHBOARD.__;
       return data;
     } catch (err) {
@@ -92,13 +97,14 @@ const AuthenticationProvider = ({ children }) => {
   const logOutUser = () => {
     localStorage.clear();
     setAuthToken(null);
+    setAssistantId(null);
     window.location.href = ROUTES_MAP.LOGIN;
   };
 
   useEffect(() => {
     if (loading) return;
 
-    const isLoggedIn = !!authToken;
+    const isLoggedIn = !!authToken && !!assistantId;
     const currentPathname = router.pathname;
 
     if (!isLoggedIn) {
@@ -110,14 +116,15 @@ const AuthenticationProvider = ({ children }) => {
         router.push(ROUTES_MAP.DASHBOARD.__);
       }
     }
-  }, [authToken, loading, router]);
+  }, [authToken, assistantId, loading, router]);
 
   const contextValue = {
     logInUser,
     logOutUser,
     registerUser,
-    isAuthenticated: !!authToken,
+    isAuthenticated: !!authToken && !!assistantId,
     authToken,
+    assistantId,
     submitting,
   };
 
