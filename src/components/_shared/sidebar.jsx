@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAssistants } from "@/providers/assistants-provider";
-import { SelectAssistantModal } from "../dashboard/assistants-container";
+import { SelectAssistantModal } from "../dashboard/assistants-modal-container";
 import {
   Settings,
   Code2,

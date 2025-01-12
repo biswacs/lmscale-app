@@ -1,8 +1,8 @@
-import { AssistantLayout } from "@/components/_shared/assistants-layout";
+import { AppLayout } from "@/components/_shared/app-layout";
 import React from "react";
 
 const index = () => {
-  return <AssistantLayout>index</AssistantLayout>;
+  return <AppLayout>index</AppLayout>;
 };
 
 export default index;

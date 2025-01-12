@@ -1,11 +1,11 @@
-import { AssistantLayout } from "@/components/_shared/assistants-layout";
+import { AppLayout } from "@/components/_shared/app-layout";
 import React from "react";
 
 const functions = () => {
   return (
-    <AssistantLayout>
+    <AppLayout>
       <div>functions</div>
-    </AssistantLayout>
+    </AppLayout>
   );
 };
 

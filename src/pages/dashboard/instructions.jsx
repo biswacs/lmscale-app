@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Plus, X, Loader2 } from "lucide-react";
-import { AssistantLayout } from "@/components/_shared/assistants-layout";
+import { AppLayout } from "@/components/_shared/app-layout";
 import { useAssistants } from "@/providers/assistants-provider";
 import { API_BASE_URL } from "@/config";
 
@@ -50,7 +50,7 @@ const InstructionManagement = () => {
         throw new Error("Failed to create instruction");
       }
 
-      await getAssistant(); // Refresh the assistant data after creating instruction
+      await getAssistant();
       setIsModalOpen(false);
       setNewInstruction({ name: "", content: "" });
     } catch (err) {
@@ -62,26 +62,26 @@ const InstructionManagement = () => {
 
   if (!currentAssistant) {
     return (
-      <AssistantLayout>
+      <AppLayout>
         <div className="flex justify-center items-center h-64">
           <div className="text-neutral-600">Loading instructions...</div>
         </div>
-      </AssistantLayout>
+      </AppLayout>
     );
   }
 
   if (error) {
     return (
-      <AssistantLayout>
+      <AppLayout>
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded m-4">
           {error}
         </div>
-      </AssistantLayout>
+      </AppLayout>
     );
   }
 
   return (
-    <AssistantLayout>
+    <AppLayout>
       <div className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <button
@@ -230,7 +230,7 @@ const InstructionManagement = () => {
           </div>
         )}
       </div>
-    </AssistantLayout>
+    </AppLayout>
   );
 };
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { AssistantLayout } from "@/components/_shared/assistants-layout";
+import { AppLayout } from "@/components/_shared/app-layout";
 import { useAssistants } from "@/providers/assistants-provider";
 import { API_BASE_URL } from "@/config";
 
@@ -10,7 +9,6 @@ const PromptDisplay = () => {
   const [updateStatus, setUpdateStatus] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [prompt, setPrompt] = useState("");
-  const router = useRouter();
   const { currentAssistant, getAssistant } = useAssistants();
 
   useEffect(() => {
@@ -89,7 +87,7 @@ const PromptDisplay = () => {
   };
 
   return (
-    <AssistantLayout>
+    <AppLayout>
       <div className="h-[75vh] font-light">
         <div className="px-6 py-4">
           <div className="flex justify-between items-start mb-6">
@@ -141,7 +139,7 @@ const PromptDisplay = () => {
           )}
         </div>
       </div>
-    </AssistantLayout>
+    </AppLayout>
   );
 };
 
