@@ -42,9 +42,7 @@ export function AppLayout({ children }) {
         <Header />
         <div className="flex-1 flex overflow-hidden">
           <Sidebar />
-          <main className="flex-1 overflow-y-auto px-4 py-4">
-            {renderContent()}
-          </main>
+          <main className="flex-1 overflow-y-auto">{renderContent()}</main>
         </div>
       </div>
     </div>

@@ -12,7 +12,7 @@ export function Header() {
   const isSettingsPage = pathname === "/dashboard/settings";
 
   return (
-    <nav className="w-full border-b border-neutral-100 bg-white">
+    <nav className="w-full border-b border-neutral-200 bg-white">
       <div className="px-4">
         <div className="flex h-12 items-center justify-between text-neutral-800">
           <Link

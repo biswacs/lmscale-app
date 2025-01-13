@@ -70,11 +70,28 @@ const UsageContainer = () => {
     );
   };
 
+  const formatDateTime = (dateTimeStr) => {
+    const date = new Date(dateTimeStr);
+    return {
+      date: date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+      }),
+      time: date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+      }),
+    };
+  };
+
   return (
-    <div className="h-[75vh] font-light">
-      <div className="px-6 py-4">
-        <div className="mb-6">
-          <h2 className="text-2xl font-light text-neutral-800">
+    <div className="min-h-[75vh] font-light">
+      <div className="px-2 sm:px-6 py-2 sm:py-4">
+        <div className="mb-4 sm:mb-6">
+          <h2 className="text-xl sm:text-2xl font-light text-neutral-800">
             {currentAssistant?.name
               ? `${currentAssistant.name} Usage Statistics`
               : "Usage Statistics"}
@@ -90,34 +107,63 @@ const UsageContainer = () => {
         ) : (
           <div>
             <div className="bg-white border border-neutral-200 p-4">
-              <div className="grid grid-cols-3 gap-4 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div className="p-4 border border-neutral-200">
                   <h3 className="text-sm text-neutral-500 mb-2">
-                    Total Requests
+                    Input Tokens
                   </h3>
-                  <p className="text-2xl">{usageData.length}</p>
+                  <p className="text-2xl">
+                    {usageData[
+                      usageData.length - 1
+                    ]?.inputTokens.toLocaleString() || "-"}
+                  </p>
+                </div>
+                <div className="p-4 border border-neutral-200">
+                  <h3 className="text-sm text-neutral-500 mb-2">
+                    Output Tokens
+                  </h3>
+                  <p className="text-2xl">
+                    {usageData[
+                      usageData.length - 1
+                    ]?.outputTokens.toLocaleString() || "-"}
+                  </p>
                 </div>
                 <div className="p-4 border border-neutral-200">
                   <h3 className="text-sm text-neutral-500 mb-2">
                     Total Tokens
                   </h3>
                   <p className="text-2xl">
-                    {usageData
-                      .reduce((sum, usage) => sum + usage.totalTokens, 0)
-                      .toLocaleString()}
+                    {usageData[
+                      usageData.length - 1
+                    ]?.totalTokens.toLocaleString() || "-"}
                   </p>
                 </div>
                 <div className="p-4 border border-neutral-200">
                   <h3 className="text-sm text-neutral-500 mb-2">
                     Latest Usage
                   </h3>
-                  <p className="text-2xl">
-                    {usageData.length > 0
-                      ? new Date(
-                          usageData[usageData.length - 1].date
-                        ).toLocaleDateString()
-                      : "-"}
-                  </p>
+                  <div className="flex flex-col">
+                    {usageData[usageData.length - 1]?.updatedAt ? (
+                      <>
+                        <p className="text-lg">
+                          {
+                            formatDateTime(
+                              usageData[usageData.length - 1].updatedAt
+                            ).date
+                          }
+                        </p>
+                        <p className="text-lg">
+                          {
+                            formatDateTime(
+                              usageData[usageData.length - 1].updatedAt
+                            ).time
+                          }
+                        </p>
+                      </>
+                    ) : (
+                      "-"
+                    )}
+                  </div>
                 </div>
               </div>
               {renderUsageChart()}

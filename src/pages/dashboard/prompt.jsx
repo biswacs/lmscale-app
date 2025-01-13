@@ -70,18 +70,18 @@ const PromptDisplay = () => {
 
   return (
     <AppLayout>
-      <div className="h-[75vh] font-light">
-        <div className="px-6 py-4">
-          <div className="flex justify-between items-start mb-6">
+      <div className="min-h-[75vh] font-light">
+        <div className="px-2 sm:px-6 py-2 sm:py-4">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 sm:gap-0 mb-4 sm:mb-6">
             <div>
-              <h2 className="text-2xl font-light text-neutral-800">
+              <h2 className="text-xl sm:text-2xl font-light text-neutral-800">
                 {currentAssistant?.name || ""}
               </h2>
             </div>
             <button
               onClick={handleUpdate}
               disabled={isUpdating}
-              className="px-4 py-1.5 bg-neutral-800 text-white hover:bg-neutral-900 flex items-center justify-center gap-2 min-w-[120px]"
+              className="w-full sm:w-auto px-4 py-1.5 bg-neutral-800 text-white hover:bg-neutral-900 flex items-center justify-center gap-2 min-w-[120px]"
             >
               {updateStatus === "Updating..." ? (
                 <>
@@ -95,24 +95,26 @@ const PromptDisplay = () => {
           </div>
 
           {error ? (
-            <div className="h-96 flex items-center justify-center">
-              <div className="bg-red-50 text-red-500 p-4 text-center max-w-lg">
+            <div className="h-64 sm:h-96 flex items-center justify-center">
+              <div className="bg-red-50 text-red-500 p-4 text-center max-w-lg mx-2 sm:mx-0">
                 {error}
               </div>
             </div>
           ) : (
             <div>
               {updateStatus === "Updated successfully!" && (
-                <div className="bg-green-50 text-green-600 p-3 text-center mb-4">
+                <div className="bg-green-50 text-green-600 p-3 text-center mb-4 mx-2 sm:mx-0">
                   {updateStatus}
                 </div>
               )}
-              <textarea
-                className="w-full h-[60vh] p-2 text-sm focus:outline-none focus:ring-0 text-neutral-800 resize-none bg-white border border-neutral-200"
-                value={prompt}
-                onChange={handlePromptChange}
-                placeholder="Enter your prompt here..."
-              />
+              <div className="h-[calc(100vh-280px)] sm:h-[60vh]">
+                <textarea
+                  className="w-full h-full p-2 text-sm focus:outline-none focus:ring-0 text-neutral-800 resize-none bg-white border border-neutral-200"
+                  value={prompt}
+                  onChange={handlePromptChange}
+                  placeholder="Enter your prompt here..."
+                />
+              </div>
             </div>
           )}
         </div>

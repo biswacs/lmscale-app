@@ -53,7 +53,7 @@ export function Sidebar() {
 
   return (
     <>
-      <div className="relative flex flex-col border-r border-neutral-200 bg-white transition-all duration-300 w-14 md:w-44">
+      <div className="relative flex flex-col border-r border-neutral-200 bg-white transition-all duration-200 w-12 md:w-44">
         <div className="flex-1 overflow-y-auto">
           <nav className="flex flex-col gap-2 p-2">
             {navigation.map((item) => renderNavLink(item))}
@@ -64,7 +64,7 @@ export function Sidebar() {
           onClick={() => setIsSelectModalOpen(true)}
           className="border-t border-neutral-200 p-2 hover:bg-neutral-50"
         >
-          <div className="flex items-center gap-3 px-3 py-2 text-sm text-neutral-600">
+          <div className="items-center gap-3 flex justify-center py-2 text-sm text-neutral-600">
             <ArrowRightLeft className="h-4 w-4 flex-shrink-0" />
             <span className="hidden md:block font-light truncate">
               {currentAssistant?.name || "Loading..."}

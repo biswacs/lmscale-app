@@ -34,13 +34,6 @@ export function SelectAssistantModal({ isOpen, onClose }) {
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    const filtered = assistants.filter((assistant) =>
-      assistant.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredAssistants(filtered);
-  }, [searchTerm, assistants]);
-
   const handleAssistantSelect = async (assistant) => {
     localStorage.setItem("lm_assistant_id", assistant.id);
     handleClose();
@@ -58,8 +51,8 @@ export function SelectAssistantModal({ isOpen, onClose }) {
 
   const handleInputChange = (e) => {
     const value = e.target.value.replace(/\s/g, "");
-    if (value.length > 24) {
-      setInputError("Name cannot exceed 24 characters");
+    if (value.length > 14) {
+      setInputError("Name cannot exceed 14 characters");
     } else {
       setInputError("");
     }
@@ -68,15 +61,14 @@ export function SelectAssistantModal({ isOpen, onClose }) {
 
   const handleCreateSubmit = async (e) => {
     e.preventDefault();
-    const trimmedName = newAssistantName.trimEnd();
 
-    if (trimmedName.length === 0) {
+    if (newAssistantName.length === 0) {
       setInputError("Name cannot be empty");
       return;
     }
 
-    if (trimmedName.length > 24) {
-      setInputError("Name cannot exceed 24 characters");
+    if (newAssistantName.length > 14) {
+      setInputError("Name cannot exceed 14 characters");
       return;
     }
 
@@ -85,7 +77,7 @@ export function SelectAssistantModal({ isOpen, onClose }) {
     setInputError("");
 
     try {
-      const response = await createAssistant({ name: trimmedName });
+      const response = await createAssistant({ name: newAssistantName });
       if (response?.data?.assistant?.id) {
         localStorage.setItem("lm_assistant_id", response.data.assistant.id);
         handleClose();
@@ -98,11 +90,24 @@ export function SelectAssistantModal({ isOpen, onClose }) {
     }
   };
 
+  useEffect(() => {
+    const filtered = assistants.filter((assistant) =>
+      assistant.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    const sorted = filtered.sort((a, b) => {
+      if (a.id === currentAssistant?.id) return -1;
+      if (b.id === currentAssistant?.id) return 1;
+      return 0;
+    });
+
+    setFilteredAssistants(sorted);
+  }, [searchTerm, assistants, currentAssistant]);
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <div className="flex flex-col h-[32rem] font-light">
         <div className="flex-none border-b border-neutral-100">
-          <div className="flex items-center justify-between px-3 py-2 bg-neutral-900">
+          <div className="flex items-center justify-between px-3 py-3 bg-neutral-900">
             <h2 className="text-lg text-neutral-200">
               {showCreateForm ? "Create New Assistant" : "Select Assistant"}
             </h2>
@@ -134,7 +139,7 @@ export function SelectAssistantModal({ isOpen, onClose }) {
               </div>
 
               <div className="flex-1 overflow-y-auto px-3 py-2">
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {filteredAssistants.map((assistant) => (
                     <button
                       key={assistant.id}
@@ -210,7 +215,7 @@ export function SelectAssistantModal({ isOpen, onClose }) {
                         type="text"
                         value={newAssistantName}
                         onChange={handleInputChange}
-                        maxLength={24}
+                        maxLength={14}
                         placeholder="Enter assistant name"
                         className={`w-full h-10 border px-3 text-sm 
                                 placeholder:text-neutral-400 focus:outline-none focus:ring-1 
@@ -226,7 +231,7 @@ export function SelectAssistantModal({ isOpen, onClose }) {
                         <p className="text-sm text-red-500">{inputError}</p>
                       )}
                       <p className="text-xs text-neutral-500">
-                        {newAssistantName.length}/24 characters
+                        {newAssistantName.length}/14 characters
                       </p>
                     </div>
                   </div>

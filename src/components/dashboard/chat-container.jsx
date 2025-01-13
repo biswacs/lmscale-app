@@ -18,10 +18,10 @@ const Header = ({ assistant, onNewChat }) => {
       </Link>
       <button
         onClick={onNewChat}
-        className="px-4 py-2 bg-black text-white text-sm flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors"
+        className="px-2 md:px-4 py-2 bg-black text-white text-sm flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors"
       >
         <PlusCircle className="w-4 h-4" />
-        New Chat
+        <p className="hidden md:block">New Chat</p>
       </button>
     </div>
   );
@@ -128,7 +128,7 @@ export function ChatContainer() {
 
       <div className="flex-none border-t border-neutral-200 bg-white">
         <div className="max-w-3xl mx-auto px-4 py-3">
-          <div className="relative flex items-center">
+          <div className="relative flex items-start">
             <textarea
               ref={textareaRef}
               value={input}
@@ -136,18 +136,18 @@ export function ChatContainer() {
               onKeyPress={handleKeyPress}
               placeholder={
                 assistant
-                  ? `Message ${assistant.name}...`
+                  ? `Message ${assistant.name}`
                   : "Assistant not available..."
               }
               disabled={!assistant}
               rows="1"
-              className="w-full resize-none border border-neutral-200 py-3 pl-4 pr-12 text-sm focus:outline-none focus:border-neutral-300 disabled:bg-neutral-50 disabled:cursor-not-allowed"
-              style={{ minHeight: "48px", maxHeight: "200px" }}
+              className="w-full resize-none border border-neutral-200 p-2 text-sm focus:outline-none focus:border-neutral-300 disabled:bg-neutral-50 disabled:cursor-not-allowed"
+              style={{ minHeight: "40px", maxHeight: "200px" }}
             />
             <button
               onClick={handleSendMessage}
               disabled={!input.trim() || isChatLoading || !assistant}
-              className={`absolute right-3 flex items-center justify-center h-8 w-8 transition-colors ${
+              className={`absolute right-3 flex items-center justify-center size-10 transition-colors ${
                 !input.trim() || isChatLoading || !assistant
                   ? "text-neutral-300"
                   : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"
