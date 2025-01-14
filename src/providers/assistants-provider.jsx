@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { API_BASE_URL } from "@/config";
+import { useAuthentication } from "./authentication-provider";
 
 const AssistantsContext = createContext({});
 
@@ -11,8 +12,11 @@ export const AssistantsProvider = ({ children }) => {
   const [currentAssistant, setCurrentAssistant] = useState(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
+  const { isAuthenticated, authToken } = useAuthentication();
+
   const fetchAllAssistants = async () => {
-    const authToken = localStorage.getItem("lm_auth_token");
+    if (!authToken) return null;
+
     try {
       const response = await fetch(`${API_BASE_URL}/assistant/list`, {
         headers: {
@@ -28,12 +32,14 @@ export const AssistantsProvider = ({ children }) => {
       setAssistants(data.data.assistants);
       return data.data.assistants;
     } catch (err) {
-      throw new Error(err.message || "Failed to fetch assistants");
+      setError(err.message || "Failed to fetch assistants");
+      return null;
     }
   };
 
   const createAssistant = async (formData) => {
-    const authToken = localStorage.getItem("lm_auth_token");
+    if (!authToken) throw new Error("Authentication required");
+
     try {
       const response = await fetch(`${API_BASE_URL}/assistant/create`, {
         method: "POST",
@@ -58,11 +64,12 @@ export const AssistantsProvider = ({ children }) => {
   };
 
   const getAssistant = async () => {
-    const authToken = localStorage.getItem("lm_auth_token");
-    const assistantId = localStorage.getItem("lm_assistant_id");
+    if (!authToken) return null;
 
-    if (!authToken || !assistantId) {
-      throw new Error("Authentication token or Assistant ID not found");
+    const assistantId = localStorage.getItem("lm_assistant_id");
+    if (!assistantId) {
+      setError("Assistant ID not found");
+      return null;
     }
 
     try {
@@ -87,20 +94,76 @@ export const AssistantsProvider = ({ children }) => {
         throw new Error(responseData.message || "Failed to fetch assistant");
       }
     } catch (err) {
-      throw new Error(err.message || "Failed to fetch assistant");
+      setError(err.message || "Failed to fetch assistant");
+      return null;
+    }
+  };
+
+  const updateAssistant = async (assistantId, updateData) => {
+    if (!authToken) throw new Error("Authentication required");
+
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/assistant/update?assistantId=${assistantId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(updateData),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update assistant");
+      }
+
+      const data = await response.json();
+      await Promise.all([fetchAllAssistants(), getAssistant()]);
+      return data;
+    } catch (err) {
+      throw new Error(err.message || "Failed to update assistant");
+    }
+  };
+
+  const deleteAssistant = async (assistantId) => {
+    if (!authToken) throw new Error("Authentication required");
+
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/assistant/delete?assistantId=${assistantId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to delete assistant");
+      }
+
+      await fetchAllAssistants();
+      return true;
+    } catch (err) {
+      throw new Error(err.message || "Failed to delete assistant");
     }
   };
 
   useEffect(() => {
     const initializeData = async () => {
-      const authToken = localStorage.getItem("lm_auth_token");
-      const assistantId = localStorage.getItem("lm_assistant_id");
-
-      if (!authToken || !assistantId) {
-        setError("Authentication required");
+      if (!isAuthenticated || !authToken) {
         setIsLoading(false);
+        setIsInitialized(true);
         return;
       }
+
+      setIsLoading(true);
+      setError(null);
 
       try {
         await Promise.all([fetchAllAssistants(), getAssistant()]);
@@ -113,7 +176,15 @@ export const AssistantsProvider = ({ children }) => {
     };
 
     initializeData();
-  }, []);
+  }, [isAuthenticated, authToken]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setAssistants([]);
+      setCurrentAssistant(null);
+      setError(null);
+    }
+  }, [isAuthenticated]);
 
   const contextValue = {
     assistants,
@@ -121,11 +192,13 @@ export const AssistantsProvider = ({ children }) => {
     error,
     isCreateModalOpen,
     setIsCreateModalOpen,
+    currentAssistant,
+    isInitialized,
     fetchAllAssistants,
     createAssistant,
-    currentAssistant,
     getAssistant,
-    isInitialized,
+    updateAssistant,
+    deleteAssistant,
   };
 
   return (
@@ -135,6 +208,12 @@ export const AssistantsProvider = ({ children }) => {
   );
 };
 
-export const useAssistants = () => useContext(AssistantsContext);
+export const useAssistants = () => {
+  const context = useContext(AssistantsContext);
+  if (!context) {
+    throw new Error("useAssistants must be used within an AssistantsProvider");
+  }
+  return context;
+};
 
 export default AssistantsProvider;

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AuthenticationProvider from "./authentication-provider";
 import UserProvider from "./user-provider";
 import ChatProvider from "./chat-provider";
@@ -12,10 +12,15 @@ const handleLogout = () => {
 };
 
 function GlobalFetchInterceptor({ children }) {
+  const [isInitialized, setIsInitialized] = useState(false);
+
   useEffect(() => {
     const verifyToken = async () => {
       const token = localStorage.getItem("lm_auth_token");
-      if (!token) return;
+      if (!token) {
+        setIsInitialized(true);
+        return;
+      }
 
       try {
         const response = await fetch(`${API_BASE_URL}/user/profile`, {
@@ -28,10 +33,13 @@ function GlobalFetchInterceptor({ children }) {
           const data = await response.json();
           if (data.shouldLogout) {
             handleLogout();
+            return;
           }
         }
       } catch (error) {
         console.error("Token verification failed:", error);
+      } finally {
+        setIsInitialized(true);
       }
     };
 
@@ -47,11 +55,10 @@ function GlobalFetchInterceptor({ children }) {
     window.fetch = async (...args) => {
       const [url, config = {}] = args;
 
-      if (!url.toString().startsWith(API_BASE_URL)) {
-        return originalFetch(...args);
-      }
-
-      if (config.headers?.["x-api-key"]) {
+      if (
+        !url.toString().startsWith(API_BASE_URL) ||
+        config.headers?.["x-api-key"]
+      ) {
         return originalFetch(...args);
       }
 
@@ -60,11 +67,16 @@ function GlobalFetchInterceptor({ children }) {
 
         if (response.status === 401) {
           const clonedResponse = response.clone();
-          const data = await clonedResponse.json();
-
-          if (data.shouldLogout) {
-            handleLogout();
-            return Promise.reject(new Error(data.message || "Session expired"));
+          try {
+            const data = await clonedResponse.json();
+            if (data.shouldLogout) {
+              handleLogout();
+              return Promise.reject(
+                new Error(data.message || "Session expired")
+              );
+            }
+          } catch (error) {
+            console.error("Error parsing response:", error);
           }
         }
 
@@ -79,18 +91,28 @@ function GlobalFetchInterceptor({ children }) {
     };
   }, []);
 
+  if (!isInitialized) {
+    return null;
+  }
+
   return children;
+}
+
+function ProviderTree({ children }) {
+  return (
+    <UserProvider>
+      <AssistantsProvider>
+        <ChatProvider>{children}</ChatProvider>
+      </AssistantsProvider>
+    </UserProvider>
+  );
 }
 
 export default function RootProvider({ children }) {
   return (
     <AuthenticationProvider>
       <GlobalFetchInterceptor>
-        <UserProvider>
-          <AssistantsProvider>
-            <ChatProvider>{children}</ChatProvider>
-          </AssistantsProvider>
-        </UserProvider>
+        <ProviderTree>{children}</ProviderTree>
       </GlobalFetchInterceptor>
     </AuthenticationProvider>
   );

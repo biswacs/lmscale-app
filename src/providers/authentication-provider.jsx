@@ -15,14 +15,33 @@ const AuthenticationProvider = ({ children }) => {
   const [assistantId, setAssistantId] = useState(undefined);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("lm_auth_token");
-    const assistant = localStorage.getItem("lm_assistant_id");
-    setAuthToken(token);
-    setAssistantId(assistant);
-    setLoading(false);
+    const initializeAuth = async () => {
+      const token = localStorage.getItem("lm_auth_token");
+      const assistant = localStorage.getItem("lm_assistant_id");
+
+      setAuthToken(token);
+      setAssistantId(assistant);
+      setLoading(false);
+      setIsInitialized(true);
+    };
+
+    initializeAuth();
   }, []);
+
+  const handleAuthSuccess = async (data) => {
+    setAuthToken(data.lm_auth_token);
+    setAssistantId(data.assistantId);
+
+    localStorage.setItem("lm_auth_token", data.lm_auth_token);
+    localStorage.setItem("lm_assistant_id", data.assistantId);
+
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    router.push(ROUTES_MAP.DASHBOARD.__);
+  };
 
   const registerUser = async (name, email, password) => {
     if (!name || !email || !password) {
@@ -45,11 +64,7 @@ const AuthenticationProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      localStorage.setItem("lm_auth_token", data.lm_auth_token);
-      localStorage.setItem("lm_assistant_id", data.assistantId);
-      setAuthToken(data.lm_auth_token);
-      setAssistantId(data.assistantId);
-      window.location.href = ROUTES_MAP.DASHBOARD.__;
+      await handleAuthSuccess(data);
       return data;
     } catch (err) {
       console.error(err);
@@ -80,11 +95,7 @@ const AuthenticationProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      localStorage.setItem("lm_auth_token", data.lm_auth_token);
-      localStorage.setItem("lm_assistant_id", data.assistantId);
-      setAuthToken(data.lm_auth_token);
-      setAssistantId(data.assistantId);
-      window.location.href = ROUTES_MAP.DASHBOARD.__;
+      await handleAuthSuccess(data);
       return data;
     } catch (err) {
       console.error(err);
@@ -98,11 +109,11 @@ const AuthenticationProvider = ({ children }) => {
     localStorage.clear();
     setAuthToken(null);
     setAssistantId(null);
-    window.location.href = ROUTES_MAP.LOGIN;
+    router.push(ROUTES_MAP.LOGIN);
   };
 
   useEffect(() => {
-    if (loading) return;
+    if (loading || !isInitialized) return;
 
     const isLoggedIn = !!authToken && !!assistantId;
     const currentPathname = router.pathname;
@@ -116,17 +127,22 @@ const AuthenticationProvider = ({ children }) => {
         router.push(ROUTES_MAP.DASHBOARD.__);
       }
     }
-  }, [authToken, assistantId, loading, router]);
+  }, [authToken, assistantId, loading, router, isInitialized]);
 
   const contextValue = {
     logInUser,
     logOutUser,
     registerUser,
     isAuthenticated: !!authToken && !!assistantId,
+    isInitialized,
     authToken,
     assistantId,
     submitting,
   };
+
+  if (!isInitialized) {
+    return null;
+  }
 
   return (
     <AuthenticationContext.Provider value={contextValue}>
