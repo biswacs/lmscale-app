@@ -35,7 +35,7 @@ const PromptDisplay = () => {
       setIsUpdating(true);
       setUpdateStatus("Updating...");
 
-      const response = await fetch(`${API_BASE_URL}/prompt/update`, {
+      const response = await fetch(`${API_BASE_URL}/assistant/update/prompt`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${lm_auth_token}`,

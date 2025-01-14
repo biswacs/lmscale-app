@@ -9,8 +9,8 @@ export function AppLayout({ children }) {
   const renderContent = () => {
     if (isLoading) {
       return (
-        <div className="flex-1 flex justify-center items-center">
-          <div className="animate-spin h-8 w-8 border-b-2 border-neutral-800" />
+        <div className="flex-1 flex justify-center items-center mt-8">
+          <div className="text-neutral-800 font-light">Loading...</div>
         </div>
       );
     }

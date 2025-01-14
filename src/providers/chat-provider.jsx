@@ -27,7 +27,7 @@ export const ChatProvider = ({ children }) => {
     const authToken = localStorage.getItem("lm_auth_token");
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/get?assistantId=${assistantId}`,
+        `${API_BASE_URL}/assistant/api?assistantId=${assistantId}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
