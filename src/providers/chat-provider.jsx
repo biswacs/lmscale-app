@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { API_BASE_URL } from "@/config";
+import { useAssistants } from "./assistants-provider";
 
 const ChatContext = createContext({});
 
@@ -7,47 +8,16 @@ export const ChatProvider = ({ children }) => {
   const [conversation, setConversation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [assistant, setAssistant] = useState(null);
   const assistantId = localStorage.getItem("lm_assistant_id");
+  const { currentAssistant } = useAssistants();
 
   useEffect(() => {
     setConversation([]);
     setError(null);
-    setAssistant(null);
   }, [assistantId]);
-
-  useEffect(() => {
-    const authToken = localStorage.getItem("lm_auth_token");
-    if (authToken && assistantId) {
-      fetchAssistantApiKey();
-    }
-  }, [assistantId]);
-
-  const fetchAssistantApiKey = async () => {
-    const authToken = localStorage.getItem("lm_auth_token");
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/assistant/api?assistantId=${assistantId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch assistant API key");
-      }
-
-      const data = await response.json();
-      setAssistant(data.data.assistant);
-    } catch (err) {
-      setError(err.message || "Failed to fetch assistant API key");
-    }
-  };
 
   const sendMessage = async (message, previousMessages = []) => {
-    if (!message.trim() || !assistant) return;
+    if (!message.trim() || !currentAssistant?.apiKey) return;
 
     const userMessage = message.trim();
     setIsLoading(true);
@@ -62,21 +32,24 @@ export const ChatProvider = ({ children }) => {
     ]);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/chat/completion`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "text/event-stream",
-          "x-api-key": assistant.apiKey,
-        },
-        body: JSON.stringify({
-          message: userMessage,
-          conversation: previousMessages.map((msg) => ({
-            role: msg.role,
-            content: msg.content,
-          })),
-        }),
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/assistant/chat/completion`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "text/event-stream",
+            "x-api-key": currentAssistant.apiKey,
+          },
+          body: JSON.stringify({
+            message: userMessage,
+            conversation: previousMessages.map((msg) => ({
+              role: msg.role,
+              content: msg.content,
+            })),
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -163,7 +136,7 @@ export const ChatProvider = ({ children }) => {
     conversation,
     isLoading,
     error,
-    assistant,
+    assistant: currentAssistant,
     sendMessage,
     newChat,
   };

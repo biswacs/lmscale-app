@@ -147,10 +147,10 @@ export function ChatContainer() {
             <button
               onClick={handleSendMessage}
               disabled={!input.trim() || isChatLoading || !assistant}
-              className={`absolute right-3 flex items-center justify-center size-10 transition-colors ${
+              className={`absolute right-0 flex items-center justify-center size-10 transition-colors ${
                 !input.trim() || isChatLoading || !assistant
                   ? "text-neutral-300"
-                  : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"
+                  : "text-neutral-600"
               }`}
             >
               {isChatLoading ? (
