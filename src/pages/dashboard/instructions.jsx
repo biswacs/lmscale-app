@@ -1,10 +1,10 @@
 import React, { useState, memo } from "react";
-import { Plus, X, Loader2, Trash2 } from "lucide-react";
+import { Plus, X, Loader2, Trash2, BookOpen, FileText } from "lucide-react";
 import { AppLayout } from "@/components/_shared/app-layout";
 import { useAssistants } from "@/providers/assistants-provider";
 import { API_BASE_URL } from "@/config";
 
-const InstructionModalForm = memo(
+const ModalForm = memo(
   ({
     instruction,
     onSubmit,
@@ -16,25 +16,13 @@ const InstructionModalForm = memo(
   }) => {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [formData, setFormData] = useState({
-      name: instruction.name,
-      content: instruction.content,
+      name: instruction?.name || "",
+      content: instruction?.content || "",
     });
 
     const handleSubmit = (e) => {
       e.preventDefault();
       onSubmit({ ...instruction, ...formData });
-    };
-
-    const handleCancelDelete = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setShowDeleteConfirm(false);
-    };
-
-    const handleConfirmDelete = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      onDelete(instruction);
     };
 
     return (
@@ -45,11 +33,11 @@ const InstructionModalForm = memo(
           </div>
         )}
 
-        <div className="space-y-2">
-          <label className="block text-sm text-neutral-700">
-            Instruction Name
-          </label>
-          <div className="space-y-1">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm text-neutral-700">
+              Instruction Name
+            </label>
             <input
               type="text"
               value={formData.name}
@@ -57,95 +45,73 @@ const InstructionModalForm = memo(
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
               }
-              placeholder="Enter instruction name"
-              className="w-full h-10 border px-3 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 border-neutral-200 focus:ring-neutral-400 focus:border-transparent"
+              className="w-full h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400"
               required
             />
-            <p className="text-xs text-neutral-500">
+            <p className="text-xs text-neutral-500 mt-1">
               {formData.name.length}/24 characters
             </p>
           </div>
-        </div>
 
-        <div className="space-y-2 mt-6">
-          <label className="block text-sm text-neutral-700">
-            Instruction Content
-          </label>
-          <div className="space-y-1">
+          <div>
+            <label className="block text-sm text-neutral-700">
+              Instruction Content
+            </label>
             <textarea
               value={formData.content}
               maxLength={2000}
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, content: e.target.value }))
               }
-              className="w-full border border-neutral-200 px-3 py-2 h-64 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 focus:border-transparent"
-              placeholder="Enter instruction content"
+              className="w-full border px-3 py-2 h-64 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400"
               required
             />
-            <p className="text-xs text-neutral-500">
+            <p className="text-xs text-neutral-500 mt-1">
               {formData.content.length}/2000 characters
             </p>
           </div>
         </div>
 
         <div className="mt-6 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {!isNewInstruction && !showDeleteConfirm && (
-              <button
-                type="button"
-                onClick={() => setShowDeleteConfirm(true)}
-                className="text-red-500 hover:text-red-600 transition-colors flex items-center gap-2 text-sm"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
-            )}
-          </div>
+          {!isNewInstruction && (
+            <button
+              type="button"
+              onClick={() =>
+                showDeleteConfirm
+                  ? onDelete(instruction)
+                  : setShowDeleteConfirm(true)
+              }
+              className="text-red-500 hover:text-red-600 transition-colors flex items-center gap-2 text-sm"
+            >
+              <Trash2 className="h-4 w-4" />
+              {showDeleteConfirm ? "Confirm Delete" : "Delete"}
+            </button>
+          )}
 
-          <div className="flex items-center gap-3">
-            {showDeleteConfirm ? (
-              <>
-                <p className="text-sm text-neutral-600 mr-2">
-                  Are you sure you want to delete?
-                </p>
-                <button
-                  type="button"
-                  onClick={handleCancelDelete}
-                  className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={handleConfirmDelete}
-                  className="px-4 py-2 bg-red-500 text-sm text-white hover:bg-red-600"
-                >
-                  Delete
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSubmitting || !formData.name || !formData.content}
-                  className="px-4 py-2 bg-neutral-900 text-sm text-white hover:bg-neutral-800 disabled:opacity-80 disabled:cursor-not-allowed flex items-center justify-center min-w-[100px]"
-                >
-                  {isSubmitting ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : isNewInstruction ? (
-                    "Create Instruction"
-                  ) : (
-                    "Update Instruction"
-                  )}
-                </button>
-              </>
-            )}
+          <div className="flex items-center gap-3 ml-auto">
+            <button
+              type="button"
+              onClick={() => {
+                setShowDeleteConfirm(false);
+                onClose();
+              }}
+              className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting || !formData.name || !formData.content}
+              className="px-4 py-2 bg-neutral-900 text-sm text-white hover:bg-neutral-800 disabled:opacity-80 flex items-center gap-2"
+            >
+              {isSubmitting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : isNewInstruction ? (
+                "Create Instruction"
+              ) : (
+                "Update Instruction"
+              )}
+            </button>
           </div>
         </div>
       </form>
@@ -153,57 +119,30 @@ const InstructionModalForm = memo(
   }
 );
 
-const InstructionModal = memo(
-  ({
-    isOpen,
-    onClose,
-    instruction,
-    onSubmit,
-    title,
-    onDelete,
-    isSubmitting,
-    error,
-    isNewInstruction,
-  }) => {
-    if (!isOpen) return null;
+const Modal = memo(({ isOpen, title, onClose, children }) => {
+  if (!isOpen) return null;
 
-    return (
-      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-        <div className="bg-white max-w-2xl w-full">
-          <div className="border-b border-neutral-100">
-            <div className="flex items-center justify-between px-6 py-3 bg-neutral-900">
-              <h2 className="text-lg text-neutral-200">{title}</h2>
-              <button
-                onClick={onClose}
-                className="text-neutral-200 hover:text-white transition-colors"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-
-          <InstructionModalForm
-            instruction={instruction}
-            onSubmit={onSubmit}
-            onClose={onClose}
-            onDelete={onDelete}
-            isSubmitting={isSubmitting}
-            error={error}
-            isNewInstruction={isNewInstruction}
-          />
+  return (
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white max-w-2xl w-full">
+        <div className="flex items-center justify-between px-6 py-3 bg-neutral-900">
+          <h2 className="text-lg text-neutral-200">{title}</h2>
+          <button
+            onClick={onClose}
+            className="text-neutral-200 hover:text-white"
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
+        {children}
       </div>
-    );
-  }
-);
+    </div>
+  );
+});
 
-const InstructionManagement = () => {
+const Instruction = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [newInstruction, setNewInstruction] = useState({
-    name: "",
-    content: "",
-  });
   const [editingInstruction, setEditingInstruction] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -211,37 +150,29 @@ const InstructionManagement = () => {
   const { currentAssistant, getAssistant } = useAssistants();
 
   const handleApiCall = async (endpoint, data) => {
-    const lm_auth_token = localStorage.getItem("lm_auth_token");
+    const authToken = localStorage.getItem("lm_auth_token");
     const assistantId = localStorage.getItem("lm_assistant_id");
 
     const response = await fetch(`${API_BASE_URL}/instruction/${endpoint}`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${lm_auth_token}`,
+        Authorization: `Bearer ${authToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ assistantId, ...data }),
     });
 
     const result = await response.json();
-
-    if (!response.ok) {
+    if (!response.ok)
       throw new Error(result.message || `Failed to ${endpoint} instruction`);
-    }
-
     await getAssistant();
   };
 
-  const createInstruction = async (data) => {
+  const handleCreate = async (data) => {
     try {
       setIsSubmitting(true);
-      const instructionData = {
-        ...data,
-        instructionId: data.id || undefined,
-      };
-      await handleApiCall("create", instructionData);
+      await handleApiCall("create", data);
       setIsCreateModalOpen(false);
-      setNewInstruction({ name: "", content: "" });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -249,14 +180,10 @@ const InstructionManagement = () => {
     }
   };
 
-  const updateInstruction = async (data) => {
+  const handleUpdate = async (data) => {
     try {
       setIsSubmitting(true);
-      const instructionData = {
-        ...data,
-        instructionId: data.id,
-      };
-      await handleApiCall("update", instructionData);
+      await handleApiCall("update", { ...data, instructionId: data.id });
       setIsEditModalOpen(false);
       setEditingInstruction(null);
     } catch (err) {
@@ -265,16 +192,16 @@ const InstructionManagement = () => {
       setIsSubmitting(false);
     }
   };
-  const deleteInstruction = async (instruction) => {
+
+  const handleDelete = async (instruction) => {
     try {
       setIsSubmitting(true);
-      const instructionData = {
-        ...instruction,
+      await handleApiCall("update", {
         instructionId: instruction.id,
         isActive: false,
-      };
-      await handleApiCall("update", instructionData);
+      });
       setIsEditModalOpen(false);
+      await getAssistant();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -284,82 +211,108 @@ const InstructionManagement = () => {
 
   return (
     <AppLayout>
-      <div className="min-h-[75vh] font-light">
-        <div className="px-2 sm:px-6 py-2 sm:py-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="min-h-[75vh] p-6 font-light">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-2xl font-light text-neutral-800">
+              Instructions
+            </h1>
             <button
-              onClick={() => {
-                setIsCreateModalOpen(true);
-                setError(null);
-              }}
-              className="border border-dashed border-neutral-200 bg-white flex flex-col items-center justify-center h-48 gap-2"
+              onClick={() => setIsCreateModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-neutral-900 text-white hover:bg-neutral-800 text-sm"
             >
-              <div className="size-10 border border-dashed border-neutral-200 flex items-center justify-center">
-                <Plus className="size-5 text-neutral-700" />
-              </div>
-              <span className="text-neutral-600 font-light text-sm">
-                Add new instruction
-              </span>
+              <Plus className="h-4 w-4" />
+              New Instruction
             </button>
+          </div>
 
+          <div className="space-y-4">
             {currentAssistant?.instructions?.map((instruction) => (
               <div
                 key={instruction.id}
                 onClick={() => {
                   setEditingInstruction(instruction);
                   setIsEditModalOpen(true);
-                  setError(null);
                 }}
-                className="bg-white border border-neutral-100 h-48 hover:border-neutral-300 cursor-pointer transition-colors"
+                className="bg-white border border-neutral-200 hover:border-neutral-300 transition-colors cursor-pointer group"
               >
-                <div className="p-2.5 flex flex-col h-full">
-                  <h3 className="font-light text-neutral-900 truncate mb-2 text-sm">
-                    {instruction.name}
-                  </h3>
-                  <div className="flex-1 overflow-hidden">
-                    <p className="text-xs text-neutral-600 font-light">
-                      {instruction.content}
-                    </p>
+                <div className="p-4">
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <BookOpen className="h-4 w-4 text-neutral-500" />
+                        <h3 className="font-medium text-neutral-900">
+                          {instruction.name}
+                        </h3>
+                      </div>
+                      <div className="flex items-start gap-2 text-sm text-neutral-600">
+                        <FileText className="h-4 w-4 flex-shrink-0 mt-1" />
+                        <p className="line-clamp-2">{instruction.content}</p>
+                      </div>
+                    </div>
+                    <span className="text-xs text-neutral-500">
+                      {instruction.content.length} characters
+                    </span>
                   </div>
                 </div>
               </div>
             ))}
-          </div>
 
-          <InstructionModal
-            isOpen={isCreateModalOpen}
-            onClose={() => {
-              setIsCreateModalOpen(false);
-              setError(null);
-            }}
-            instruction={newInstruction}
-            onSubmit={createInstruction}
-            onDelete={deleteInstruction}
-            title="Add New Instruction"
+            {(!currentAssistant?.instructions ||
+              currentAssistant.instructions.length === 0) && (
+              <div className="text-center py-12 bg-white border border-dashed border-neutral-200">
+                <BookOpen className="h-8 w-8 text-neutral-400 mx-auto mb-4" />
+                <h3 className="text-neutral-900 font-medium mb-2">
+                  No instructions yet
+                </h3>
+                <p className="text-neutral-600 text-sm max-w-md mx-auto mb-4">
+                  Add your first instruction to guide your assistant's behavior
+                  and responses.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <Modal
+          isOpen={isCreateModalOpen}
+          title="Add New Instruction"
+          onClose={() => setIsCreateModalOpen(false)}
+        >
+          <ModalForm
+            instruction={{ name: "", content: "" }}
+            onSubmit={handleCreate}
+            onClose={() => setIsCreateModalOpen(false)}
             isSubmitting={isSubmitting}
             error={error}
             isNewInstruction={true}
           />
+        </Modal>
 
-          <InstructionModal
-            isOpen={isEditModalOpen}
+        <Modal
+          isOpen={isEditModalOpen}
+          title="Edit Instruction"
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setEditingInstruction(null);
+          }}
+        >
+          <ModalForm
+            instruction={editingInstruction}
+            onSubmit={handleUpdate}
             onClose={() => {
               setIsEditModalOpen(false);
               setEditingInstruction(null);
-              setError(null);
             }}
-            instruction={editingInstruction || { name: "", content: "" }}
-            onSubmit={updateInstruction}
-            onDelete={deleteInstruction}
-            title="Edit Instruction"
+            onDelete={handleDelete}
             isSubmitting={isSubmitting}
             error={error}
             isNewInstruction={false}
           />
-        </div>
+        </Modal>
       </div>
     </AppLayout>
   );
 };
 
-export default InstructionManagement;
+export default Instruction;
