@@ -268,8 +268,8 @@ const Instruction = () => {
                   No instructions yet
                 </h3>
                 <p className="text-neutral-600 text-sm max-w-md mx-auto mb-4">
-                  Add your first instruction to guide your assistant's behavior
-                  and responses.
+                  Add your first instruction to guide your assistant&apos;s
+                  behavior and responses.
                 </p>
               </div>
             )}
