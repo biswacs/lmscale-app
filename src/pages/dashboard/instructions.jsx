@@ -4,7 +4,6 @@ import { AppLayout } from "@/components/_shared/app-layout";
 import { useAssistants } from "@/providers/assistants-provider";
 import { API_BASE_URL } from "@/config";
 
-// Separate modal form component
 const InstructionModalForm = memo(
   ({
     instruction,
@@ -15,6 +14,7 @@ const InstructionModalForm = memo(
     error,
     isNewInstruction,
   }) => {
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [formData, setFormData] = useState({
       name: instruction.name,
       content: instruction.content,
@@ -23,6 +23,18 @@ const InstructionModalForm = memo(
     const handleSubmit = (e) => {
       e.preventDefault();
       onSubmit({ ...instruction, ...formData });
+    };
+
+    const handleCancelDelete = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setShowDeleteConfirm(false);
+    };
+
+    const handleConfirmDelete = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      onDelete(instruction);
     };
 
     return (
@@ -76,27 +88,65 @@ const InstructionModalForm = memo(
           </div>
         </div>
 
-        <div className="mt-6 flex items-center justify-end gap-3">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmitting || !formData.name || !formData.content}
-            className="px-4 py-2 bg-neutral-900 text-sm text-white hover:bg-neutral-800 disabled:opacity-80 disabled:cursor-not-allowed flex items-center justify-center min-w-[100px]"
-          >
-            {isSubmitting ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : isNewInstruction ? (
-              "Create Instruction"
-            ) : (
-              "Update Instruction"
+        <div className="mt-6 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {!isNewInstruction && !showDeleteConfirm && (
+              <button
+                type="button"
+                onClick={() => setShowDeleteConfirm(true)}
+                className="text-red-500 hover:text-red-600 transition-colors flex items-center gap-2 text-sm"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
             )}
-          </button>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {showDeleteConfirm ? (
+              <>
+                <p className="text-sm text-neutral-600 mr-2">
+                  Are you sure you want to delete?
+                </p>
+                <button
+                  type="button"
+                  onClick={handleCancelDelete}
+                  className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmDelete}
+                  className="px-4 py-2 bg-red-500 text-sm text-white hover:bg-red-600"
+                >
+                  Delete
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !formData.name || !formData.content}
+                  className="px-4 py-2 bg-neutral-900 text-sm text-white hover:bg-neutral-800 disabled:opacity-80 disabled:cursor-not-allowed flex items-center justify-center min-w-[100px]"
+                >
+                  {isSubmitting ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : isNewInstruction ? (
+                    "Create Instruction"
+                  ) : (
+                    "Update Instruction"
+                  )}
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </form>
     );
@@ -123,32 +173,12 @@ const InstructionModal = memo(
           <div className="border-b border-neutral-100">
             <div className="flex items-center justify-between px-6 py-3 bg-neutral-900">
               <h2 className="text-lg text-neutral-200">{title}</h2>
-              <div className="flex items-center gap-3">
-                {!isNewInstruction && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (
-                        window.confirm(
-                          "Are you sure you want to delete this instruction?"
-                        )
-                      ) {
-                        onDelete(instruction);
-                        onClose();
-                      }
-                    }}
-                    className="text-red-400 hover:text-red-300 transition-colors"
-                  >
-                    <Trash2 className="h-5 w-5" />
-                  </button>
-                )}
-                <button
-                  onClick={onClose}
-                  className="text-neutral-200 hover:text-white transition-colors"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
+              <button
+                onClick={onClose}
+                className="text-neutral-200 hover:text-white transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
           </div>
 
@@ -193,8 +223,10 @@ const InstructionManagement = () => {
       body: JSON.stringify({ assistantId, ...data }),
     });
 
+    const result = await response.json();
+
     if (!response.ok) {
-      throw new Error(`Failed to ${endpoint} instruction`);
+      throw new Error(result.message || `Failed to ${endpoint} instruction`);
     }
 
     await getAssistant();
@@ -203,7 +235,11 @@ const InstructionManagement = () => {
   const createInstruction = async (data) => {
     try {
       setIsSubmitting(true);
-      await handleApiCall("create", data);
+      const instructionData = {
+        ...data,
+        instructionId: data.id || undefined,
+      };
+      await handleApiCall("create", instructionData);
       setIsCreateModalOpen(false);
       setNewInstruction({ name: "", content: "" });
     } catch (err) {
@@ -216,7 +252,11 @@ const InstructionManagement = () => {
   const updateInstruction = async (data) => {
     try {
       setIsSubmitting(true);
-      await handleApiCall("update", data);
+      const instructionData = {
+        ...data,
+        instructionId: data.id,
+      };
+      await handleApiCall("update", instructionData);
       setIsEditModalOpen(false);
       setEditingInstruction(null);
     } catch (err) {
@@ -225,11 +265,16 @@ const InstructionManagement = () => {
       setIsSubmitting(false);
     }
   };
-
   const deleteInstruction = async (instruction) => {
     try {
       setIsSubmitting(true);
-      await handleApiCall("update", { ...instruction, isActive: false });
+      const instructionData = {
+        ...instruction,
+        instructionId: instruction.id,
+        isActive: false,
+      };
+      await handleApiCall("update", instructionData);
+      setIsEditModalOpen(false);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -243,7 +288,10 @@ const InstructionManagement = () => {
         <div className="px-2 sm:px-6 py-2 sm:py-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <button
-              onClick={() => setIsCreateModalOpen(true)}
+              onClick={() => {
+                setIsCreateModalOpen(true);
+                setError(null);
+              }}
               className="border border-dashed border-neutral-200 bg-white flex flex-col items-center justify-center h-48 gap-2"
             >
               <div className="size-10 border border-dashed border-neutral-200 flex items-center justify-center">
@@ -260,6 +308,7 @@ const InstructionManagement = () => {
                 onClick={() => {
                   setEditingInstruction(instruction);
                   setIsEditModalOpen(true);
+                  setError(null);
                 }}
                 className="bg-white border border-neutral-100 h-48 hover:border-neutral-300 cursor-pointer transition-colors"
               >
@@ -279,7 +328,10 @@ const InstructionManagement = () => {
 
           <InstructionModal
             isOpen={isCreateModalOpen}
-            onClose={() => setIsCreateModalOpen(false)}
+            onClose={() => {
+              setIsCreateModalOpen(false);
+              setError(null);
+            }}
             instruction={newInstruction}
             onSubmit={createInstruction}
             onDelete={deleteInstruction}
@@ -294,6 +346,7 @@ const InstructionManagement = () => {
             onClose={() => {
               setIsEditModalOpen(false);
               setEditingInstruction(null);
+              setError(null);
             }}
             instruction={editingInstruction || { name: "", content: "" }}
             onSubmit={updateInstruction}
