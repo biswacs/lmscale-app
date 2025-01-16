@@ -118,6 +118,7 @@ const ModalForm = memo(
     );
   }
 );
+ModalForm.displayName = "ModalForm";
 
 const Modal = memo(({ isOpen, title, onClose, children }) => {
   if (!isOpen) return null;
@@ -139,6 +140,7 @@ const Modal = memo(({ isOpen, title, onClose, children }) => {
     </div>
   );
 });
+Modal.displayName = "Modal";
 
 const Instruction = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
