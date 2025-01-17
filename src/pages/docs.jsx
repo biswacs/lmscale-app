@@ -1,6 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import { BookOpen, Code, FileText, Cpu, Terminal } from "lucide-react";
+import Link from "next/link";
 
 const DocSection = ({ icon: Icon, title, children }) => (
   <div className="mb-12">
@@ -96,15 +97,15 @@ export default function DocsPage() {
           <nav aria-label="Breadcrumb" className="mb-8">
             <ol className="flex items-center space-x-2 text-sm text-neutral-600">
               <li>
-                <a href="/" className="hover:text-neutral-900">
+                <Link href="/" className="hover:text-neutral-900">
                   Home
-                </a>
+                </Link>
               </li>
               <li>/</li>
               <li>
-                <a href="/docs" className="hover:text-neutral-900">
+                <Link href="/docs" className="hover:text-neutral-900">
                   Documentation
-                </a>
+                </Link>
               </li>
             </ol>
           </nav>
