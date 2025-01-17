@@ -24,7 +24,7 @@ export default function DocsPage() {
     "@type": "TechArticle",
     headline: "Getting Started with LmScale - AI Agent Configuration Guide",
     description:
-      "Learn how to create, configure, and deploy AI agents using LmScale's platform. Complete guide for system prompts, instructions, functions, and API integration.",
+      "Learn how to create, configure, and deploy AI agents using LmScale&apos;s platform. Complete guide for system prompts, instructions, functions, and API integration.",
     keywords:
       "AI agents, LmScale, system prompts, API integration, AI deployment, custom instructions",
     author: {
@@ -118,7 +118,7 @@ export default function DocsPage() {
             </h1>
             <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
               Learn how to create, configure, and deploy your AI agents using
-              LmScale's platform
+              LmScale&apos;s platform
             </p>
           </div>
 
@@ -169,8 +169,9 @@ export default function DocsPage() {
 
           <DocSection icon={FileText} title="System Prompts">
             <p className="text-neutral-600 mb-4">
-              System prompts define your agent's core behavior and personality.
-              They're the foundation of how your agent will interact with users.
+              System prompts define your agent&apos;s core behavior and
+              personality. They&apos;re the foundation of how your agent will
+              interact with users.
             </p>
 
             <CodeBlock>
@@ -188,9 +189,9 @@ export default function DocsPage() {
 
           <DocSection icon={Code} title="Instructions">
             <p className="text-neutral-600 mb-4">
-              Instructions provide specific guidelines for your agent's behavior
-              and responses. They help maintain consistency and ensure proper
-              handling of different scenarios.
+              Instructions provide specific guidelines for your agent&apos;s
+              behavior and responses. They help maintain consistency and ensure
+              proper handling of different scenarios.
             </p>
 
             <CodeBlock>
@@ -243,8 +244,8 @@ export default function DocsPage() {
 
           <DocSection icon={Terminal} title="API Integration">
             <p className="text-neutral-600 mb-4">
-              Once configured, integrate your agent using our REST API. Here's
-              an example of how to make API calls to your agent:
+              Once configured, integrate your agent using our REST API.
+              Here&apos;s an example of how to make API calls to your agent:
             </p>
 
             <CodeBlock>
