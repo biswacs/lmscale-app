@@ -154,7 +154,7 @@ const Modal = memo(({ isOpen, title, onClose, children }) => {
 });
 Modal.displayName = "Modal";
 
-const Instruction = () => {
+const InstructionsPage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingInstruction, setEditingInstruction] = useState(null);
@@ -330,4 +330,4 @@ const Instruction = () => {
   );
 };
 
-export default Instruction;
+export default InstructionsPage;

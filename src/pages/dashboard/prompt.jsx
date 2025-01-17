@@ -3,7 +3,7 @@ import { AppLayout } from "@/components/_shared/app-layout";
 import { useAssistants } from "@/providers/assistants-provider";
 import { API_BASE_URL } from "@/config";
 
-const PromptDisplay = () => {
+const PromptPage = () => {
   const [error, setError] = useState("");
   const [updateStatus, setUpdateStatus] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
@@ -70,14 +70,12 @@ const PromptDisplay = () => {
 
   return (
     <AppLayout>
-      <div className="min-h-[75vh] font-light">
-        <div className="px-2 sm:px-6 py-2 sm:py-4">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 sm:gap-0 mb-4 sm:mb-6">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-light text-neutral-800">
-                {currentAssistant?.name || ""}
-              </h2>
-            </div>
+      <div className="min-h-[75vh] p-2 sm:p-6 font-light">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0 mb-6 sm:mb-8">
+            <h1 className="text-xl sm:text-2xl font-light text-neutral-800">
+              {currentAssistant?.name || ""}
+            </h1>
             <button
               onClick={handleUpdate}
               disabled={isUpdating}
@@ -123,4 +121,4 @@ const PromptDisplay = () => {
   );
 };
 
-export default PromptDisplay;
+export default PromptPage;
