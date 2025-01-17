@@ -1,8 +1,9 @@
 import { API_BASE_URL } from "@/config";
 import {
-  AUTHENTICATED_ROUTES,
   ROUTES_MAP,
-  UNAUTHENTICATED_ROUTES,
+  isPublicRoute,
+  isAuthenticatedRoute,
+  isUnauthenticatedRoute,
 } from "@/constants/routes";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -16,31 +17,43 @@ const AuthenticationProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const token = localStorage.getItem("lm_auth_token");
-      const assistant = localStorage.getItem("lm_assistant_id");
+      try {
+        const token = localStorage.getItem("lm_auth_token");
+        const assistant = localStorage.getItem("lm_assistant_id");
 
-      setAuthToken(token);
-      setAssistantId(assistant);
-      setLoading(false);
-      setIsInitialized(true);
+        setAuthToken(token);
+        setAssistantId(assistant);
+      } catch (err) {
+        console.error("Error initializing auth:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+        setIsInitialized(true);
+      }
     };
 
     initializeAuth();
   }, []);
 
   const handleAuthSuccess = async (data) => {
-    setAuthToken(data.lm_auth_token);
-    setAssistantId(data.assistantId);
+    try {
+      setAuthToken(data.lm_auth_token);
+      setAssistantId(data.assistantId);
 
-    localStorage.setItem("lm_auth_token", data.lm_auth_token);
-    localStorage.setItem("lm_assistant_id", data.assistantId);
+      localStorage.setItem("lm_auth_token", data.lm_auth_token);
+      localStorage.setItem("lm_assistant_id", data.assistantId);
 
-    await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
-    router.push(ROUTES_MAP.DASHBOARD.__);
+      router.push(ROUTES_MAP.DASHBOARD.__);
+    } catch (err) {
+      console.error("Error handling auth success:", err);
+      setError(err.message);
+    }
   };
 
   const registerUser = async (name, email, password) => {
@@ -49,6 +62,8 @@ const AuthenticationProvider = ({ children }) => {
     }
 
     setSubmitting(true);
+    setError(null);
+
     try {
       const response = await fetch(`${API_BASE_URL}/user/register`, {
         method: "POST",
@@ -58,17 +73,18 @@ const AuthenticationProvider = ({ children }) => {
         body: JSON.stringify({ name, email, password }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Registration failed");
+        throw new Error(data.message || "Registration failed");
       }
 
-      const data = await response.json();
       await handleAuthSuccess(data);
       return data;
     } catch (err) {
-      console.error(err);
-      throw new Error(err.message || "Registration failed");
+      console.error("Registration error:", err);
+      setError(err.message);
+      throw err;
     } finally {
       setSubmitting(false);
     }
@@ -80,6 +96,8 @@ const AuthenticationProvider = ({ children }) => {
     }
 
     setSubmitting(true);
+    setError(null);
+
     try {
       const response = await fetch(`${API_BASE_URL}/user/login`, {
         method: "POST",
@@ -89,27 +107,56 @@ const AuthenticationProvider = ({ children }) => {
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Login failed");
+        throw new Error(data.message || "Login failed");
       }
 
-      const data = await response.json();
       await handleAuthSuccess(data);
       return data;
     } catch (err) {
-      console.error(err);
-      throw new Error(err.message || "Login failed");
+      console.error("Login error:", err);
+      setError(err.message);
+      throw err;
     } finally {
       setSubmitting(false);
     }
   };
 
+  const verifyToken = async () => {
+    if (!authToken) return false;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/user/verify`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      return response.ok;
+    } catch (err) {
+      console.error("Token verification error:", err);
+      return false;
+    }
+  };
+
   const logOutUser = () => {
-    localStorage.clear();
-    setAuthToken(null);
-    setAssistantId(null);
-    router.push(ROUTES_MAP.LOGIN);
+    try {
+      localStorage.clear();
+      setAuthToken(null);
+      setAssistantId(null);
+      setError(null);
+      router.push(ROUTES_MAP.LOGIN);
+    } catch (err) {
+      console.error("Logout error:", err);
+      setError(err.message);
+    }
+  };
+
+  const clearError = () => {
+    setError(null);
   };
 
   useEffect(() => {
@@ -118,12 +165,16 @@ const AuthenticationProvider = ({ children }) => {
     const isLoggedIn = !!authToken && !!assistantId;
     const currentPathname = router.pathname;
 
+    if (isPublicRoute(currentPathname)) {
+      return;
+    }
+
     if (!isLoggedIn) {
-      if (!UNAUTHENTICATED_ROUTES.includes(currentPathname)) {
+      if (isAuthenticatedRoute(currentPathname)) {
         router.push(ROUTES_MAP.LOGIN);
       }
     } else {
-      if (!AUTHENTICATED_ROUTES.includes(currentPathname)) {
+      if (isUnauthenticatedRoute(currentPathname)) {
         router.push(ROUTES_MAP.DASHBOARD.__);
       }
     }
@@ -133,11 +184,14 @@ const AuthenticationProvider = ({ children }) => {
     logInUser,
     logOutUser,
     registerUser,
+    verifyToken,
+    clearError,
     isAuthenticated: !!authToken && !!assistantId,
     isInitialized,
     authToken,
     assistantId,
     submitting,
+    error,
   };
 
   if (!isInitialized) {
@@ -151,6 +205,14 @@ const AuthenticationProvider = ({ children }) => {
   );
 };
 
-export const useAuthentication = () => useContext(AuthenticationContext);
+export const useAuthentication = () => {
+  const context = useContext(AuthenticationContext);
+  if (context === undefined) {
+    throw new Error(
+      "useAuthentication must be used within an AuthenticationProvider"
+    );
+  }
+  return context;
+};
 
 export default AuthenticationProvider;

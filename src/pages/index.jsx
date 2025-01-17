@@ -133,8 +133,8 @@ export default function HomePage() {
                   <nav>
                     <ul className="flex items-center space-x-6">
                       {[
-                        { href: "#", text: "Product" },
-                        { href: "#", text: "Docs" },
+                        { href: "/blogs", text: "Blogs" },
+                        { href: "/docs", text: "Docs" },
                       ].map((item) => (
                         <li key={item.text}>
                           <Link
@@ -184,8 +184,8 @@ export default function HomePage() {
             <div className="px-4 py-6">
               <nav className="flex flex-col space-y-1">
                 {[
-                  { href: "#", text: "Product" },
-                  { href: "#", text: "Docs" },
+                  { href: "/blogs", text: "Blogs" },
+                  { href: "/docs", text: "Docs" },
                   { href: "/login", text: "Login" },
                 ].map((item) => (
                   <Link
