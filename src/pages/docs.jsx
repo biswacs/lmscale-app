@@ -126,7 +126,7 @@ export default function DocsPage() {
 
             <DocSection icon={FileText} title="System Prompts">
               <p className="text-neutral-600 mb-4">
-                System prompts define your agent's core behavior and
+                System prompts define your agent&apos;s core behavior and
                 personality. Configure how your agent responds and handles
                 different scenarios.
               </p>
@@ -145,7 +145,7 @@ export default function DocsPage() {
             <DocSection icon={Code} title="API Integration">
               <p className="text-neutral-600 mb-4">
                 Our API supports server-sent events (SSE) for streaming
-                responses. Here's how to integrate:
+                responses. Here&apos;s how to integrate:
               </p>
               <CodeBlock title="API Request Example with Streaming">
                 {`curl -X POST "https://api.lmscale.tech/v1/chat/completion" \\
