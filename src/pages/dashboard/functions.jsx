@@ -1,5 +1,5 @@
 import React, { useState, memo } from "react";
-import { Plus, X, Loader2, Trash2, Globe, Key } from "lucide-react";
+import { Plus, X, Loader2, Trash2, Globe, Key, Code2 } from "lucide-react";
 import { AppLayout } from "@/components/_shared/app-layout";
 import { useAssistants } from "@/providers/assistants-provider";
 import { API_BASE_URL } from "@/config";
@@ -26,6 +26,7 @@ const ModalForm = memo(
     });
     const [newParamKey, setNewParamKey] = useState("");
     const [newParamType, setNewParamType] = useState("string");
+    const [paramError, setParamError] = useState("");
 
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -33,16 +34,23 @@ const ModalForm = memo(
     };
 
     const addParameter = () => {
-      if (newParamKey.trim()) {
+      const trimmedKey = newParamKey.trim();
+      if (trimmedKey) {
+        if (formData.parameters[trimmedKey]) {
+          setParamError(`Parameter "${trimmedKey}" already exists`);
+          return;
+        }
+
         setFormData((prev) => ({
           ...prev,
           parameters: {
-            [newParamKey]: newParamType,
+            [trimmedKey]: newParamType,
             ...prev.parameters,
           },
         }));
         setNewParamKey("");
         setNewParamType("string");
+        setParamError("");
       }
     };
 
@@ -152,9 +160,14 @@ const ModalForm = memo(
                 <input
                   type="text"
                   value={newParamKey}
-                  onChange={(e) => setNewParamKey(e.target.value)}
+                  onChange={(e) => {
+                    setNewParamKey(e.target.value);
+                    setParamError(""); // Clear error when typing
+                  }}
                   placeholder="Parameter name"
-                  className="w-full sm:w-auto flex-1 h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400"
+                  className={`w-full sm:w-auto flex-1 h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400 ${
+                    paramError ? "border-red-300" : ""
+                  }`}
                 />
                 <select
                   value={newParamType}
@@ -173,6 +186,10 @@ const ModalForm = memo(
                   Add
                 </button>
               </div>
+
+              {paramError && (
+                <div className="mt-2 text-sm text-red-600">{paramError}</div>
+              )}
             </div>
           </div>
         </div>
@@ -359,28 +376,26 @@ const FunctionsPage = () => {
                   setSelectedFunction(func);
                   setIsEditModalOpen(true);
                 }}
-                className="bg-white border border-neutral-200 hover:border-neutral-300 transition-colors cursor-pointer group"
+                className="bg-white border border-neutral-200 hover:border-neutral-300 transition-colors cursor-pointer"
               >
-                <div className="p-3 sm:p-4">
-                  <div className="flex flex-col sm:flex-row items-start justify-between gap-2 sm:gap-0">
-                    <div className="space-y-1 w-full sm:w-auto">
-                      <h3 className="font-medium text-neutral-900">
-                        {func.name}
-                      </h3>
-                      <div className="flex items-center gap-2 text-sm text-neutral-600">
-                        <Globe className="h-4 w-4" />
-                        <span className="font-mono break-all">
-                          {func.endpoint}
-                        </span>
+                <div className="p-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <Code2 className="h-4 w-4 text-neutral-500" />
+                        <h3 className="text-neutral-900">{func.name}</h3>
+                      </div>
+                      <div className="font-mono text-sm text-neutral-600">
+                        {func.endpoint}
                       </div>
                     </div>
                     <span
-                      className={`px-3 py-1 text-xs rounded-full whitespace-nowrap ${
+                      className={`px-2.5 py-1 text-xs rounded-full whitespace-nowrap ${
                         {
-                          GET: "bg-green-100 text-green-800",
-                          POST: "bg-blue-100 text-blue-800",
-                          PUT: "bg-yellow-100 text-yellow-800",
-                          DELETE: "bg-red-100 text-red-800",
+                          GET: "bg-emerald-50 text-emerald-700",
+                          POST: "bg-blue-50 text-blue-700",
+                          PUT: "bg-amber-50 text-amber-700",
+                          DELETE: "bg-red-50 text-red-700",
                         }[func.method]
                       }`}
                     >
@@ -388,30 +403,25 @@ const FunctionsPage = () => {
                     </span>
                   </div>
 
-                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="flex items-center gap-2 text-sm text-neutral-500">
-                      <Key className="h-4 w-4" />
-                      <span>Auth: {func.authType}</span>
-                    </div>
-                    <div className="text-sm text-neutral-500">
-                      <span className="block mb-1">Parameters:</span>
-                      <div className="flex flex-wrap gap-2">
-                        {Object.entries(func.parameters).map(([key, type]) => (
+                  {Object.keys(func.parameters).length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {Object.entries(func.parameters)
+                        .slice(0, 4)
+                        .map(([key, type]) => (
                           <span
                             key={key}
-                            className="px-2 py-0.5 bg-neutral-100 text-neutral-600 rounded-full text-xs"
+                            className="px-2 py-0.5 bg-neutral-100 text-neutral-500 rounded-full text-xs"
                           >
                             {key}: {type}
                           </span>
                         ))}
-                        {Object.keys(func.parameters).length === 0 && (
-                          <span className="text-neutral-400">
-                            No parameters
-                          </span>
-                        )}
-                      </div>
+                      {Object.keys(func.parameters).length > 4 && (
+                        <span className="px-2 py-0.5 bg-neutral-100 text-neutral-500 rounded-full text-xs">
+                          ...
+                        </span>
+                      )}
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -419,10 +429,8 @@ const FunctionsPage = () => {
             {(!currentAssistant?.functions ||
               currentAssistant.functions.length === 0) && (
               <div className="text-center py-8 sm:py-12 bg-white border border-dashed border-neutral-200">
-                <Globe className="h-8 w-8 text-neutral-400 mx-auto mb-4" />
-                <h3 className="text-neutral-900 font-medium mb-2">
-                  No functions yet
-                </h3>
+                <Code2 className="h-8 w-8 text-neutral-800 mx-auto mb-4" />
+                <h3 className="text-neutral-900 mb-2">No functions yet</h3>
                 <p className="text-neutral-600 text-sm max-w-md mx-auto mb-4 px-4">
                   Add your first API function to enable your assistant to
                   interact with external services.

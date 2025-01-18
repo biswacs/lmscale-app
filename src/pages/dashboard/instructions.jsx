@@ -1,5 +1,5 @@
 import React, { useState, memo } from "react";
-import { Plus, X, Loader2, Trash2, BookOpen, FileText } from "lucide-react";
+import { Plus, X, Loader2, Trash2, Waypoints, FileText } from "lucide-react";
 import { AppLayout } from "@/components/_shared/app-layout";
 import { useAssistants } from "@/providers/assistants-provider";
 import { API_BASE_URL } from "@/config";
@@ -251,23 +251,17 @@ const InstructionsPage = () => {
                 }}
                 className="bg-white border border-neutral-200 hover:border-neutral-300 transition-colors cursor-pointer group"
               >
-                <div className="p-3 sm:p-4">
+                <div className="p-3">
                   <div className="flex flex-col sm:flex-row items-start justify-between gap-2 sm:gap-0">
                     <div className="space-y-1 w-full sm:w-auto">
                       <div className="flex items-center gap-2">
-                        <BookOpen className="h-4 w-4 text-neutral-500" />
-                        <h3 className="font-medium text-neutral-900">
-                          {instruction.name}
-                        </h3>
+                        <Waypoints className="h-4 w-4 text-neutral-500" />
+                        <h3 className="text-neutral-900">{instruction.name}</h3>
                       </div>
                       <div className="flex items-start gap-2 text-sm text-neutral-600">
-                        <FileText className="h-4 w-4 flex-shrink-0 mt-1" />
                         <p className="line-clamp-2">{instruction.content}</p>
                       </div>
                     </div>
-                    <span className="text-xs text-neutral-500 mt-2 sm:mt-0">
-                      {instruction.content.length} characters
-                    </span>
                   </div>
                 </div>
               </div>
@@ -276,10 +270,8 @@ const InstructionsPage = () => {
             {(!currentAssistant?.instructions ||
               currentAssistant.instructions.length === 0) && (
               <div className="text-center py-8 sm:py-12 bg-white border border-dashed border-neutral-200">
-                <BookOpen className="h-8 w-8 text-neutral-400 mx-auto mb-4" />
-                <h3 className="text-neutral-900 font-medium mb-2">
-                  No instructions yet
-                </h3>
+                <Waypoints className="h-8 w-8 text-neutral-800 mx-auto mb-4" />
+                <h3 className="text-neutral-900 mb-2">No instructions yet</h3>
                 <p className="text-neutral-600 text-sm max-w-md mx-auto mb-4 px-4">
                   Add your first instruction to guide your assistant&apos;s
                   behavior and responses.
