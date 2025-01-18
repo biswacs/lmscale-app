@@ -1,5 +1,5 @@
 import React, { useState, memo } from "react";
-import { Plus, X, Loader2, Trash2, Globe, Key, Code2 } from "lucide-react";
+import { Plus, X, Loader2, Trash2, Code2 } from "lucide-react";
 import { AppLayout } from "@/components/_shared/app-layout";
 import { useAssistants } from "@/providers/assistants-provider";
 import { API_BASE_URL } from "@/config";
