@@ -4,12 +4,9 @@ import { useUser } from "@/providers/user-provider";
 
 export function Header() {
   const { user, loading } = useUser();
-  const pathname = usePathname();
   const userDisplayName = (
     loading ? "Loading..." : user?.name || "User"
   ).toUpperCase();
-
-  const isSettingsPage = pathname === "/dashboard/settings";
 
   return (
     <nav className="w-full border-b border-neutral-200 bg-white">
@@ -27,17 +24,20 @@ export function Header() {
             <span className="text-md font-light">LmScale</span>
           </Link>
 
-          <Link
-            href="/dashboard/settings"
-            className={`flex size-7 items-center justify-center border text-sm uppercase transition-colors duration-200 font-light
-              ${
-                isSettingsPage
-                  ? "bg-neutral-900 border-neutral-900 text-white"
-                  : "border-neutral-100 bg-neutral-50 text-neutral-600 hover:bg-neutral-100"
-              }`}
-          >
-            {userDisplayName[0]}
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/docs"
+              className="text-sm text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
+            >
+              Docs
+            </Link>
+            <Link
+              href="/dashboard/settings"
+              className="flex size-7 items-center justify-center bg-neutral-900 border border-neutral-900 text-white text-sm uppercase transition-colors duration-200 font-light hover:bg-neutral-800"
+            >
+              {userDisplayName[0]}
+            </Link>
+          </div>
         </div>
       </div>
     </nav>

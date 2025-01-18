@@ -11,7 +11,6 @@ export const ROUTES_MAP = {
   REGISTER: "/register",
   HOME: "/",
   DOCS: "/docs",
-  BLOGS: "/blogs",
 };
 
 export const AUTHENTICATED_ROUTES = [...Object.values(ROUTES_MAP.DASHBOARD)];
@@ -22,7 +21,7 @@ export const UNAUTHENTICATED_ROUTES = [
   ROUTES_MAP.REGISTER,
 ];
 
-export const PUBLIC_ROUTES = [ROUTES_MAP.BLOGS, ROUTES_MAP.DOCS];
+export const PUBLIC_ROUTES = [ROUTES_MAP.DOCS];
 
 export const isPublicRoute = (pathname) => PUBLIC_ROUTES.includes(pathname);
 export const isAuthenticatedRoute = (pathname) =>
