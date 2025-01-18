@@ -22,6 +22,7 @@ const ModalForm = memo(
       method: func?.method || "GET",
       authType: func?.authType || "bearer",
       parameters: func?.parameters || {},
+      isActive: func?.isActive !== false,
     });
     const [newParamKey, setNewParamKey] = useState("");
     const [newParamType, setNewParamType] = useState("string");
@@ -35,7 +36,10 @@ const ModalForm = memo(
       if (newParamKey.trim()) {
         setFormData((prev) => ({
           ...prev,
-          parameters: { ...prev.parameters, [newParamKey]: newParamType },
+          parameters: {
+            [newParamKey]: newParamType,
+            ...prev.parameters,
+          },
         }));
         setNewParamKey("");
         setNewParamType("string");
@@ -119,28 +123,30 @@ const ModalForm = memo(
 
           <div>
             <label className="block text-sm text-neutral-700">Parameters</label>
-            <div className="border border-neutral-200 p-3 sm:p-4 space-y-4">
-              {Object.entries(formData.parameters).map(([key, type]) => (
-                <div key={key} className="flex items-center gap-2">
-                  <span className="text-sm flex-1">
-                    {key}: {type}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const newParams = { ...formData.parameters };
-                      delete newParams[key];
-                      setFormData((prev) => ({
-                        ...prev,
-                        parameters: newParams,
-                      }));
-                    }}
-                    className="text-red-500 hover:text-red-600"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-              ))}
+            <div className="border border-neutral-200 p-3 sm:p-4">
+              <div className="max-h-40 overflow-y-auto mb-4 space-y-4">
+                {Object.entries(formData.parameters).map(([key, type]) => (
+                  <div key={key} className="flex items-center gap-2">
+                    <span className="text-sm flex-1">
+                      {key}: {type}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newParams = { ...formData.parameters };
+                        delete newParams[key];
+                        setFormData((prev) => ({
+                          ...prev,
+                          parameters: newParams,
+                        }));
+                      }}
+                      className="text-red-500 hover:text-red-600"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
 
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
                 <input
@@ -267,14 +273,12 @@ const FunctionsPage = () => {
     const assistantId = localStorage.getItem("lm_assistant_id");
 
     const response = await fetch(`${API_BASE_URL}/function/${endpoint}`, {
-      method: endpoint === "delete" ? "DELETE" : "POST",
+      method: "POST", // Changed to always use POST
       headers: {
         Authorization: `Bearer ${authToken}`,
-        ...(endpoint !== "delete" && { "Content-Type": "application/json" }),
+        "Content-Type": "application/json",
       },
-      ...(endpoint !== "delete" && {
-        body: JSON.stringify({ assistantId, ...data }),
-      }),
+      body: JSON.stringify({ assistantId, ...data }),
     });
 
     const result = await response.json();
@@ -288,6 +292,7 @@ const FunctionsPage = () => {
       setIsSubmitting(true);
       await handleApiCall("create", data);
       setIsCreateModalOpen(false);
+      setError(null);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -298,9 +303,13 @@ const FunctionsPage = () => {
   const handleUpdate = async (data) => {
     try {
       setIsSubmitting(true);
-      await handleApiCall("update", { ...data, functionId: data.id });
+      await handleApiCall("update", {
+        ...data,
+        functionId: selectedFunction.id,
+      });
       setIsEditModalOpen(false);
       setSelectedFunction(null);
+      setError(null);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -311,9 +320,13 @@ const FunctionsPage = () => {
   const handleDelete = async (func) => {
     try {
       setIsDeleting(true);
-      await handleApiCall(`delete?functionId=${func.id}`);
+      await handleApiCall("update", {
+        functionId: func.id,
+        isActive: false,
+      });
       setIsEditModalOpen(false);
       setSelectedFunction(null);
+      setError(null);
     } catch (err) {
       setError(err.message);
     } finally {
