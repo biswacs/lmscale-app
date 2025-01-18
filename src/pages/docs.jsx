@@ -1,8 +1,6 @@
 import React from "react";
 import Head from "next/head";
 import { BookOpen, Code, FileText, Terminal, Cpu } from "lucide-react";
-import Link from "next/link";
-import PublicLayout from "@/components/_shared/public/layout";
 
 const DocSection = ({ icon: Icon, title, children }) => (
   <div className="mb-12 p-6 bg-white border border-neutral-200 hover:border-neutral-300 transition-colors">
@@ -48,7 +46,7 @@ const FeatureCard = ({ title, description }) => (
 
 export default function DocsPage() {
   return (
-    <PublicLayout>
+    <>
       <Head>
         <title>LmScale Documentation - AI Agent Configuration Guide</title>
         <meta
@@ -57,7 +55,7 @@ export default function DocsPage() {
         />
       </Head>
 
-      <div className="relative min-h-screen py-24 font-light">
+      <div className="relative min-h-screen py-12 font-light">
         <div
           className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:14px_14px] sm:bg-[size:24px_24px] md:bg-[size:32px_32px]"
           style={{
@@ -233,6 +231,6 @@ data: {
           </div>
         </div>
       </div>
-    </PublicLayout>
+    </>
   );
 }
