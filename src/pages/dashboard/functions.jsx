@@ -209,7 +209,7 @@ const ModalForm = memo(
               ) : (
                 <Trash2 className="h-4 w-4" />
               )}
-              {showDeleteConfirm ? "Confirm Delete" : "Delete"}
+              {showDeleteConfirm ? "Confirm Delete" : ""}
             </button>
           )}
 
@@ -357,7 +357,7 @@ const FunctionsPage = () => {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0 mb-6 sm:mb-8">
             <h1 className="text-xl sm:text-2xl font-light text-neutral-800">
-              API Functions
+              Functions
             </h1>
             <button
               onClick={() => setIsCreateModalOpen(true)}
@@ -382,10 +382,12 @@ const FunctionsPage = () => {
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="flex items-center gap-2 mb-1.5">
-                        <Code2 className="h-4 w-4 text-neutral-500" />
-                        <h3 className="text-neutral-900">{func.name}</h3>
+                        <Code2 className="h-5 w-5 text-neutral-700" />
+                        <h3 className="text-neutral-900 text-xl">
+                          {func.name}
+                        </h3>
                       </div>
-                      <div className="font-mono text-sm text-neutral-600">
+                      <div className="text-sm text-neutral-600">
                         {func.endpoint}
                       </div>
                     </div>
@@ -402,26 +404,6 @@ const FunctionsPage = () => {
                       {func.method}
                     </span>
                   </div>
-
-                  {Object.keys(func.parameters).length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {Object.entries(func.parameters)
-                        .slice(0, 4)
-                        .map(([key, type]) => (
-                          <span
-                            key={key}
-                            className="px-2 py-0.5 bg-neutral-100 text-neutral-500 rounded-full text-xs"
-                          >
-                            {key}: {type}
-                          </span>
-                        ))}
-                      {Object.keys(func.parameters).length > 4 && (
-                        <span className="px-2 py-0.5 bg-neutral-100 text-neutral-500 rounded-full text-xs">
-                          ...
-                        </span>
-                      )}
-                    </div>
-                  )}
                 </div>
               </div>
             ))}

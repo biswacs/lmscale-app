@@ -90,7 +90,7 @@ const ModalForm = memo(
               ) : (
                 <Trash2 className="h-4 w-4" />
               )}
-              {showDeleteConfirm ? "Confirm Delete" : "Delete"}
+              {showDeleteConfirm ? "Confirm Delete" : ""}
             </button>
           )}
 
@@ -255,8 +255,10 @@ const InstructionsPage = () => {
                   <div className="flex flex-col sm:flex-row items-start justify-between gap-2 sm:gap-0">
                     <div className="space-y-1 w-full sm:w-auto">
                       <div className="flex items-center gap-2">
-                        <Waypoints className="h-4 w-4 text-neutral-500" />
-                        <h3 className="text-neutral-900">{instruction.name}</h3>
+                        <Waypoints className="h-5 w-5 text-neutral-700" />
+                        <h3 className="text-neutral-900 text-xl">
+                          {instruction.name}
+                        </h3>
                       </div>
                       <div className="flex items-start gap-2 text-sm text-neutral-600">
                         <p className="line-clamp-2">{instruction.content}</p>
