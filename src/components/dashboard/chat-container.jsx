@@ -6,7 +6,7 @@ import Link from "next/link";
 const Header = ({ assistant, onNewChat }) => {
   return (
     <div className="border-b border-neutral-200 bg-white h-12 flex justify-between items-center px-4 z-10">
-      <Link href="/dashboard/assistants" className="flex items-center gap-2">
+      <Link href="/dashboard" className="flex items-center gap-2">
         <img
           src="/icon.png"
           alt="LmScale Logo"
