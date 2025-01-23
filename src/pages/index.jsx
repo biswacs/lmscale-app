@@ -118,12 +118,16 @@ export default function HomePage() {
                 <div className="flex items-center">
                   <Link
                     href="/"
-                    className="group flex items-center gap-2 text-xl sm:text-2xl font-bold text-neutral-800"
+                    className={`group flex items-center gap-2 text-xl sm:text-2xl font-bold ${
+                      scrolled || isMenuOpen ? "text-neutral-800" : "text-white"
+                    }`}
                   >
                     <img
-                      src="/icon.png"
+                      src={
+                        scrolled || isMenuOpen ? "/b-icon.png" : "/w-icon.png"
+                      }
                       alt="LmScale Logo"
-                      className="h-7 w-7 sm:h-8 sm:w-8 object-contain"
+                      className="h-7 w-7 sm:h-8 sm:w-8 object-contain transition-opacity duration-300"
                     />
                     <div className="font-light">LmScale</div>
                   </Link>
@@ -136,7 +140,11 @@ export default function HomePage() {
                         <li key={item.text}>
                           <Link
                             href={item.href}
-                            className="text-sm  text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
+                            className={`text-sm transition-colors duration-200 ${
+                              scrolled || isMenuOpen
+                                ? "text-neutral-600 hover:text-neutral-800"
+                                : "text-white/90 hover:text-white"
+                            }`}
                           >
                             {item.text}
                           </Link>
@@ -147,9 +155,19 @@ export default function HomePage() {
 
                   <Link
                     href="/login"
-                    className="group relative inline-flex items-center justify-center overflow-hidden bg-neutral-800 p-0.5 transition-all duration-300 hover:bg-neutral-950"
+                    className={`group inline-flex items-center justify-center overflow-hidden p-0.5 transition-all duration-300 ${
+                      scrolled || isMenuOpen
+                        ? "bg-neutral-800 hover:bg-neutral-950"
+                        : "bg-white hover:bg-white/90"
+                    }`}
                   >
-                    <span className="inline-flex h-full w-full items-center justify-center px-4 py-1.5 md:px-6 text-sm md:text-base  text-white transition-all duration-300">
+                    <span
+                      className={`inline-flex h-full w-full items-center justify-center px-4 py-1.5 md:px-6 text-sm md:text-base transition-all duration-300 ${
+                        scrolled || isMenuOpen
+                          ? "text-white"
+                          : "text-neutral-900"
+                      }`}
+                    >
                       Login
                     </span>
                   </Link>
@@ -158,7 +176,11 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="inline-flex items-center justify-center p-2 text-neutral-600 transition-colors duration-200 hover:bg-neutral-100 lg:hidden"
+                  className={`inline-flex items-center justify-center p-2 transition-colors duration-200 lg:hidden ${
+                    scrolled || isMenuOpen
+                      ? "text-neutral-600 hover:bg-neutral-100"
+                      : "text-white hover:bg-white/10"
+                  }`}
                   aria-label="Toggle menu"
                 >
                   {isMenuOpen ? (
@@ -172,6 +194,7 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Mobile menu */}
         <div
           className={`fixed inset-0 z-40 bg-white/90 backdrop-blur-xl transition-all duration-300 lg:hidden ${
             isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -188,7 +211,7 @@ export default function HomePage() {
                     key={item.text}
                     href={item.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className="group relative flex items-center justify-between px-4 py-3 text-sm  text-neutral-600 transition-all duration-300 hover:text-neutral-800"
+                    className="group relative flex items-center justify-between px-4 py-3 text-sm text-neutral-600 transition-all duration-300 hover:text-neutral-800"
                   >
                     <span className="relative">
                       {item.text}
@@ -206,7 +229,6 @@ export default function HomePage() {
         className="relative h-screen overflow-hidden"
         aria-label="Hero Section"
       >
-        {/* Video Background */}
         <div className="absolute inset-0">
           <video
             autoPlay
@@ -228,7 +250,6 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Content */}
         <div className="relative h-full flex flex-col justify-center items-center px-4 z-10">
           <div className="text-center max-w-7xl mx-auto">
             <div className="flex justify-center mb-8">
