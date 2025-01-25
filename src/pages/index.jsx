@@ -118,16 +118,12 @@ export default function HomePage() {
                 <div className="flex items-center">
                   <Link
                     href="/"
-                    className={`group flex items-center gap-2 text-xl sm:text-2xl font-bold ${
-                      scrolled || isMenuOpen ? "text-neutral-800" : "text-white"
-                    }`}
+                    className="group flex items-center gap-2 text-xl sm:text-2xl font-bold text-neutral-800"
                   >
                     <img
-                      src={
-                        scrolled || isMenuOpen ? "/b-icon.png" : "/w-icon.png"
-                      }
+                      src="/icon.png"
                       alt="LmScale Logo"
-                      className="h-7 w-7 sm:h-8 sm:w-8 object-contain transition-opacity duration-300"
+                      className="h-7 w-7 sm:h-8 sm:w-8 object-contain"
                     />
                     <div className="font-light">LmScale</div>
                   </Link>
@@ -140,11 +136,7 @@ export default function HomePage() {
                         <li key={item.text}>
                           <Link
                             href={item.href}
-                            className={`text-sm transition-colors duration-200 ${
-                              scrolled || isMenuOpen
-                                ? "text-neutral-600 hover:text-neutral-800"
-                                : "text-white/90 hover:text-white"
-                            }`}
+                            className="text-sm  text-neutral-600 hover:text-neutral-800 transition-colors duration-200"
                           >
                             {item.text}
                           </Link>
@@ -155,19 +147,9 @@ export default function HomePage() {
 
                   <Link
                     href="/login"
-                    className={`group inline-flex items-center justify-center overflow-hidden p-0.5 transition-all duration-300 ${
-                      scrolled || isMenuOpen
-                        ? "bg-neutral-800 hover:bg-neutral-950"
-                        : "bg-white hover:bg-white/90"
-                    }`}
+                    className="group relative inline-flex items-center justify-center overflow-hidden bg-neutral-800 p-0.5 transition-all duration-300 hover:bg-neutral-950"
                   >
-                    <span
-                      className={`inline-flex h-full w-full items-center justify-center px-4 py-1.5 md:px-6 text-sm md:text-base transition-all duration-300 ${
-                        scrolled || isMenuOpen
-                          ? "text-white"
-                          : "text-neutral-900"
-                      }`}
-                    >
+                    <span className="inline-flex h-full w-full items-center justify-center px-4 py-1.5 md:px-6 text-sm md:text-base  text-white transition-all duration-300">
                       Login
                     </span>
                   </Link>
@@ -176,11 +158,7 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className={`inline-flex items-center justify-center p-2 transition-colors duration-200 lg:hidden ${
-                    scrolled || isMenuOpen
-                      ? "text-neutral-600 hover:bg-neutral-100"
-                      : "text-white hover:bg-white/10"
-                  }`}
+                  className="inline-flex items-center justify-center p-2 text-neutral-600 transition-colors duration-200 hover:bg-neutral-100 lg:hidden"
                   aria-label="Toggle menu"
                 >
                   {isMenuOpen ? (
@@ -194,7 +172,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Mobile menu */}
         <div
           className={`fixed inset-0 z-40 bg-white/90 backdrop-blur-xl transition-all duration-300 lg:hidden ${
             isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -211,7 +188,7 @@ export default function HomePage() {
                     key={item.text}
                     href={item.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className="group relative flex items-center justify-between px-4 py-3 text-sm text-neutral-600 transition-all duration-300 hover:text-neutral-800"
+                    className="group relative flex items-center justify-between px-4 py-3 text-sm  text-neutral-600 transition-all duration-300 hover:text-neutral-800"
                   >
                     <span className="relative">
                       {item.text}
@@ -226,20 +203,10 @@ export default function HomePage() {
       </header>
       <section
         id="Hero"
-        className="relative h-screen overflow-hidden"
+        className="relative min-h-screen bg-white overflow-hidden"
         aria-label="Hero Section"
       >
         <div className="absolute inset-0">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover object-center"
-          >
-            <source src="bg.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-black/20" />
           <div
             className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"
             style={{
@@ -247,32 +214,29 @@ export default function HomePage() {
               WebkitMask:
                 "radial-gradient(circle at center, white 30%, transparent 70%)",
             }}
-          />
+          ></div>
         </div>
-
-        <div className="relative h-full flex flex-col justify-center items-center px-4 z-10">
-          <div className="text-center max-w-7xl mx-auto">
+        <div className="relative mx-auto max-w-7xl px-4 pt-20 pb-16 sm:pt-24 sm:pb-24">
+          <div className="text-center">
             <div className="flex justify-center mb-8">
-              <div className="inline-flex items-center border border-white/20 px-4 py-1.5 md:px-6 md:py-2 text-xs md:text-sm text-white bg-white/10 backdrop-blur-sm">
+              <div className="mb-6 md:mb-8 inline-flex items-center border border-black/10 px-4 py-1.5 md:px-6 md:py-2 text-xs md:text-sm text-neutral-800">
                 <Terminal className="mr-2 h-3 w-3 md:h-4 md:w-4" />
                 Now Available in Beta
               </div>
             </div>
-
-            <h1 className="mx-auto max-w-4xl font-display text-4xl font-light tracking-tight text-white sm:text-6xl">
+            <h1 className="mx-auto max-w-4xl font-display text-4xl font-light tracking-tight text-neutral-800 sm:text-6xl">
               Deploy Custom AI with SLMs
             </h1>
-
-            <p className="mx-auto font-light mt-6 max-w-2xl text-lg sm:text-xl leading-8 text-white/90">
+            <p className="mx-auto font-light mt-6 max-w-2xl text-lg sm:text-xl leading-8 text-neutral-600">
               Build and deploy production ready AI systems without the
               complexity. Simple setup, powerful features and enterprise grade
               infrastructure, all in one platform.
             </p>
 
-            <div className="mt-10 flex items-center justify-center gap-4 md:gap-6">
+            <div className="my-10 flex items-center justify-center gap-4 md:gap-6">
               <Link
                 href="/register"
-                className="group inline-flex items-center bg-white px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base text-neutral-900 transition-all duration-300 hover:bg-neutral-100 hover:scale-105 hover:shadow-lg"
+                className="group inline-flex items-center bg-neutral-900 px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base  text-white transition-all duration-300 hover:bg-neutral-950 hover:scale-105 hover:shadow-lg"
               >
                 Get Started
                 <svg
@@ -291,20 +255,60 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 items-center justify-center text-white">
-              {[
-                { value: "40%", label: "Lower Deployment Cost" },
-                { value: "15x", label: "Faster Integration" },
-                { value: "99.9%", label: "Server Uptime" },
-              ].map((stat, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col items-center gap-2 px-4 py-6 bg-white/5 backdrop-blur-sm"
-                >
-                  <span className="text-3xl font-light">{stat.value}</span>
-                  <span className="text-sm text-center">{stat.label}</span>
+            <div className="relative w-full p-2 md:p-4">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,#3b82f6,transparent_40%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,#84cc16,transparent_40%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,#e879f9,transparent_40%)]" />
+              <div className="absolute inset-0 bg-white/40 backdrop-blur-[1px]" />
+              <div
+                className="m-4 bg-white/80 p-2 md:p-4 backdrop-blur
+-sm"
+              >
+                <div className="flex items-center space-x-2 mb-3">
+                  <div className="h-2.5 w-2.5 md:h-3 md:w-3 rounded-full bg-[#FF5F57]"></div>
+                  <div className="h-2.5 w-2.5 md:h-3 md:w-3 rounded-full bg-[#FFBD2E]"></div>
+                  <div className="h-2.5 w-2.5 md:h-3 md:w-3 rounded-full bg-[#28CA41]"></div>
                 </div>
-              ))}
+                <pre className="text-left text-xs md:text-sm text-neutral-600 overflow-x-auto scrollbar-thin scrollbar-thumb-neutral-300 scrollbar-track-transparent">
+                  <code>
+                    {`curl -X POST "https://api.lmscale.tech/v1/chat/completion" \\
+-H "Content-Type: application/json" \\
+-H "Accept: text/event-stream" \\
+-H "x-api-key: api_key" \\
+-d '{
+  "message": "Can you help me choose the right product for my needs?",
+  "conversation": [
+    {
+      "role": "user",
+      "content": "hi"
+    },
+    {
+      "role": "ai", 
+      "content": "how can i help you?"
+    }
+  ]
+}'`}
+                  </code>
+                </pre>
+              </div>
+            </div>
+            <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 items-center justify-center text-neutral-800">
+              <div className="flex flex-col items-center gap-2 px-4 py-6">
+                <span className="text-3xl font-light">40%</span>
+                <span className="text-sm text-center">
+                  Lower Deployment Cost
+                </span>
+              </div>
+              <div className="flex flex-col items-center gap-2 px-4 py-6">
+                <span className="text-3xl font-light">15x</span>
+                <span className="text-sm text-center">Faster Integration</span>
+              </div>
+              <div className="flex flex-col items-center gap-2 px-4 py-6">
+                <span className="text-3xl font-light">99.9%</span>
+                <span className="text-sm text-center">Server Uptime</span>
+              </div>
             </div>
           </div>
         </div>
