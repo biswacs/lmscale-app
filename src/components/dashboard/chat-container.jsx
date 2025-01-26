@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Send, Loader, PlusCircle } from "lucide-react";
 import { useChat } from "@/providers/chat-provider";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 
 const Header = ({ assistant, onNewChat }) => {
   return (
@@ -24,6 +25,52 @@ const Header = ({ assistant, onNewChat }) => {
         <p className="hidden md:block">New Chat</p>
       </button>
     </div>
+  );
+};
+
+const MarkdownMessage = ({ content }) => {
+  return (
+    <ReactMarkdown
+      components={{
+        a: ({ node, ...props }) => (
+          <a
+            {...props}
+            className="text-blue-600 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          />
+        ),
+
+        strong: ({ node, ...props }) => (
+          <strong {...props} className="font-semibold" />
+        ),
+
+        ul: ({ node, ...props }) => (
+          <ul {...props} className="list-disc pl-4 my-2" />
+        ),
+        ol: ({ node, ...props }) => (
+          <ol {...props} className="list-decimal pl-4 my-2" />
+        ),
+
+        li: ({ node, ...props }) => <li {...props} className="my-1" />,
+
+        p: ({ node, ...props }) => <p {...props} className="my-2" />,
+
+        code: ({ node, inline, ...props }) => (
+          <code
+            {...props}
+            className={`${
+              inline
+                ? "bg-neutral-100 rounded px-1"
+                : "block bg-neutral-100 p-2 rounded my-2"
+            }`}
+          />
+        ),
+      }}
+      className="prose prose-sm max-w-none prose-neutral"
+    >
+      {content}
+    </ReactMarkdown>
   );
 };
 
@@ -85,7 +132,11 @@ export function ChatContainer() {
         </div>
       );
     }
-    return <div className="whitespace-pre-wrap">{msg.content}</div>;
+    return msg.role === "user" ? (
+      <div className="whitespace-pre-wrap">{msg.content}</div>
+    ) : (
+      <MarkdownMessage content={msg.content} />
+    );
   };
 
   return (
