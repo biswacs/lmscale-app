@@ -123,7 +123,7 @@ export function SelectAssistantModal({ isOpen, onClose }) {
         <div className="flex-1 flex flex-col min-h-0">
           {!showCreateForm ? (
             <>
-              <div className="flex-none px-3 py-2 border-b border-neutral-200">
+              <div className="flex-none p-1 border-b border-neutral-200">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-400" />
                   <input
@@ -131,9 +131,7 @@ export function SelectAssistantModal({ isOpen, onClose }) {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search assistants..."
-                    className="w-full pl-10 pr-4 py-2 border border-neutral-200 
-                             focus:outline-none focus:ring-1 focus:ring-neutral-400
-                             text-sm placeholder:text-neutral-400"
+                    className="w-full pl-10 pr-4 py-2 focus:outline-none"
                   />
                 </div>
               </div>

@@ -46,7 +46,7 @@ const ModalForm = memo(
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
               }
-              className="w-full h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400"
+              className="w-full h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400 focus:outline-none"
               required
             />
             <p className="text-xs text-neutral-500 mt-1">
@@ -64,7 +64,7 @@ const ModalForm = memo(
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, content: e.target.value }))
               }
-              className="w-full border px-3 py-2 h-48 sm:h-64 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400"
+              className="w-full border px-3 py-2 h-48 sm:h-64 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400 focus:outline-none"
               required
             />
             <p className="text-xs text-neutral-500 mt-1">
@@ -168,19 +168,41 @@ const InstructionsPage = () => {
     const authToken = localStorage.getItem("lm_auth_token");
     const assistantId = localStorage.getItem("lm_assistant_id");
 
-    const response = await fetch(`${API_BASE_URL}/instruction/${endpoint}`, {
+    const url = `${API_BASE_URL}/instruction/${endpoint}${
+      endpoint === "delete" ? `?instructionId=${data.instructionId}` : ""
+    }`;
+
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${authToken}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ assistantId, ...data }),
+      body:
+        endpoint === "delete"
+          ? undefined
+          : JSON.stringify({ assistantId, ...data }),
     });
 
     const result = await response.json();
     if (!response.ok)
       throw new Error(result.message || `Failed to ${endpoint} instruction`);
     await getAssistant();
+  };
+
+  const handleDelete = async (instruction) => {
+    try {
+      setIsDeleting(true);
+      await handleApiCall("delete", {
+        instructionId: instruction.id,
+      });
+      setIsEditModalOpen(false);
+      setEditingInstruction(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const handleCreate = async (data) => {
@@ -205,22 +227,6 @@ const InstructionsPage = () => {
       setError(err.message);
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const handleDelete = async (instruction) => {
-    try {
-      setIsDeleting(true);
-      await handleApiCall("update", {
-        instructionId: instruction.id,
-        isActive: false,
-      });
-      setIsEditModalOpen(false);
-      setEditingInstruction(null);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsDeleting(false);
     }
   };
 

@@ -73,7 +73,7 @@ const ModalForm = memo(
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
               }
-              className="w-full h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400"
+              className="w-full h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400 focus:outline-none"
               required
             />
           </div>
@@ -88,7 +88,7 @@ const ModalForm = memo(
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, endpoint: e.target.value }))
               }
-              className="w-full h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400"
+              className="w-full h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400 focus:outline-none"
               required
             />
           </div>
@@ -101,7 +101,7 @@ const ModalForm = memo(
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, method: e.target.value }))
                 }
-                className="w-full h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400"
+                className="w-full h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400 focus:outline-none"
               >
                 {["GET", "POST", "PUT", "DELETE"].map((method) => (
                   <option key={method} value={method}>
@@ -120,7 +120,7 @@ const ModalForm = memo(
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, authType: e.target.value }))
                 }
-                className="w-full h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400"
+                className="w-full h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400 focus:outline-none"
               >
                 <option value="bearer">Bearer Token</option>
                 <option value="basic">Basic Auth</option>
@@ -162,17 +162,17 @@ const ModalForm = memo(
                   value={newParamKey}
                   onChange={(e) => {
                     setNewParamKey(e.target.value);
-                    setParamError(""); // Clear error when typing
+                    setParamError("");
                   }}
                   placeholder="Parameter name"
-                  className={`w-full sm:w-auto flex-1 h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400 ${
+                  className={`w-full sm:w-auto flex-1 h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400 focus:outline-none ${
                     paramError ? "border-red-300" : ""
                   }`}
                 />
                 <select
                   value={newParamType}
                   onChange={(e) => setNewParamType(e.target.value)}
-                  className="w-full sm:w-auto h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400"
+                  className="w-full sm:w-auto h-10 border px-3 text-sm focus:ring-1 border-neutral-200 focus:ring-neutral-400 focus:outline-none"
                 >
                   <option value="string">String</option>
                   <option value="number">Number</option>
@@ -289,19 +289,44 @@ const FunctionsPage = () => {
     const authToken = localStorage.getItem("lm_auth_token");
     const assistantId = localStorage.getItem("lm_assistant_id");
 
-    const response = await fetch(`${API_BASE_URL}/function/${endpoint}`, {
-      method: "POST", // Changed to always use POST
+    // Add query params for delete endpoint
+    const url = `${API_BASE_URL}/function/${endpoint}${
+      endpoint === "delete" ? `?functionId=${data.functionId}` : ""
+    }`;
+
+    const response = await fetch(url, {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${authToken}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ assistantId, ...data }),
+      // Don't send body for delete endpoint
+      body:
+        endpoint === "delete"
+          ? undefined
+          : JSON.stringify({ assistantId, ...data }),
     });
 
     const result = await response.json();
     if (!response.ok)
       throw new Error(result.message || `Failed to ${endpoint} function`);
     await getAssistant();
+  };
+
+  const handleDelete = async (func) => {
+    try {
+      setIsDeleting(true);
+      await handleApiCall("delete", {
+        functionId: func.id,
+      });
+      setIsEditModalOpen(false);
+      setSelectedFunction(null);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const handleCreate = async (data) => {
@@ -331,23 +356,6 @@ const FunctionsPage = () => {
       setError(err.message);
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const handleDelete = async (func) => {
-    try {
-      setIsDeleting(true);
-      await handleApiCall("update", {
-        functionId: func.id,
-        isActive: false,
-      });
-      setIsEditModalOpen(false);
-      setSelectedFunction(null);
-      setError(null);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsDeleting(false);
     }
   };
 
