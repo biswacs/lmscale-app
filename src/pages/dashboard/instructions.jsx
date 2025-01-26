@@ -261,8 +261,8 @@ const InstructionsPage = () => {
                   <div className="flex flex-col sm:flex-row items-start justify-between gap-2 sm:gap-0">
                     <div className="space-y-1 w-full sm:w-auto">
                       <div className="flex items-center gap-2">
-                        <Waypoints className="h-5 w-5 text-neutral-700" />
-                        <h3 className="text-neutral-900 text-xl">
+                        <Waypoints className="size-4 text-neutral-700" />
+                        <h3 className="text-neutral-900 text-md">
                           {instruction.name}
                         </h3>
                       </div>

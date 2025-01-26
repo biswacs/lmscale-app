@@ -558,8 +558,8 @@ const FunctionsPage = () => {
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="flex items-center gap-2 mb-1.5">
-                        <Code2 className="h-5 w-5 text-neutral-700" />
-                        <h3 className="text-neutral-900 text-xl">
+                        <Code2 className="size-4 text-neutral-700" />
+                        <h3 className="text-neutral-900 text-md">
                           {func.name}
                         </h3>
                       </div>
