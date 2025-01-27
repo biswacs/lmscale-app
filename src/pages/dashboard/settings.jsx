@@ -39,7 +39,6 @@ const Settings = () => {
     <AppLayout>
       <div className="px-3 sm:px-6 py-4 font-light">
         <div className="max-w-2xl mx-auto space-y-6">
-          {/* User Profile Section */}
           <div className="bg-white border border-neutral-200 p-3 sm:p-4">
             <div className="space-y-4">
               <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
