@@ -10,6 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { ChartNoAxesColumn } from "lucide-react";
 
 const UsageContainer = () => {
   const [error, setError] = useState("");
@@ -28,8 +29,13 @@ const UsageContainer = () => {
   const renderUsageChart = () => {
     if (usageData.length === 0) {
       return (
-        <div className="text-center text-neutral-500 p-8">
-          No usage data available
+        <div className="text-center py-8 sm:py-12 bg-white border border-dashed border-neutral-200">
+          <ChartNoAxesColumn className="h-8 w-8 text-neutral-800 mx-auto mb-4" />
+          <h3 className="text-neutral-900 mb-2">No usage data available</h3>
+          <p className="text-neutral-600 text-sm max-w-md mx-auto mb-4 px-4">
+            Usage statistics will appear here once you start interacting with
+            your assistant.
+          </p>
         </div>
       );
     }
@@ -105,68 +111,70 @@ const UsageContainer = () => {
           </div>
         ) : (
           <div>
-            <div className="bg-white border border-neutral-200 p-3">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div className="p-4 border border-neutral-200">
-                  <h3 className="text-sm text-neutral-500 mb-2">
-                    Input Tokens
-                  </h3>
-                  <p className="text-2xl">
-                    {usageData[
-                      usageData.length - 1
-                    ]?.inputTokens.toLocaleString() || "-"}
-                  </p>
-                </div>
-                <div className="p-4 border border-neutral-200">
-                  <h3 className="text-sm text-neutral-500 mb-2">
-                    Output Tokens
-                  </h3>
-                  <p className="text-2xl">
-                    {usageData[
-                      usageData.length - 1
-                    ]?.outputTokens.toLocaleString() || "-"}
-                  </p>
-                </div>
-                <div className="p-4 border border-neutral-200">
-                  <h3 className="text-sm text-neutral-500 mb-2">
-                    Total Tokens
-                  </h3>
-                  <p className="text-2xl">
-                    {usageData[
-                      usageData.length - 1
-                    ]?.totalTokens.toLocaleString() || "-"}
-                  </p>
-                </div>
-                <div className="p-4 border border-neutral-200">
-                  <h3 className="text-sm text-neutral-500 mb-2">
-                    Latest Usage
-                  </h3>
-                  <div className="flex flex-col">
-                    {usageData[usageData.length - 1]?.updatedAt ? (
-                      <>
-                        <p className="text-lg">
-                          {
-                            formatDateTime(
-                              usageData[usageData.length - 1].updatedAt
-                            ).date
-                          }
-                        </p>
-                        <p className="text-lg">
-                          {
-                            formatDateTime(
-                              usageData[usageData.length - 1].updatedAt
-                            ).time
-                          }
-                        </p>
-                      </>
-                    ) : (
-                      "-"
-                    )}
+            {usageData.length > 0 && (
+              <div className="bg-white border border-neutral-200 p-3 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="p-4 border border-neutral-200">
+                    <h3 className="text-sm text-neutral-500 mb-2">
+                      Input Tokens
+                    </h3>
+                    <p className="text-2xl">
+                      {usageData[
+                        usageData.length - 1
+                      ]?.inputTokens.toLocaleString() || "-"}
+                    </p>
+                  </div>
+                  <div className="p-4 border border-neutral-200">
+                    <h3 className="text-sm text-neutral-500 mb-2">
+                      Output Tokens
+                    </h3>
+                    <p className="text-2xl">
+                      {usageData[
+                        usageData.length - 1
+                      ]?.outputTokens.toLocaleString() || "-"}
+                    </p>
+                  </div>
+                  <div className="p-4 border border-neutral-200">
+                    <h3 className="text-sm text-neutral-500 mb-2">
+                      Total Tokens
+                    </h3>
+                    <p className="text-2xl">
+                      {usageData[
+                        usageData.length - 1
+                      ]?.totalTokens.toLocaleString() || "-"}
+                    </p>
+                  </div>
+                  <div className="p-4 border border-neutral-200">
+                    <h3 className="text-sm text-neutral-500 mb-2">
+                      Latest Usage
+                    </h3>
+                    <div className="flex flex-col">
+                      {usageData[usageData.length - 1]?.updatedAt ? (
+                        <>
+                          <p className="text-lg">
+                            {
+                              formatDateTime(
+                                usageData[usageData.length - 1].updatedAt
+                              ).date
+                            }
+                          </p>
+                          <p className="text-lg">
+                            {
+                              formatDateTime(
+                                usageData[usageData.length - 1].updatedAt
+                              ).time
+                            }
+                          </p>
+                        </>
+                      ) : (
+                        "-"
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-              {renderUsageChart()}
-            </div>
+            )}
+            {renderUsageChart()}
           </div>
         )}
       </div>
