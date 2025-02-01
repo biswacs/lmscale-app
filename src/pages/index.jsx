@@ -225,7 +225,7 @@ export default function HomePage() {
               </div>
             </div>
             <h1 className="mx-auto max-w-4xl font-display text-4xl font-light tracking-tight text-neutral-800 sm:text-6xl">
-              Deploy Custom AI with SLMs
+              Deploy Custom AI Assistants with SLMs
             </h1>
             <p className="mx-auto font-light mt-6 max-w-2xl text-lg sm:text-xl leading-8 text-neutral-600">
               Build and deploy production ready AI systems without the
