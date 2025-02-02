@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useUser } from "@/providers/user-provider";
+import { useAuthentication } from "@/providers/authentication-provider";
 
 export function Header() {
-  const { user, loading } = useUser();
+  const { user, loading } = useAuthentication();
   const userDisplayName = (
     loading ? "Loading..." : user?.name || "User"
   ).toUpperCase();

@@ -18,6 +18,7 @@ const AuthenticationProvider = ({ children }) => {
   const [submitting, setSubmitting] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -47,8 +48,9 @@ const AuthenticationProvider = ({ children }) => {
       localStorage.setItem("lm_auth_token", data.lm_auth_token);
       localStorage.setItem("lm_assistant_id", data.assistantId);
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await fetchUser();
 
+      await new Promise((resolve) => setTimeout(resolve, 100));
       router.push(ROUTES_MAP.DASHBOARD.__);
     } catch (err) {
       console.error("Error handling auth success:", err);
@@ -180,6 +182,40 @@ const AuthenticationProvider = ({ children }) => {
     }
   }, [authToken, assistantId, loading, router, isInitialized]);
 
+  const fetchUser = async () => {
+    const authToken = localStorage.getItem("lm_auth_token");
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_BASE_URL}/user/profile`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user profile");
+      }
+
+      const data = await response.json();
+      setUser(data.data.user);
+      return data.data.user;
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (authToken) {
+      fetchUser();
+    } else {
+      setUser(null);
+      setLoading(false);
+    }
+  }, [authToken]);
+
   const contextValue = {
     logInUser,
     logOutUser,
@@ -192,6 +228,9 @@ const AuthenticationProvider = ({ children }) => {
     assistantId,
     submitting,
     error,
+    user,
+    loading,
+    fetchUser,
   };
 
   if (!isInitialized) {

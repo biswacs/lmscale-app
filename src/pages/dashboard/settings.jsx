@@ -1,14 +1,13 @@
 import { AppLayout } from "@/components/_shared/app-layout";
 import { useAuthentication } from "@/providers/authentication-provider";
 import { useAssistants } from "@/providers/assistants-provider";
-import { useUser } from "@/providers/user-provider";
 import { Copy, Check, User } from "lucide-react";
 import React, { useState } from "react";
 
 const Settings = () => {
   const { logOutUser } = useAuthentication();
   const { currentAssistant } = useAssistants();
-  const { user, loading } = useUser();
+  const { user, loading } = useAuthentication();
   const [copied, setCopied] = useState(false);
 
   const maskApiKey = (apiKey) => {

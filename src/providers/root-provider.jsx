@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import AuthenticationProvider from "./authentication-provider";
-import UserProvider from "./user-provider";
 import ChatProvider from "./chat-provider";
 import { AssistantsProvider } from "./assistants-provider";
 import { API_BASE_URL } from "@/config";
@@ -100,11 +99,9 @@ function GlobalFetchInterceptor({ children }) {
 
 function ProviderTree({ children }) {
   return (
-    <UserProvider>
-      <AssistantsProvider>
-        <ChatProvider>{children}</ChatProvider>
-      </AssistantsProvider>
-    </UserProvider>
+    <AssistantsProvider>
+      <ChatProvider>{children}</ChatProvider>
+    </AssistantsProvider>
   );
 }
 
