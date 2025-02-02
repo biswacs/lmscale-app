@@ -10,7 +10,7 @@ import {
   MessageCircle,
   Waypoints,
   SquareTerminal,
-  Bot,
+  ArrowRightLeft,
 } from "lucide-react";
 
 const navigation = [
@@ -50,19 +50,21 @@ export function Sidebar() {
   return (
     <>
       <div className="relative flex flex-col border-r border-neutral-200 bg-white transition-all duration-200 w-12 md:w-44">
-        <nav className="flex flex-col gap-2 p-2">
-          {navigation.map((item) => renderNavLink(item))}
-          <button
-            onClick={() => setIsSelectModalOpen(true)}
-            className="flex items-center justify-center md:justify-start gap-3 px-3 py-2 w-full text-sm text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 transition-colors duration-200"
-          >
-            <Bot className="h-4 w-4 flex-shrink-0" />
-            <span className="hidden md:block font-light truncate">
-              {currentAssistant?.name || "Loading..."}
-            </span>
-          </button>
-        </nav>
-        <div className="flex-1 overflow-y-auto" />
+        <div className="flex-1 overflow-y-auto">
+          <nav className="flex flex-col gap-2 p-2">
+            {navigation.map((item) => renderNavLink(item))}
+          </nav>
+        </div>
+
+        <button
+          onClick={() => setIsSelectModalOpen(true)}
+          className="border-t border-neutral-200 flex items-center justify-center md:justify-start gap-3 px-6 py-4 w-full text-sm text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 transition-colors duration-200"
+        >
+          <ArrowRightLeft className="h-4 w-4 flex-shrink-0" />
+          <span className="hidden md:block font-light truncate">
+            {currentAssistant?.name || "Loading..."}
+          </span>
+        </button>
       </div>
 
       <SelectAssistantModal

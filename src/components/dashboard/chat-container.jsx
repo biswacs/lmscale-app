@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Send, Loader, PlusCircle } from "lucide-react";
+import { Send, Loader, PlusCircle, Eraser } from "lucide-react";
 import { useChat } from "@/providers/chat-provider";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
@@ -149,7 +149,7 @@ export function ChatContainer() {
               {conversation.map((msg, index) => (
                 <div
                   key={`${msg.role}-${index}`}
-                  className="px-4 py-3 flex items-start gap-4"
+                  className="flex items-start gap-4"
                 >
                   <div className="size-8 flex-shrink-0 flex items-center justify-center font-light bg-neutral-900 text-white">
                     {msg.role === "user" ? "U" : "A"}
@@ -162,10 +162,10 @@ export function ChatContainer() {
               <div ref={conversationEndRef} className="h-1" />
             </div>
 
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-neutral-200 p-4">
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-neutral-200 p-2">
               <div className="max-w-3xl mx-auto">
-                <div className="flex items-end gap-2">
-                  <div className="relative flex-1">
+                <div className="gap-2 flex items-center">
+                  <div className="relative flex-1 flex items-center">
                     <textarea
                       ref={textareaRef}
                       value={input}
@@ -201,7 +201,7 @@ export function ChatContainer() {
                     onClick={newChat}
                     className="bg-black text-white p-2 flex items-center justify-center hover:bg-neutral-800 transition-colors"
                   >
-                    <PlusCircle className="w-4 h-4" />
+                    <Eraser className="w-4 h-4" />
                   </button>
                 </div>
               </div>
