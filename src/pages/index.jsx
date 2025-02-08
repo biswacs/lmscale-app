@@ -313,40 +313,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section id="GetStarted" className="relative bg-white py-24">
-        <div className="absolute inset-0">
-          <div
-            className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]"
-            style={{
-              mask: "radial-gradient(circle at center, white 30%, transparent 70%)",
-              WebkitMask:
-                "radial-gradient(circle at center, white 30%, transparent 70%)",
-            }}
-          />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-4">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-            <div className="space-y-4">
-              <h2 className="text-3xl font-light text-neutral-800">
-                Deploy AI Solutions Faster
-              </h2>
-              <p className="text-lg font-light text-neutral-800">
-                Build and launch production ready AI applications with
-                simplicity
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/register"
-                className="group inline-flex items-center justify-center gap-2 px-6 py-3 text-sm  transition-all duration-300 bg-black text-white"
-              >
-                Get Started
-                <MoveRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
       <footer className="relative bg-white" role="contentinfo">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#10b981,transparent_40%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,#f97316,transparent_40%)]" />
